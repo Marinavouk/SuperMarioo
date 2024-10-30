@@ -15,7 +15,7 @@ bool CApplication::Create(void)
 	m_pRandomNumberGenerator = new CRandom;
 	m_pRandomNumberGenerator->Seed();
 
-	if (!m_Window.Create(this, "Framework", false, false))
+	if (!m_Window.Create(this, "Super Marioo", false, false))
 		return false;
 
 	// If you want to set the title of the window while the game is running, you can use this function
