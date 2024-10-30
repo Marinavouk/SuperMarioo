@@ -28,7 +28,7 @@ bool CMainMenuState::OnEnter(void)
 	*/
 	m_pBackground = textureHandler.CreateTexture("MainMenuBackGroundSuper-Mario.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
-	m_pBackground->SetAlphaMod(100);
+	m_pBackground->SetAlphaMod(225);
 
 
 	return true;
@@ -79,6 +79,7 @@ void CMainMenuState::Render(void)
 	// Render the main-menu objects here
 
 	m_pBackground->Render({ 0.0f, 0.0f });
+
 
 }
 
