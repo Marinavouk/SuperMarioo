@@ -13,13 +13,22 @@ bool CMainMenuState::OnEnter(void)
 	* Set the clear color (the background color that is shown behind the menu background and other objects) of the window
 	* This is completely optional
 	*/
+
+	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
+
 	m_pApplication->GetWindow().SetClearColor({200, 200, 200, 255});
 
 	/**
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
 	* This function is called once, when the game is entering this state
 	*/
-
+	m_pBackground = textureHandler.CreateTexture("MainMenuBackGroundSuper-Mario.png");
+	m_pBackground->SetSize(m_pApplication->GetWindowSize());
+	m_pBackground->SetAlphaMod(100);
 
 
 	return true;
@@ -36,7 +45,13 @@ void CMainMenuState::OnExit(void)
 	* This function is called once, when the game is leaving this state
 	*/
 
+	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 
+	textureHandler.DestroyTexture(m_pBackground->GetName());
+	
+	m_pBackground = nullptr;
 }
 
 void CMainMenuState::Update(const float deltaTime)
@@ -58,7 +73,12 @@ void CMainMenuState::Render(void)
 	* Render the menu objects here
 	* This function is called every frame
 	*/
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+	const SDL_FPoint	mousePosition = m_pApplication->GetInputHandler().GetMousePosition();
 
+	// Render the main-menu objects here
+
+	m_pBackground->Render({ 0.0f, 0.0f });
 
 }
 
