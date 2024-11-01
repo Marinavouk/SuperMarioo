@@ -42,7 +42,11 @@ bool CMainMenuState::OnEnter(void)
 
 	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor))
 		return false;
-	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 100.0f });
+	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 50.0f });
+	
+	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
+		return false;
+	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 150.0f });
 	
 	return true;
 }
@@ -62,6 +66,7 @@ void CMainMenuState::OnExit(void)
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 
+	m_2PlayerGame.Destroy(m_pApplication);
 	m_1PlayerGame.Destroy(m_pApplication);
 
 	fontHandler.DestroyFont(m_pButtonFont);
@@ -108,6 +113,7 @@ void CMainMenuState::Render(void)
 	m_pBackground->Render({ 0.0f, 0.0f });
 
 	m_1PlayerGame.Render(renderer, &mousePosition);
+	m_2PlayerGame.Render(renderer, &mousePosition);
 }
 
 void CMainMenuState::RenderDebug(void)
