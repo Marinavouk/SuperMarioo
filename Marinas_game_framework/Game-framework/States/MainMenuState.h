@@ -36,8 +36,8 @@ private:
 	TTF_Font* m_pButtonFont = nullptr;
 
 	CButton		m_TitleTextBlock = {};
-	CButton		m_PlayButton = {};
-	CButton		m_QuitButton = {};
+	CButton		m_1PlayerGame = {};
+	CButton		m_2PlayerGame = {};
 
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function
