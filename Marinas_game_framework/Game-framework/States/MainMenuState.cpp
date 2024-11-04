@@ -93,17 +93,19 @@ void CMainMenuState::Update(const float deltaTime)
 	else if (m_pApplication->GetInputHandler().KeyPressed(SDL_SCANCODE_ESCAPE)) m_pApplication->SetState(CApplication::EState::QUIT);
 
 		 // Easy access to the input handler and the transition renderer, so you don't have to write m_pApplication->GetX() multiple times below
-		// CInputHandler& inputHandler = m_pApplication->GetInputHandler();
-		 //const CTransitionRenderer& transitionRenderer = m_pApplication->GetTransitionRenderer();
+		 CInputHandler& inputHandler = m_pApplication->GetInputHandler();
+		 const CTransitionRenderer& transitionRenderer = m_pApplication->GetTransitionRenderer();
 
 		 // Update the main-menu objects here
 
-		// m_1PlayerGame.Update(inputHandler);
+		 m_1PlayerGame.Update(inputHandler);
+		 m_2PlayerGame.Update(inputHandler);
 
-
-		 // Will only fade in/out the menu music if the game isn't switching to/from the settings state
-		 //if (transitionRenderer.IsTransitioning() && (m_pApplication->GetNextState() != CApplication::EState::SETTINGS) && (m_pApplication->GetLastState() != CApplication::EState::SETTINGS))
-			// m_pApplication->GetAudioHandler().SetMusicVolume(MIX_MAX_VOLUME - (int)((float)MIX_MAX_VOLUME * transitionRenderer.GetTransitionValue()));
+		 // Switch state whenever any of the buttons are pressed
+		 if (m_1PlayerGame.IsPressed(inputHandler))		m_pApplication->SetState(CApplication::EState::GAME);
+		 else if (m_2PlayerGame.IsPressed(inputHandler))	m_pApplication->SetState(CApplication::EState::GAME);
+		
+		 
 
 }
 
