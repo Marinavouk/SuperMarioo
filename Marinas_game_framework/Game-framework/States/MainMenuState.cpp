@@ -30,23 +30,31 @@ bool CMainMenuState::OnEnter(void)
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 
-	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 60); if (!m_pButtonFont)	return false;
+	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 50); if (!m_pButtonFont)	return false;
 
 	const SDL_Color titleTextColor = { 200,	0,		0,		255 }; // Dark red
-	const SDL_Color buttonBackgroundColor = { 100,	100,	100,	150 }; // Light gray	<-- Background color when the button is not held
-	const SDL_Color buttonBackgroundPressedColor = { 100,	100,	100,	200 }; // Dark gray	<-- Background color when the button is held
+	const SDL_Color buttonBackgroundColor = { 0,	0,	0,	0 }; // nothing	<-- Background color when the button is not held
+	const SDL_Color buttonBackgroundPressedColor = { 0,	0,	0,	0 }; // nothing	<-- Background color when the button is held
 	const SDL_Color buttonTextColor = { 255, 255,	255,	255 }; // White		<-- Text color when the mouse pointer is outside the button
-	const SDL_Color buttonTextColorHovered = { 255,	0,		0,		255 }; // Red		<-- Text color when the mouse pointer is inside (hovering) the button
-	const SDL_Color buttonTextColorPressed = { 255,	0,		0,		255 }; // Red		<-- Text color when the button is held
+	const SDL_Color buttonTextColorHovered = { 100,	 100,	100,	255 }; // Light gray<-- Text color when the mouse pointer is inside (hovering) the button
+	const SDL_Color buttonTextColorPressed = { 100,	100,	100,	200 }; // Dark gray	<-- Text color when the button is held
 
 
 	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor))
 		return false;
 	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 50.0f });
+	m_1PlayerGame.SetBackgroundColor(buttonBackgroundColor);
+	m_1PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
+	m_1PlayerGame.SetTextColorHovered(buttonTextColorHovered);
+	m_1PlayerGame.SetTextColorPressed(buttonTextColorPressed);
 	
 	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
 		return false;
 	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 150.0f });
+	m_2PlayerGame.SetBackgroundColor(buttonBackgroundColor);
+	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
+	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
+	m_2PlayerGame.SetTextColorPressed(buttonTextColorPressed);
 	
 	return true;
 }
@@ -109,6 +117,8 @@ void CMainMenuState::Render(void)
 	const SDL_FPoint	mousePosition = m_pApplication->GetInputHandler().GetMousePosition();
 
 	// Render the main-menu objects here
+
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
 
