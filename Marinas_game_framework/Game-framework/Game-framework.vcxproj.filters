@@ -87,6 +87,7 @@
     <ClCompile Include="Pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -149,5 +150,6 @@
     <ClInclude Include="Pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h" />
   </ItemGroup>
 </Project>

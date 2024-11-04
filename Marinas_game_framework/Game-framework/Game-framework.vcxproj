@@ -23,6 +23,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="States\GameState.cpp" />
     <ClCompile Include="States\MainMenuState.cpp" />
     <ClCompile Include="States\QuitState.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="Handlers\LibraryHandler.h" />
     <ClInclude Include="Handlers\TextureHandler.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="States\GameState.h" />
     <ClInclude Include="States\MainMenuState.h" />
     <ClInclude Include="States\QuitState.h" />
