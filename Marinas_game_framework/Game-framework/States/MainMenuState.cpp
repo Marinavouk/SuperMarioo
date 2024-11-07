@@ -13,6 +13,7 @@ bool CMainMenuState::OnEnter(void)
 	* Set the clear color (the background color that is shown behind the menu background and other objects) of the window
 	* This is completely optional
 	*/
+	m_pApplication->GetWindow().SetClearColor({ 173, 216, 230, 255 }); 
 
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
@@ -20,7 +21,6 @@ bool CMainMenuState::OnEnter(void)
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
-	m_pApplication->GetWindow().SetClearColor({ 173, 216, 230, 255 }); 
 
 	/**
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
@@ -29,6 +29,13 @@ bool CMainMenuState::OnEnter(void)
 	m_pBackground = textureHandler.CreateTexture("MainMarioBackground.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
+
+	m_pSuperMario = textureHandler.CreateTexture("SuperIdle.png");
+	m_pSuperMario->SetSize({ 64.0f, 64.0f });
+	m_pSuperMario->SetTextureCoords(0, 64, 256, 320);
+
+	
+
 
 	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 50); if (!m_pButtonFont)	return false;
 
@@ -82,8 +89,9 @@ void CMainMenuState::OnExit(void)
 	m_pButtonFont	= nullptr;
 	m_pTextFont		= nullptr;
 
+	textureHandler.DestroyTexture(m_pSuperMario->GetName());
 	textureHandler.DestroyTexture(m_pBackground->GetName());
-	
+	m_pSuperMario = nullptr;
 	m_pBackground = nullptr;
 }
 
@@ -123,6 +131,7 @@ void CMainMenuState::Render(void)
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
+	//m_pSuperMario->Render({ 0.0f, 0.0f });
 
 	m_1PlayerGame.Render(renderer, &mousePosition);
 	m_2PlayerGame.Render(renderer, &mousePosition);

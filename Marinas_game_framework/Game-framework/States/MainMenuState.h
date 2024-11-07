@@ -39,6 +39,9 @@ private:
 	CButton		m_1PlayerGame = {};
 	CButton		m_2PlayerGame = {};
 
+	SDL_FPoint	m_MarioSize = { 0.0f, 0.0f };
+	SDL_FPoint	m_MarioPosition = { 0.0f, 0.0f };
+
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function
 
