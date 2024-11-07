@@ -13,14 +13,19 @@ bool CGameState::OnEnter(void)
 	* Set the clear color (the background color that is shown behind the game background and other objects) of the window
 	* This is completely optional
 	*/
+
+	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
+
+
 	m_pApplication->GetWindow().SetClearColor({200, 200, 200, 255});
 
-	/**
-	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
-	* This function is called once, when the game is entering this state
-	*/
-
-
+	m_pBackground = textureHandler.CreateTexture("BackgroundMB.png");
+	m_pBackground->SetSize(m_pApplication->GetWindowSize());
+	m_pBackground->SetAlphaMod(225);
 
 	return true;
 }
@@ -31,11 +36,16 @@ void CGameState::OnExit(void)
 	std::cout << "Exiting game state" << std::endl;
 #endif
 
+	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+
 	/**
 	* Destroy objects that should be destroyed/stopped when this state is exited/stopped (destroy textures, unload/stop game music etc)
 	* This function is called once, when the game is leaving this state
 	*/
 
+	textureHandler.DestroyTexture(m_pBackground->GetName());
+	m_pBackground = nullptr;
 
 }
 
@@ -54,11 +64,11 @@ void CGameState::Update(const float deltaTime)
 
 void CGameState::Render(void)
 {
-	/**
-	* Render the game objects here
-	* This function is called every frame
-	*/
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
 
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
+
+	m_pBackground->Render({ 0.0f, 0.0f });
 
 }
 
