@@ -20,13 +20,13 @@ bool CMainMenuState::OnEnter(void)
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
-	m_pApplication->GetWindow().SetClearColor({200, 200, 200, 255});
+	m_pApplication->GetWindow().SetClearColor({ 173, 216, 230, 255 });
 
 	/**
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
 	* This function is called once, when the game is entering this state
 	*/
-	m_pBackground = textureHandler.CreateTexture("MainMenuBackGroundSuper-Mario.png");
+	m_pBackground = textureHandler.CreateTexture("MainMarioBackground.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 
