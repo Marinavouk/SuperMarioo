@@ -21,7 +21,7 @@ bool CGameState::OnEnter(void)
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
 
-	m_pApplication->GetWindow().SetClearColor({200, 200, 200, 255});
+	m_pApplication->GetWindow().SetClearColor({0, 0, 0, 255});
 
 	m_pBackground = textureHandler.CreateTexture("BackgroundMB.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
