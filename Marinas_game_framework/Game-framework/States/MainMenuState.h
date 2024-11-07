@@ -25,11 +25,17 @@ public:
 private:
 	CTexture* m_pBackground = nullptr;
 	CTexture* m_pSuperMario = nullptr;
+	CTexture* m_pCoinTexture = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 	TTF_Font* m_pButtonFont = nullptr;
 
-	CButton		m_TitleTextBlock = {};
+	CButton		m_MarioTextBlock = {};
+	CButton		m_LevelTextBlock = {};
+	CButton		m_TimeTextBlock = {};
+	CButton		m_BonusNumberBlock = {};
+	CButton		m_CoinsNumberBlock = {};
+	CButton		m_LevelsNumberBlock = {};
 	CButton		m_1PlayerGame = {};
 	CButton		m_2PlayerGame = {};
 

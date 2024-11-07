@@ -20,7 +20,7 @@ bool CMainMenuState::OnEnter(void)
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
-	m_pApplication->GetWindow().SetClearColor({ 173, 216, 230, 255 });
+	m_pApplication->GetWindow().SetClearColor({ 173, 216, 230, 255 }); 
 
 	/**
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
