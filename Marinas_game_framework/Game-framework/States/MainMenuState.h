@@ -22,12 +22,6 @@ public:
 
 	// Place getters and setters here, in their own public field 
 
-	// Example:
-	/*
-	* int	GetMyInteger(void) const					{return m_MyInteger;}
-	* void	SetMyInteger(const int newInteger) const	{m_MyInteger = newInteger;}
-	*/
-
 private:
 	CTexture* m_pBackground = nullptr;
 	CTexture* m_pSuperMario = nullptr;
