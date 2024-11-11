@@ -24,23 +24,18 @@ public:
 
 private:
 	CTexture* m_pBackground = nullptr;
-	CTexture* m_pSuperMario = nullptr;
+	
 	CTexture* m_pCoinTexture = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 	TTF_Font* m_pButtonFont = nullptr;
 
-	CButton		m_MarioTextBlock = {};
-	CButton		m_LevelTextBlock = {};
-	CButton		m_TimeTextBlock = {};
-	CButton		m_BonusNumberBlock = {};
-	CButton		m_CoinsNumberBlock = {};
-	CButton		m_LevelsNumberBlock = {};
+
 	CButton		m_1PlayerGame = {};
 	CButton		m_2PlayerGame = {};
 
-	SDL_FPoint	m_MarioSize = { 0.0f, 0.0f };
-	SDL_FPoint	m_MarioPosition = { 0.0f, 0.0f };
+	SDL_FPoint	m_CoinSize = { 0.0f, 0.0f };
+	SDL_FPoint	m_CoinPosition = { 520.0f, 38.0f };
 
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function

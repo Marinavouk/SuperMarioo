@@ -30,12 +30,8 @@ bool CMainMenuState::OnEnter(void)
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 
-	m_pSuperMario = textureHandler.CreateTexture("SuperIdle.png");
-	m_pSuperMario->SetSize({ 64.0f, 64.0f });
-	m_pSuperMario->SetTextureCoords(0, 64, 256, 320);
-
-	
-
+	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
+	m_pCoinTexture->SetSize({24.f, 24.f});
 
 	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 50); if (!m_pButtonFont)	return false;
 
@@ -62,7 +58,7 @@ bool CMainMenuState::OnEnter(void)
 	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
 	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
 	m_2PlayerGame.SetTextColorPressed(buttonTextColorPressed);
-	
+
 	return true;
 }
 
@@ -89,9 +85,10 @@ void CMainMenuState::OnExit(void)
 	m_pButtonFont	= nullptr;
 	m_pTextFont		= nullptr;
 
-	textureHandler.DestroyTexture(m_pSuperMario->GetName());
+	
 	textureHandler.DestroyTexture(m_pBackground->GetName());
-	m_pSuperMario = nullptr;
+	textureHandler.DestroyTexture(m_pCoinTexture->GetName());
+	m_pCoinTexture= nullptr;
 	m_pBackground = nullptr;
 }
 
@@ -131,10 +128,11 @@ void CMainMenuState::Render(void)
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
-	//m_pSuperMario->Render({ 0.0f, 0.0f });
-
+	m_pCoinTexture->Render(m_CoinPosition);
+	
 	m_1PlayerGame.Render(renderer, &mousePosition);
 	m_2PlayerGame.Render(renderer, &mousePosition);
+
 }
 
 void CMainMenuState::RenderDebug(void)
