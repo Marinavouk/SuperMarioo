@@ -106,6 +106,13 @@ void CMainMenuState::Update(const float deltaTime)
 		 m_1PlayerGame.Update(inputHandler);
 		 m_2PlayerGame.Update(inputHandler);
 
+		 m_CoinToggleTimer += deltaTime;
+		 if (m_CoinToggleTimer >= 1.0f)
+		 {
+			 m_CoinToggleTimer = 0.0f; // Reset the timer
+			 m_IsCoinVisible = !m_IsCoinVisible;
+		 }
+
 		 // Switch state whenever any of the buttons are pressed
 		 if (m_1PlayerGame.IsPressed(inputHandler))		m_pApplication->SetState(CApplication::EState::GAME);
 		 else if (m_2PlayerGame.IsPressed(inputHandler))	m_pApplication->SetState(CApplication::EState::GAME);
@@ -128,7 +135,12 @@ void CMainMenuState::Render(void)
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
-	m_pCoinTexture->Render(m_CoinPosition);
+	
+	if (m_IsCoinVisible)
+	{
+		m_pCoinTexture->Render(m_CoinPosition);
+	}
+
 	
 	m_1PlayerGame.Render(renderer, &mousePosition);
 	m_2PlayerGame.Render(renderer, &mousePosition);

@@ -38,6 +38,10 @@ private:
 	SDL_FPoint	m_CoinPosition = { 520.0f, 38.0f };
 
 	bool		m_SwitchToGameState = false;
+
+
+	float m_CoinToggleTimer = 0.0f;
+	bool m_IsCoinVisible = true;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function
 
 
