@@ -26,7 +26,7 @@ bool CMainMenuState::OnEnter(void)
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
 	* This function is called once, when the game is entering this state
 	*/
-	m_pBackground = textureHandler.CreateTexture("MainMarioBackground.png");
+	m_pBackground = textureHandler.CreateTexture("MainBack.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 
@@ -57,7 +57,7 @@ bool CMainMenuState::OnEnter(void)
 	
 	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
 		return false;
-	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 150.0f });
+	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 120.0f });
 	m_2PlayerGame.SetBackgroundColor(buttonBackgroundColor);
 	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
 	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
