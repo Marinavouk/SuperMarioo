@@ -87,7 +87,7 @@ void CMainMenuState::OnExit(void)
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
-	if (m_pApplication->GetNextState() != CApplication::EState::GAME)
+	if (m_pApplication->GetNextState() == CApplication::EState::GAME)
 	{
 		CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
