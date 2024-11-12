@@ -1,6 +1,6 @@
 #include "Pch.h"
 #include "MainMenuState.h"
-
+#include "Globals.h"
 #include "Application.h"
 
 bool CMainMenuState::OnEnter(void)
@@ -59,6 +59,14 @@ bool CMainMenuState::OnEnter(void)
 	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
 	m_2PlayerGame.SetTextColorPressed(buttonTextColorPressed);
 
+
+	e_pMusic = audioHandler.CreateMusic("Assets/Audio/MainMenuTheme.mp3");
+	if (!e_pMusic)
+		return false;
+
+	audioHandler.PlayMusic(e_pMusic, -1);
+	audioHandler.SetMusicVolume(0);
+
 	return true;
 }
 
@@ -76,6 +84,15 @@ void CMainMenuState::OnExit(void)
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
+
+	if (m_pApplication->GetNextState() == CApplication::EState::GAME)
+	{
+		CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+		audioHandler.StopMusic();
+		audioHandler.DestroyMusic(e_pMusic);
+		e_pMusic = nullptr;
+	}
 
 	m_2PlayerGame.Destroy(m_pApplication);
 	m_1PlayerGame.Destroy(m_pApplication);
