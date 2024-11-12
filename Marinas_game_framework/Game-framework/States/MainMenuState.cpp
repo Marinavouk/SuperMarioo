@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Application.h"
 
+
 bool CMainMenuState::OnEnter(void)
 {
 #if defined(_DEBUG)
@@ -65,7 +66,7 @@ bool CMainMenuState::OnEnter(void)
 		return false;
 
 	audioHandler.PlayMusic(e_pMusic, -1);
-	audioHandler.SetMusicVolume(0);
+	audioHandler.SetMusicVolume(15);
 
 	return true;
 }
@@ -84,8 +85,9 @@ void CMainMenuState::OnExit(void)
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
-	if (m_pApplication->GetNextState() == CApplication::EState::GAME)
+	if (m_pApplication->GetNextState() != CApplication::EState::GAME)
 	{
 		CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
@@ -101,7 +103,6 @@ void CMainMenuState::OnExit(void)
 	fontHandler.DestroyFont(m_pTextFont);
 	m_pButtonFont	= nullptr;
 	m_pTextFont		= nullptr;
-
 	
 	textureHandler.DestroyTexture(m_pBackground->GetName());
 	textureHandler.DestroyTexture(m_pCoinTexture->GetName());

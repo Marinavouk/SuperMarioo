@@ -30,7 +30,6 @@ private:
 	TTF_Font* m_pTextFont = nullptr;
 	TTF_Font* m_pButtonFont = nullptr;
 
-
 	CButton		m_1PlayerGame = {};
 	CButton		m_2PlayerGame = {};
 
@@ -38,7 +37,6 @@ private:
 	SDL_FPoint	m_CoinPosition = { 520.0f, 38.0f };
 
 	bool		m_SwitchToGameState = false;
-
 
 	float m_CoinToggleTimer = 0.0f;
 	bool m_IsCoinVisible = true;
