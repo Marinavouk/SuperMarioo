@@ -20,7 +20,7 @@ bool CGameState::OnEnter(void)
 
 
 	//create background
-	m_pBackground = textureHandler.CreateTexture("BackgroundMB.png");
+	m_pBackground = textureHandler.CreateTexture("UnderBackgroung.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 

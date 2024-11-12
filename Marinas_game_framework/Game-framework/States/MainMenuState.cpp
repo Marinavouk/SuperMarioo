@@ -44,16 +44,20 @@ bool CMainMenuState::OnEnter(void)
 	const SDL_Color buttonTextColorPressed = { 100,	100,	100,	200 }; // Dark gray	<-- Text color when the button is held
 
 
-	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor))
+	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor)) 
+	{
 		return false;
+	}
 	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 50.0f });
 	m_1PlayerGame.SetBackgroundColor(buttonBackgroundColor);
 	m_1PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
 	m_1PlayerGame.SetTextColorHovered(buttonTextColorHovered);
 	m_1PlayerGame.SetTextColorPressed(buttonTextColorPressed);
 	
-	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
+	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor)) 
+	{
 		return false;
+	}
 	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 120.0f });
 	m_2PlayerGame.SetBackgroundColor(buttonBackgroundColor);
 	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
@@ -63,7 +67,9 @@ bool CMainMenuState::OnEnter(void)
 
 	e_pMusic = audioHandler.CreateMusic("Assets/Audio/MainMenuTheme.mp3");
 	if (!e_pMusic)
+	{
 		return false;
+	}
 
 	audioHandler.PlayMusic(e_pMusic, -1);
 	audioHandler.SetMusicVolume(15);
