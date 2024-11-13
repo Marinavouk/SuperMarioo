@@ -16,7 +16,7 @@ bool CPipe::Create(const std::string& textureFileName, const SDL_FPoint& positio
 
 	m_Rectangle = { position.x, position.y, newTextureSize.x, newTextureSize.y };
 
-	m_Collider = { m_Rectangle.x + m_ColliderOffset.x, m_Rectangle.y + m_ColliderOffset.y, newTextureSize.x - 20.0f, 25.0f };
+	m_Collider = { m_Rectangle.x + m_ColliderOffset.x, m_Rectangle.y + m_ColliderOffset.y, newTextureSize.x - 30.0f, 50.0f };
 
 	return true;
 }

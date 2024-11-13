@@ -17,7 +17,7 @@ public:
 
 private:
 
-	SDL_FPoint m_ColliderOffset = { 10.0f, 10.0f };
+	SDL_FPoint m_ColliderOffset = { -5.0f, 110.0f };
 
 };
 

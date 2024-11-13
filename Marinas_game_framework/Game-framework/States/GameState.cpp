@@ -30,7 +30,7 @@ bool CGameState::OnEnter(void)
 	{
 		return false;
 	}
-	m_pPipe->SetPosition({0.0f, windowSize.y - m_pPipe->GetRectangleSize().y });
+	m_pPipe->SetPosition({-30.0f, windowSize.y - m_pPipe->GetRectangleSize().y });
 
 	//m_pPipe->SetPosition({ windowSize.x - (m_pPipe->GetColliderSize().x + 100.0f), windowSize.y - m_pPipe->GetRectangleSize().y });
 
