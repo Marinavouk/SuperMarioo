@@ -1,5 +1,6 @@
 #include "Pch.h"
 #include "GameState.h"
+#include "Pipe.h"
 
 #include "Application.h"
 
@@ -16,13 +17,21 @@ bool CGameState::OnEnter(void)
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
-	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
+	const SDL_FPoint	windowSize = m_pApplication->GetWindowSize();
 
 
 	//create background
 	m_pBackground = textureHandler.CreateTexture("UnderBackgroung.png");
-	m_pBackground->SetSize(m_pApplication->GetWindowSize());
-	m_pBackground->SetAlphaMod(225);
+	m_pBackground->SetSize(windowSize);
+
+
+	m_pPipe = new CPipe(m_pApplication);
+	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0))
+		return false;
+	m_pPipe->SetPosition({ windowSize.x - (m_pPipe->GetColliderSize().x + 100.0f), windowSize.y - m_pPipe->GetRectangleSize().y });
+
+
+	m_Obstacles.push_back(m_pPipe);
 
 	return true;
 }
@@ -35,6 +44,13 @@ void CGameState::OnExit(void)
 
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+
+	m_Obstacles.clear();
+
+	m_pPipe->Destroy();
+	delete m_pPipe;
+	m_pPipe = nullptr;
+
 
 	//Destroy texture background
 	textureHandler.DestroyTexture(m_pBackground->GetName());
@@ -62,6 +78,7 @@ void CGameState::Render(void)
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
+	m_pPipe->Render();
 
 }
 
@@ -72,6 +89,6 @@ void CGameState::RenderDebug(void)
 	* It's completely optional to use this function
 	* This function is called every frame
 	*/
-
+	m_pPipe->RenderDebug();
 
 }
