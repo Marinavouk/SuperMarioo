@@ -28,3 +28,12 @@ void CPipe::SetPosition(const SDL_FPoint& position)
 	m_Collider.x = m_Rectangle.x + m_ColliderOffset.x;
 	m_Collider.y = m_Rectangle.y + m_ColliderOffset.y;
 }
+
+void CPipe::RenderDebug(void)
+{
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+
+	SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
+	SDL_RenderDrawRectF(renderer, &m_Collider);
+}
+
