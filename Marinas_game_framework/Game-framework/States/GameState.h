@@ -30,12 +30,12 @@ private:
 private:
 	CTexture* m_pBackground = nullptr;
 	CTexture* m_pSuperMario = nullptr;
+	CTexture* m_pBricks2 = nullptr;
+	CTexture* m_pBricks5 = nullptr;
 
 	CButton		m_TitleTextBlock = {};
 
 	CGameObject* m_pPipe = nullptr;
-	CGameObject* m_pBricks2 = nullptr;
-	CGameObject* m_pBricks5 = nullptr;
 
 
 	GameObjectList	m_Obstacles = {};
