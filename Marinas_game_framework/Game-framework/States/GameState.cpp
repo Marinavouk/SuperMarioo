@@ -26,8 +26,10 @@ bool CGameState::OnEnter(void)
 
 
 	m_pPipe = new CPipe(m_pApplication);
-	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0))
+	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0)) 
+	{
 		return false;
+	}
 	m_pPipe->SetPosition({ windowSize.x - (m_pPipe->GetColliderSize().x + 100.0f), windowSize.y - m_pPipe->GetRectangleSize().y });
 
 

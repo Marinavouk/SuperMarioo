@@ -9,7 +9,8 @@ bool CPipe::Create(const std::string& textureFileName, const SDL_FPoint& positio
 		return false;
 
 	const SDL_FPoint textureSize = m_pTexture->GetSize();
-	const SDL_FPoint newTextureSize = { textureSize.x * 0.7f, textureSize.y * 0.7f };
+	const float scaleFactor = 0.5f;
+	const SDL_FPoint newTextureSize = { textureSize.x * scaleFactor, textureSize.y * scaleFactor };
 
 	m_pTexture->SetSize(newTextureSize);
 
