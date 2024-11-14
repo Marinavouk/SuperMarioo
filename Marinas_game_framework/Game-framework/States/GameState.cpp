@@ -48,16 +48,24 @@ bool CGameState::OnEnter(void)
 		return false;
 	m_MarioTextBlock.SetPosition({ 100.0f, 10.0f });
 	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
+	
 	// Buttons can be used as text blocks too, without mouse interaction
 	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "WORLD", titleTextColor))
 		return false;
 	m_WorldTextBlock.SetPosition({ windowCenter.x + 100.0f, 10.0f });
 	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
+	
 	// Buttons can be used as text blocks too, without mouse interaction
 	if (!m_TimeTextBlock.Create(m_pApplication, m_pTextFont, "TIME", titleTextColor))
 		return false;
 	m_TimeTextBlock.SetPosition({ windowCenter.x + 400.0f, 10.0f });
 	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
+
+	// Buttons can be used as text blocks too, without mouse interaction
+	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "0-88", titleTextColor))
+		return false;
+	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 100.0f, 35.0f });
+	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
 	return true;
 }
@@ -71,6 +79,7 @@ void CGameState::OnExit(void)
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 
+	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
 	m_MarioTextBlock.Destroy(m_pApplication);
@@ -116,6 +125,7 @@ void CGameState::Render(void)
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);
 	m_TimeTextBlock.Render(renderer);
+	m_WorldNumberTextBlock.Render(renderer);
 }
 
 void CGameState::RenderDebug(void)

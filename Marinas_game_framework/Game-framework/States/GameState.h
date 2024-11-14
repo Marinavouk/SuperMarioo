@@ -38,6 +38,8 @@ private:
 	CButton		m_MarioTextBlock = {};
 	CButton		m_WorldTextBlock = {};
 	CButton		m_TimeTextBlock = {};
+	CButton     m_MarioBonusTextBlock = {};
+	CButton     m_WorldNumberTextBlock = {};
 
 	CGameObject* m_pPipe = nullptr;
 
