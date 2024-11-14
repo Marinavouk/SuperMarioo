@@ -38,21 +38,26 @@ bool CGameState::OnEnter(void)
 
 	m_Obstacles.push_back(m_pPipe);
 
-
+	//Upload Font
 	m_pTextFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 30); if (!m_pTextFont)	return false;
 	//Text color
 	const SDL_Color titleTextColor = { 255,	255, 255, 255 }; // White
 	
 	// Buttons can be used as text blocks too, without mouse interaction
-	if (!m_MarioTextBlock.Create(m_pApplication, m_pTextFont, "Mario", titleTextColor))
+	if (!m_MarioTextBlock.Create(m_pApplication, m_pTextFont, "MARIO", titleTextColor))
 		return false;
 	m_MarioTextBlock.SetPosition({ 100.0f, 10.0f });
 	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
-	
-	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "World", titleTextColor))
+	// Buttons can be used as text blocks too, without mouse interaction
+	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "WORLD", titleTextColor))
 		return false;
 	m_WorldTextBlock.SetPosition({ windowCenter.x + 100.0f, 10.0f });
 	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
+	// Buttons can be used as text blocks too, without mouse interaction
+	if (!m_TimeTextBlock.Create(m_pApplication, m_pTextFont, "TIME", titleTextColor))
+		return false;
+	m_TimeTextBlock.SetPosition({ windowCenter.x + 400.0f, 10.0f });
+	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
 	return true;
 }
@@ -66,6 +71,7 @@ void CGameState::OnExit(void)
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 
+	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
 	m_MarioTextBlock.Destroy(m_pApplication);
 
@@ -109,6 +115,7 @@ void CGameState::Render(void)
 
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);
+	m_TimeTextBlock.Render(renderer);
 }
 
 void CGameState::RenderDebug(void)
