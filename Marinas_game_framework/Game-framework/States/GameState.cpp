@@ -18,10 +18,11 @@ bool CGameState::OnEnter(void)
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowSize = m_pApplication->GetWindowSize();
+	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
 
 	//create background
-	m_pBackground = textureHandler.CreateTexture("UnderBackgroung.png");
+	m_pBackground = textureHandler.CreateTexture("undergound.png");
 	m_pBackground->SetSize(windowSize);
 
 	m_pBricks2 = textureHandler.CreateTexture("brickSeries2.png");
@@ -35,10 +36,18 @@ bool CGameState::OnEnter(void)
 	}
 	m_pPipe->SetPosition({-30.0f, windowSize.y - m_pPipe->GetRectangleSize().y });
 
-	//m_pPipe->SetPosition({ windowSize.x - (m_pPipe->GetColliderSize().x + 100.0f), windowSize.y - m_pPipe->GetRectangleSize().y });
-
-
 	m_Obstacles.push_back(m_pPipe);
+
+
+	m_pTextFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 30); if (!m_pTextFont)	return false;
+	//Text color
+	const SDL_Color titleTextColor = { 255,	255, 255, 255 }; // White
+	
+	// Buttons can be used as text blocks too, without mouse interaction
+	if (!m_MarioTextBlock.Create(m_pApplication, m_pTextFont, "Mario", titleTextColor))
+		return false;
+	m_MarioTextBlock.SetPosition({ 100.0f, 10.0f });
+	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
 	return true;
 }
@@ -51,6 +60,8 @@ void CGameState::OnExit(void)
 
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+
+	m_MarioTextBlock.Destroy(m_pApplication);
 
 	m_Obstacles.clear();
 
@@ -90,6 +101,7 @@ void CGameState::Render(void)
 	m_pBricks2->Render({ 0.0f, 0.0f });
 	m_pPipe->Render();
 
+	m_MarioTextBlock.Render(renderer);
 }
 
 void CGameState::RenderDebug(void)

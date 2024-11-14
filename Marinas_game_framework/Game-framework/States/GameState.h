@@ -33,7 +33,11 @@ private:
 	CTexture* m_pBricks2 = nullptr;
 	CTexture* m_pBricks5 = nullptr;
 
-	CButton		m_TitleTextBlock = {};
+	TTF_Font* m_pTextFont = nullptr;
+
+	CButton		m_MarioTextBlock = {};
+	CButton		m_WorldTextBlock = {};
+	CButton		m_TimeTextBlock = {};
 
 	CGameObject* m_pPipe = nullptr;
 
