@@ -46,6 +46,10 @@ private:
 
 	GameObjectList	m_Obstacles = {};
 
+	float			m_TimerDefault = 246.0f;
+	float			m_Timer = m_TimerDefault;
+
+
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function
 };

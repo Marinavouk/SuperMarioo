@@ -67,6 +67,8 @@ bool CGameState::OnEnter(void)
 	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 100.0f, 35.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
+	m_Timer = m_TimerDefault;
+
 	return true;
 }
 
@@ -104,10 +106,15 @@ void CGameState::Update(const float deltaTime)
 	if (m_pApplication->GetInputHandler().KeyPressed(SDL_SCANCODE_ESCAPE))
 		m_pApplication->SetState(CApplication::EState::MAIN_MENU);
 
-	/**
-	* Update the game objects here
-	* This function is called every frame
-	*/
+
+	m_Timer -= deltaTime;
+
+	if (m_Timer <= 0.0f)
+	{
+		m_Timer = 0.0f;
+
+		//END ROUND
+	}
 
 
 }
@@ -115,6 +122,8 @@ void CGameState::Update(const float deltaTime)
 void CGameState::Render(void)
 {
 	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
+	const SDL_FPoint windowCenter = m_pApplication->GetWindowCenter();
 
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
@@ -126,6 +135,9 @@ void CGameState::Render(void)
 	m_WorldTextBlock.Render(renderer);
 	m_TimeTextBlock.Render(renderer);
 	m_WorldNumberTextBlock.Render(renderer);
+
+	fontHandler.RenderText(renderer, m_pTextFont, std::to_string((uint32_t)ceilf(m_Timer)), { windowCenter.x + 375.0f, 25.0f }, { 250, 250, 250, 250 });
+
 }
 
 void CGameState::RenderDebug(void)
