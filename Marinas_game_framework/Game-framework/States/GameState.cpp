@@ -48,6 +48,11 @@ bool CGameState::OnEnter(void)
 		return false;
 	m_MarioTextBlock.SetPosition({ 100.0f, 10.0f });
 	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
+	
+	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "World", titleTextColor))
+		return false;
+	m_WorldTextBlock.SetPosition({ windowCenter.x + 100.0f, 10.0f });
+	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
 	return true;
 }
@@ -61,6 +66,7 @@ void CGameState::OnExit(void)
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 
+	m_WorldTextBlock.Destroy(m_pApplication);
 	m_MarioTextBlock.Destroy(m_pApplication);
 
 	m_Obstacles.clear();
@@ -102,6 +108,7 @@ void CGameState::Render(void)
 	m_pPipe->Render();
 
 	m_MarioTextBlock.Render(renderer);
+	m_WorldTextBlock.Render(renderer);
 }
 
 void CGameState::RenderDebug(void)
