@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="CollisionUtilities.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjects\Button.h" />
     <ClInclude Include="Globals.h" />

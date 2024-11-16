@@ -1,6 +1,7 @@
 #include "Pch.h"
 #include "GameState.h"
 #include "Pipe.h"
+#include "Utilities/CollisionUtilities.h"
 
 #include "Application.h"
 
