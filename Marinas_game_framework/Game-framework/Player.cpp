@@ -155,3 +155,14 @@ bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPo
 {
 	return false;
 }
+
+void CPlayer::SyncColliders(void)
+{
+	m_HorizontalCollider.x = m_Rectangle.x + m_HorizontalColliderOffset.x;
+	m_HorizontalCollider.y = m_Rectangle.y + m_HorizontalColliderOffset.y;
+	m_VerticalCollider.x = m_Rectangle.x + m_VerticalColliderOffset.x;
+	m_VerticalCollider.y = m_Rectangle.y + m_VerticalColliderOffset.y;
+
+	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
+}
+
