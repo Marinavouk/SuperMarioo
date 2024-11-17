@@ -150,3 +150,8 @@ void CPlayer::HandleObstacleCollision(const GameObjectList& obstacles, const flo
 void CPlayer::HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime)
 {
 }
+
+bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
+{
+	return false;
+}
