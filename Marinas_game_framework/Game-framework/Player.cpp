@@ -166,3 +166,12 @@ void CPlayer::SyncColliders(void)
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 }
 
+void CPlayer::ActivateAnimator(CAnimator* animator)
+{
+	if (m_pCurrentAnimator != animator)
+	{
+		m_pCurrentAnimator = animator;
+		m_pCurrentAnimator->Reset();
+	}
+}
+ 

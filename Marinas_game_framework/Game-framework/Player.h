@@ -27,7 +27,6 @@ public:
 
 public:
 
-	void			SetAttackingCallback(Callback attackCallback) { m_pAttackingCallback = attackCallback; }
 	void			SetDyingCallback(Callback dyingCallback) { m_pDyingCallback = dyingCallback; }
 
 private:
@@ -38,7 +37,6 @@ private:
 	bool			ResolveEnemyYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
 	void			SyncColliders(void);
 	void			ActivateAnimator(CAnimator* animator);
-	void			OnAttackAnimationEnd(void);
 
 private:
 
@@ -57,14 +55,12 @@ private:
 
 private:
 
-	Callback	m_pAttackingCallback = nullptr;
 	Callback	m_pDyingCallback = nullptr;
 
 	CAnimator* m_pAnimatorIdle = nullptr;
 	CAnimator* m_pAnimatorWalking = nullptr;
 	CAnimator* m_pAnimatorRunning = nullptr;
 	CAnimator* m_pAnimatorJumping = nullptr;
-	CAnimator* m_pAnimatorAttacking = nullptr;
 	CAnimator* m_pCurrentAnimator = nullptr;
 	CAnimator* m_pAnimatorDying = nullptr;
 
@@ -102,7 +98,6 @@ private:
 
 	bool		m_IsRunning = false;
 	bool		m_IsJumping = false;
-	bool		m_IsAttacking = false;
 	bool		m_DamageCooldown = false;
 	bool		m_Show = true;
 
