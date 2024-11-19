@@ -32,7 +32,6 @@ private:
 	enum Estate
 	{
 		IDLE = 0,
-		PRE_START,
 		ROUND_STARTED,
 		ROUND_ENDED,
 	};
@@ -62,6 +61,7 @@ private:
 	float			m_TimerDefault = 246.0f;
 	float			m_Timer = m_TimerDefault;
 
+	uint32_t		m_VolumeLimiter = 100;
 
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function

@@ -106,6 +106,10 @@ void CGameState::OnExit(void)
 
 	m_Obstacles.clear();
 
+	m_pPlayer->Destroy();
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
+
 	m_pPipe->Destroy();
 	delete m_pPipe;
 	m_pPipe = nullptr;
@@ -125,16 +129,58 @@ void CGameState::Update(const float deltaTime)
 		m_pApplication->SetState(CApplication::EState::MAIN_MENU);
 
 
-	m_Timer -= deltaTime;
-
-	if (m_Timer <= 0.0f)
+	if (m_State == Estate::IDLE)
 	{
-		m_Timer = 0.0f;
-
-		//END ROUND
+		if (!m_pApplication->GetTransitionRenderer().IsTransitioning())
+			m_State = Estate::ROUND_STARTED;
 	}
 
+	else if (m_State == Estate::ROUND_STARTED)
+	{
+		// The round has started, so update the game objects here so they can move etc
 
+		m_pPlayer->HandleInput(deltaTime);
+		m_pPlayer->Update(deltaTime);
+		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
+
+		m_Timer -= deltaTime;
+
+		if (m_Timer <= 0.0f)
+		{
+			m_Timer = 0.0f;
+
+			m_State = Estate::ROUND_ENDED;
+			e_EndOfRoundPlayerKilled = false;
+
+			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
+		}
+
+	}
+
+	else if (m_State == Estate::ROUND_ENDED)
+	{
+		m_pPlayer->Update(deltaTime);
+		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
+
+
+		if (m_DeathFadeout)
+		{
+			m_DeathFadeDelay -= deltaTime;
+
+			if (m_DeathFadeDelay <= 0.0f)
+			{
+				m_DeathFadeDelay = 0.0f;
+
+				m_DeathFadeout = false;
+
+				m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
+			}
+		}
+	}
+	const CTransitionRenderer& transitionRenderer = m_pApplication->GetTransitionRenderer();
+
+	if (transitionRenderer.IsTransitioning())
+		m_pApplication->GetAudioHandler().SetMusicVolume((MIX_MAX_VOLUME - m_VolumeLimiter) - (int)((float)(MIX_MAX_VOLUME - m_VolumeLimiter) * transitionRenderer.GetTransitionValue()));
 }
 
 void CGameState::Render(void)
@@ -148,6 +194,7 @@ void CGameState::Render(void)
 	m_pBackground->Render({ 0.0f, 0.0f });
 	m_pBricks2->Render({ 0.0f, 0.0f });
 	m_pPipe->Render();
+	m_pPlayer->Render();
 
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);
@@ -166,7 +213,7 @@ void CGameState::RenderDebug(void)
 	* This function is called every frame
 	*/
 	m_pPipe->RenderDebug();
-
+	m_pPlayer->RenderDebug();
 }
 
 // This function is called whenever the player is playing its dying animation
