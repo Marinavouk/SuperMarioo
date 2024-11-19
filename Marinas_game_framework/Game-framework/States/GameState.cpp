@@ -73,7 +73,7 @@ bool CGameState::OnEnter(void)
 	m_Timer = m_TimerDefault;
 
 	m_pPlayer = new CPlayer(m_pApplication);
-	if (!m_pPlayer->Create("player1.png", { 0.0f, 0.0f }, 1))
+	if (!m_pPlayer->Create("SuperMario.png", { 0.0f, 0.0f }, 1))
 		return false;
 	m_pPlayer->SetPosition({ 250.0f, windowSize.y - m_pPlayer->GetRectangleSize().y });
 	CPlayer* player = (CPlayer*)m_pPlayer;
