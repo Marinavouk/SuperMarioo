@@ -71,10 +71,20 @@ void CPlayer::Kill(void)
 
 void CPlayer::Render(void)
 {
+	CGameObject::Render();
 }
 
 void CPlayer::RenderDebug(void)
 {
+	CGameObject::RenderDebug();
+
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+
+	SDL_SetRenderDrawColor(renderer, 200, 255, 0, 255);
+	SDL_RenderDrawRectF(renderer, &m_HorizontalCollider);
+
+	SDL_SetRenderDrawColor(renderer, 0, 200, 200, 255);
+	SDL_RenderDrawRectF(renderer, &m_VerticalCollider);
 }
 
 void CPlayer::Update(const float deltaTime)
