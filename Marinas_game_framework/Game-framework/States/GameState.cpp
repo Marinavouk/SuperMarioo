@@ -1,6 +1,8 @@
 #include "Pch.h"
 #include "GameState.h"
 #include "Pipe.h"
+#include "Globals.h"
+#include "Player.h"
 #include "Utilities/CollisionUtilities.h"
 
 #include "Application.h"
@@ -70,6 +72,19 @@ bool CGameState::OnEnter(void)
 
 	m_Timer = m_TimerDefault;
 
+	m_pPlayer = new CPlayer(m_pApplication);
+	if (!m_pPlayer->Create("SuperMario1.png", { 0.0f, 0.0f }, 1))
+		return false;
+	m_pPlayer->SetPosition({ 250.0f, windowSize.y - m_pPlayer->GetRectangleSize().y });
+	CPlayer* player = (CPlayer*)m_pPlayer;
+	player->SetDyingCallback(std::bind(&CGameState::OnPlayerDying, this));
+
+	m_DeathFadeout = false;
+
+	m_State = Estate::IDLE;
+
+	e_EndOfRoundPlayerKilled = false;
+
 	return true;
 }
 
@@ -81,6 +96,8 @@ void CGameState::OnExit(void)
 
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 
 	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
@@ -150,4 +167,15 @@ void CGameState::RenderDebug(void)
 	*/
 	m_pPipe->RenderDebug();
 
+}
+
+// This function is called whenever the player is playing its dying animation
+void CGameState::OnPlayerDying(void)
+{
+	m_DeathFadeDelay = m_DeathFadeDelayDefault;
+	m_DeathFadeout = true;
+
+	m_State = Estate::ROUND_ENDED;
+
+	e_EndOfRoundPlayerKilled = true;
 }

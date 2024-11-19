@@ -2,9 +2,8 @@
 
 #include "GameObjects/Button.h"
 #include "Utilities/Texture.h"
-
-#include "GameObject.h"
 #include "State.h"
+#include "GameObject.h"
 
 class CGameState final : public CState
 {
@@ -26,6 +25,18 @@ public:
 
 
 private:
+
+	void			OnPlayerDying(void);
+
+
+	enum Estate
+	{
+		IDLE = 0,
+		PRE_START,
+		ROUND_STARTED,
+		ROUND_ENDED,
+	};
+
 	typedef std::vector<CGameObject*> GameObjectList;
 
 private:
@@ -43,6 +54,7 @@ private:
 	CButton     m_WorldNumberTextBlock = {};
 
 	CGameObject* m_pPipe = nullptr;
+	CGameObject* m_pPlayer = nullptr;
 
 
 	GameObjectList	m_Obstacles = {};
@@ -53,4 +65,12 @@ private:
 
 	bool		m_SwitchToGameState = false;
 	// Declare the game objects here, create them in the OnEnter function and then finally destroy them in the OnExit function
+
+	// When the player has died, the game waits this long before fading out and changing to the end-of-round state
+	float			m_DeathFadeDelayDefault = 2.0f;
+	float			m_DeathFadeDelay = m_DeathFadeDelayDefault;
+
+	bool			m_DeathFadeout = false;
+
+	Estate			m_State = Estate::IDLE;
 };
