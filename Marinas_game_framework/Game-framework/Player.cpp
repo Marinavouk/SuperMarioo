@@ -79,6 +79,83 @@ void CPlayer::RenderDebug(void)
 
 void CPlayer::Update(const float deltaTime)
 {
+	m_Velocity.y = std::min(m_Velocity.y + m_Gravity * deltaTime, m_MaxFallVelocity);
+
+	m_Rectangle.x += m_Velocity.x * deltaTime;
+	m_Rectangle.y += m_Velocity.y * deltaTime;
+
+	SyncColliders();
+
+	const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
+
+	// Make sure that the player can't leave the left edge of the window
+	if (m_HorizontalCollider.x < 0.0f)
+	{
+		m_Rectangle.x = -m_HorizontalColliderOffset.x;
+
+		m_Velocity.x = 0.0f;
+	}
+
+	// Make sure that the player can't leave the right edge of the window
+	else if (m_HorizontalCollider.x > (windowSize.x - m_HorizontalCollider.w))
+	{
+		const float rightOffset = m_Rectangle.w - (m_HorizontalCollider.w + m_HorizontalColliderOffset.x);
+
+		m_Rectangle.x = windowSize.x - (m_Rectangle.w - rightOffset);
+
+		m_Velocity.x = 0.0f;
+	}
+
+	if (m_State == EState::ALIVE)
+	{
+		const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
+
+		if (m_Rectangle.y > windowSize.y - m_Rectangle.h)
+		{
+			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+
+			m_Velocity.y = 0.0f;
+
+			if (m_IsJumping)
+			{
+				if ((m_pCurrentAnimator != m_pAnimatorIdle) && (m_HorizontalDirection == EMovementState::IDLE) && (m_VerticalDirection == EMovementState::IDLE))
+					ActivateAnimator(m_pAnimatorIdle);
+
+				else
+				{
+					if (m_HorizontalDirection != EMovementState::IDLE)
+					{
+						if (m_IsRunning)
+							ActivateAnimator(m_pAnimatorRunning);
+
+						else
+							ActivateAnimator(m_pAnimatorWalking);
+					}
+				}
+			}
+
+			m_IsJumping = false;
+		}
+
+	
+	}
+
+	else if (m_State == EState::DEAD)
+	{
+		const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
+
+		if (m_Rectangle.y > windowSize.y - m_Rectangle.h)
+		{
+			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+
+			m_Velocity.y = 0.0f;
+		}
+	}
+
+	SyncColliders();
+
+	if (m_pCurrentAnimator)
+		m_pCurrentAnimator->Update(deltaTime);
 }
 
 void CPlayer::HandleInput(const float deltaTime)
