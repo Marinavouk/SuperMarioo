@@ -16,9 +16,23 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pAnimatorRunning = new CAnimator;
 	m_pAnimatorJumping = new CAnimator;
 	m_pAnimatorDying = new CAnimator;
+	m_pAnimatorIdle->Set(m_pTexture, 21, 0, 20, 1, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorWalking->Set(m_pTexture, 21, 2, 4, 1, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorRunning->Set(m_pTexture, 21, 2, 4, 1, frameSize, 14.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorJumping->Set(m_pTexture, 21, 6, 6, 1, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
+	m_pAnimatorDying->Set(m_pTexture, 21, 15, 15, 1, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
 
+	ActivateAnimator(m_pAnimatorIdle);
 
+	m_pTexture->SetSize({ frameSize.x * m_Scale, frameSize.y * m_Scale });
+	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
 
+	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale };
+
+	m_HorizontalCollider = { m_Rectangle.x + m_HorizontalColliderOffset.x,	m_Rectangle.y + m_HorizontalColliderOffset.y,	18.0f * m_Scale, 40.0f * m_Scale };
+	m_VerticalCollider = { m_Rectangle.x + m_VerticalColliderOffset.x,		m_Rectangle.y + m_VerticalColliderOffset.y,		10.0f * m_Scale, 64.0f * m_Scale };
+
+	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
     return false;
 }
@@ -56,13 +70,10 @@ void CPlayer::HandleInput(const float deltaTime)
 	{
 		m_Velocity.y = -m_JumpStrength;
 
-		if (!m_IsAttacking)
-		{
-			m_pCurrentAnimator = m_pAnimatorJumping;
-			m_pCurrentAnimator->Reset();
-		}
-
-		m_IsJumping = true;
+		m_pCurrentAnimator = m_pAnimatorJumping;
+		m_pCurrentAnimator->Reset();
+		
+		m_IsJumping = true; // Need to confirm if it's working
 	}
 
 
