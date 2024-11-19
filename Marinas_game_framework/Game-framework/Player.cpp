@@ -34,7 +34,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
-    return false;
+    return true;
 }
 
 void CPlayer::Destroy(void)
