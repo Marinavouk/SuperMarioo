@@ -16,11 +16,11 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pAnimatorRunning = new CAnimator;
 	m_pAnimatorJumping = new CAnimator;
 	m_pAnimatorDying = new CAnimator;
-	m_pAnimatorIdle->Set(m_pTexture, 7, 0, 6, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorWalking->Set(m_pTexture, 6, 0, 5, 1, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorRunning->Set(m_pTexture, 8, 0, 7, 2, frameSize, 14.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorJumping->Set(m_pTexture, 9, 0, 8, 7, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
-	m_pAnimatorDying->Set(m_pTexture, 6, 0, 5, 9, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
+	m_pAnimatorIdle->Set(m_pTexture, 5, 0, 0, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorWalking->Set(m_pTexture, 5, 1, 3, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorRunning->Set(m_pTexture, 5, 1, 3, 0, frameSize, 14.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorJumping->Set(m_pTexture, 5, 4, 4, 0, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
+	m_pAnimatorDying->Set(m_pTexture, 5, 5, 5, 0, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
 
 	ActivateAnimator(m_pAnimatorIdle);
 
