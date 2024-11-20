@@ -85,8 +85,8 @@ private:
 	int32_t		m_VerticalDirection = EMovementState::IDLE;
 
 	SDL_FPoint	m_Velocity = { 0.0f, 0.0f };
-	SDL_FPoint	m_HorizontalColliderOffset = { 2.0f * m_Scale, 2.0f * m_Scale };
-	SDL_FPoint	m_VerticalColliderOffset = { 2.0f * m_Scale, 2.0f * m_Scale };
+	SDL_FPoint	m_HorizontalColliderOffset = { 1.0f * m_Scale, 1.0f * m_Scale };
+	SDL_FPoint	m_VerticalColliderOffset = { 1.0f * m_Scale, 1.0f * m_Scale };
 
 	// How much (in pixels) the player should be moved out of- and how much to jump when colliding with a spider
 	SDL_FPoint	m_HitStrength = { 50.0f, 300.0f };

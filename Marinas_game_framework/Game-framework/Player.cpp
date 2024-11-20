@@ -9,7 +9,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	if (!CGameObject::Create(textureFileName, position, maxHealth))
 		return false;
 
-	SDL_FPoint frameSize = { 21.0f , 26.0f };
+	SDL_FPoint frameSize = { 28.0f , 28.0f };
 
 	m_pAnimatorIdle = new CAnimator;
 	m_pAnimatorWalking = new CAnimator;
@@ -17,7 +17,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pAnimatorJumping = new CAnimator;
 	m_pAnimatorDying = new CAnimator;
 	m_pAnimatorIdle->Set(m_pTexture,    1, 0, 0, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorWalking->Set(m_pTexture, 3, 1, 3, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorWalking->Set(m_pTexture, 3, 1, 3, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
 	m_pAnimatorRunning->Set(m_pTexture, 3, 1, 3, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
 	m_pAnimatorJumping->Set(m_pTexture, 1, 5, 5, 0, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
 	m_pAnimatorDying->Set(m_pTexture,   1, 7, 7, 0, frameSize, 1.0f, false, CAnimator::EDirection::FORWARD);
