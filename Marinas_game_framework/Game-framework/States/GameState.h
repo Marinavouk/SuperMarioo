@@ -41,8 +41,6 @@ private:
 private:
 	CTexture* m_pBackground = nullptr;
 	CTexture* m_pSuperMario = nullptr;
-	CTexture* m_pBricks2 = nullptr;
-	CTexture* m_pBricks5 = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 

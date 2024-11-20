@@ -15,7 +15,7 @@ bool CApplication::Create(void)
 	m_pRandomNumberGenerator = new CRandom;
 	m_pRandomNumberGenerator->Seed();
 
-	if (!m_Window.Create(this, "Super Marioo", false, false))
+	if (!m_Window.Create(this, "Super Mario", false, false))
 		return false;
 
 	// If you want to set the title of the window while the game is running, you can use this function
@@ -110,28 +110,6 @@ void CApplication::HandleEvents(void)
 
 				break;
 			}
-
-			case SDL_EventType::SDL_WINDOWEVENT:
-			{
-				switch (event.window.event)
-				{
-					case SDL_WindowEventID::SDL_WINDOWEVENT_EXPOSED:
-					case SDL_WindowEventID::SDL_WINDOWEVENT_RESIZED:
-					case SDL_WindowEventID::SDL_WINDOWEVENT_SIZE_CHANGED:
-					case SDL_WindowEventID::SDL_WINDOWEVENT_RESTORED:
-					{
-						m_Window.OnResized();
-
-						break;
-					}
-
-					default:
-						break;
-				}
-
-				break;
-			}
-
 			default:
 				break;
 		}

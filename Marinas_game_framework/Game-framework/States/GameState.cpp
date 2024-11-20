@@ -28,10 +28,6 @@ bool CGameState::OnEnter(void)
 	m_pBackground = textureHandler.CreateTexture("undergound.png");
 	m_pBackground->SetSize(windowSize);
 
-	m_pBricks2 = textureHandler.CreateTexture("brickSeries2.png");
-	m_pBricks2->SetSize({ 300.0f, 150.0f });
-
-
 	m_pPipe = new CPipe(m_pApplication);
 	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0)) 
 	{
@@ -114,9 +110,6 @@ void CGameState::OnExit(void)
 	delete m_pPipe;
 	m_pPipe = nullptr;
 
-	textureHandler.DestroyTexture(m_pBricks2->GetName());
-	m_pBricks2 = nullptr;
-
 	//Destroy texture background
 	textureHandler.DestroyTexture(m_pBackground->GetName());
 	m_pBackground = nullptr;
@@ -192,7 +185,6 @@ void CGameState::Render(void)
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
 	m_pBackground->Render({ 0.0f, 0.0f });
-	m_pBricks2->Render({ 0.0f, 0.0f });
 	m_pPipe->Render();
 	m_pPlayer->Render();
 
