@@ -40,7 +40,6 @@ private:
 
 private:
 	CTexture* m_pBackground = nullptr;
-	CTexture* m_pSuperMario = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 

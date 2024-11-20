@@ -17,9 +17,9 @@ bool CGameState::OnEnter(void)
 	m_pApplication->GetWindow().SetClearColor({0, 0, 0, 255});
 
 	// Easy access to handlers so you don't have to write m_pApplication->Get_X_Handler() multiple times below
-	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
-	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
-	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+	CTextureHandler&	textureHandler = m_pApplication->GetTextureHandler();
+	CFontHandler&		fontHandler = m_pApplication->GetFontHandler();
+	CAudioHandler&		audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowSize = m_pApplication->GetWindowSize();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
@@ -199,13 +199,7 @@ void CGameState::Render(void)
 
 void CGameState::RenderDebug(void)
 {
-	/**
-	* Render the game debug objects here, for example colliders/bounding-boxes etc
-	* It's completely optional to use this function
-	* This function is called every frame
-	*/
 	m_pPipe->RenderDebug();
-	m_pPlayer->RenderDebug();
 }
 
 // This function is called whenever the player is playing its dying animation

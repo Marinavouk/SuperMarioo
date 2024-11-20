@@ -40,7 +40,7 @@ class Map {
 	public void Render() {
 		for (int y = 0; y < map_width; y++) {
 			for (int x = 0; x < map_height; x++) {
-				Vector2 tile_pos = { x * tile_size, y * tile_size }
+				Vector2 tile_pos = { x * tile_size, y * tile_size };
 				
 				switch (data[y * map_width + x]) {
 				case 1:
