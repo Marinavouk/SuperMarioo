@@ -34,7 +34,7 @@ public:
 	SDL_Rect*			GetClipRectangle(void) const						{return m_pClipRectangle;}
 
 	SDL_RendererFlip	GetFlipMethod(void)	const							{return m_FlipMethod;}
-	void				SetFlipMethod(const SDL_RendererFlip flipMethod)	{m_FlipMethod = flipMethod;}
+	void				SetFlipMethod(const SDL_RendererFlip flipMethod)	{m_FlipMethod = flipMethod;} //
 
 	SDL_FPoint&			GetSize(void) const									{return (SDL_FPoint&)m_Size;}
 	void				SetSize(const SDL_FPoint& size)						{m_Size = size;}
