@@ -76,20 +76,12 @@ private:
 	float		m_Gravity = 1500.0f;
 	float		m_Scale = 2.0f;
 
-	// How long time (in seconds) the damage-cooldown should last
-	// During the damage-cooldown, the player can't be hurt by the spiders
-	float		m_DamageCooldownTimerDefault = 2.0f;
-	float		m_DamageCooldownTimer = m_DamageCooldownTimerDefault;
-
 	int32_t		m_HorizontalDirection = EMovementState::IDLE;
 	int32_t		m_VerticalDirection = EMovementState::IDLE;
 
 	SDL_FPoint	m_Velocity = { 0.0f, 0.0f };
-	SDL_FPoint	m_HorizontalColliderOffset = { 1.0f * m_Scale, 1.0f * m_Scale };
-	SDL_FPoint	m_VerticalColliderOffset = { 1.0f * m_Scale, 1.0f * m_Scale };
-
-	// How much (in pixels) the player should be moved out of- and how much to jump when colliding with a spider
-	SDL_FPoint	m_HitStrength = { 50.0f, 300.0f };
+	SDL_FPoint	m_HorizontalColliderOffset = { 20.0f * m_Scale, 20.0f * m_Scale };
+	SDL_FPoint	m_VerticalColliderOffset = { 9.0f * m_Scale, 3.0f * m_Scale };
 
 	SDL_FRect	m_HorizontalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
 	SDL_FRect	m_VerticalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -98,7 +90,4 @@ private:
 
 	bool		m_IsRunning = false;
 	bool		m_IsJumping = false;
-	bool		m_DamageCooldown = false;
-	bool		m_Show = true;
-
 };

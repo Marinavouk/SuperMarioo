@@ -95,6 +95,6 @@ private:
 	EState				m_LastState					= EState::MAIN_MENU;
 
 	bool				m_Running					= true;
-	bool				m_DebugRendering			= true; // change it to false later
+	bool				m_DebugRendering			= true; // Change it to false later
 
 };

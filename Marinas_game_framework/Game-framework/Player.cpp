@@ -29,8 +29,8 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 
 	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale };
 
-	m_HorizontalCollider = { m_Rectangle.x + m_HorizontalColliderOffset.x,	m_Rectangle.y + m_HorizontalColliderOffset.y,	18.0f * m_Scale, 40.0f * m_Scale };
-	m_VerticalCollider = { m_Rectangle.x + m_VerticalColliderOffset.x,		m_Rectangle.y + m_VerticalColliderOffset.y,		10.0f * m_Scale, 64.0f * m_Scale };
+	m_HorizontalCollider = { m_Rectangle.x + m_HorizontalColliderOffset.x,	m_Rectangle.y + m_HorizontalColliderOffset.y,	9.0f * m_Scale, 20.0f * m_Scale };
+	m_VerticalCollider = { m_Rectangle.x + m_VerticalColliderOffset.x,		m_Rectangle.y + m_VerticalColliderOffset.y,		10.0f * m_Scale, 24.0f * m_Scale };
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
@@ -184,7 +184,7 @@ void CPlayer::HandleInput(const float deltaTime)
 		m_pCurrentAnimator = m_pAnimatorJumping;
 		m_pCurrentAnimator->Reset();
 		
-		m_IsJumping = true; // Need to confirm if it's working
+		m_IsJumping = true;
 	}
 
 
