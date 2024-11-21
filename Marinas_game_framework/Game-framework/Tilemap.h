@@ -22,7 +22,7 @@ public:
     bool isSolid(int x, int y) const;
 
 private:
-    const int tile_size = 32; 
+    const int tile_size = 64; 
     int width = 12;           
     int height = 12;          
 
