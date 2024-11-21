@@ -28,6 +28,10 @@ bool CGameState::OnEnter(void)
 	m_pBackground = textureHandler.CreateTexture("undergound.png");
 	m_pBackground->SetSize(windowSize);
 
+	// Initialize tilemap
+	m_pTilemap = new CTilemap(textureHandler);
+	if (!m_pTilemap) return false;
+
 	m_pPipe = new CPipe(m_pApplication);
 	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0)) 
 	{
@@ -110,6 +114,9 @@ void CGameState::OnExit(void)
 	delete m_pPipe;
 	m_pPipe = nullptr;
 
+	delete m_pTilemap;
+	m_pTilemap = nullptr;
+
 	//Destroy texture background
 	textureHandler.DestroyTexture(m_pBackground->GetName());
 	m_pBackground = nullptr;
@@ -187,6 +194,7 @@ void CGameState::Render(void)
 	m_pBackground->Render({ 0.0f, 0.0f });
 	m_pPipe->Render();
 	m_pPlayer->Render();
+	m_pTilemap->Render(renderer);
 
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);

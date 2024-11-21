@@ -3,6 +3,7 @@
 #include "GameObjects/Button.h"
 #include "Utilities/Texture.h"
 #include "State.h"
+#include "Tilemap.h"
 #include "GameObject.h"
 
 class CGameState final : public CState
@@ -40,7 +41,6 @@ private:
 
 private:
 	CTexture* m_pBackground = nullptr;
-
 	TTF_Font* m_pTextFont = nullptr;
 
 	CButton		m_MarioTextBlock = {};
@@ -51,6 +51,7 @@ private:
 
 	CGameObject* m_pPipe = nullptr;
 	CGameObject* m_pPlayer = nullptr;
+	CTilemap*	 m_pTilemap = nullptr;
 
 
 	GameObjectList	m_Obstacles = {};

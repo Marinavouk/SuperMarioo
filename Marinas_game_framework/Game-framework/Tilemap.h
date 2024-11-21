@@ -1,41 +1,33 @@
 #pragma once
+
 #include "Handlers/TextureHandler.h"
+#include <vector>
 
 struct Tile 
 {
-	int id;      
-	bool solid;   
+    int id;      
+    bool solid;  
 };
 
 class CTilemap final 
 {
 public:
+    CTilemap(CTextureHandler& textureHandler);
+    ~CTilemap();
 
-	CTilemap(CTextureHandler& textureHandler) {}
+    void Render(SDL_Renderer* renderer);
+    void SetTile(int x, int y, int tile_id, bool solid);
+    
 
-	~CTilemap(void) {}
+    bool isSolid(int x, int y) const;
 
-	
-public:
+private:
+    const int tile_size = 32; 
+    int width = 12;           
+    int height = 12;          
 
-	void				Render(SDL_Renderer* renderer);
-	void				SetTile(int x, int y, int tile_id, bool solid);
+    CTexture* groundBrick = nullptr; 
+    CTexture* blueBrick = nullptr;   
 
-
-	bool isSolid(int x, int y) const;
-
-public:
-
-	CTexture* groundBrick= nullptr;
-	CTexture* blueBrick= nullptr;
-
-	int width = 12;	
-	int height = 12; 
-
-	std::vector<Tile> data;
-
-
-private: 
-	 const int tile_size = 32;
+    std::vector<Tile> data; 
 };
-

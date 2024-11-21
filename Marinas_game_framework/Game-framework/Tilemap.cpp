@@ -1,73 +1,76 @@
 #include "Pch.h"
 #include "Tilemap.h"
 
-
-
-bool CTilemap::isSolid(int x, int y) const
+CTilemap::CTilemap(CTextureHandler& textureHandler) 
 {
-    return data[y * width + x].solid;
-}
-
-CTilemap::CTilemap(CTextureHandler& textureHandler)
- {
     width = 12;
     height = 12;
 
+    // Initial tilemap layout
     int initial_data[12][12] =
     {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
 
+    
     data.resize(width * height);
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            data[y * width + x].id = initial_data[y][x];
-            data[y * width + x].solid = false; 
-        }
-    }
-
-    groundBrick = textureHandler.CreateTexture("Assets/Textures/groundTile.png");
-    blueBrick = textureHandler.CreateTexture("Assets/Textures/underGroundTile.png");
- }
-
-   CTilemap::~CTilemap() = default;
-
-
-
-void CTilemap::Render(SDL_Renderer* renderer)
-{
     for (int y = 0; y < height; y++) 
     {
         for (int x = 0; x < width; x++) 
         {
+            data[y * width + x].id = initial_data[y][x];
+            data[y * width + x].solid = (initial_data[y][x] == 1);
+        }
+    }
+
+    groundBrick = textureHandler.CreateTexture("groundTile.png");
+    blueBrick = textureHandler.CreateTexture("underGroundTile.png");
+
+}
+
+CTilemap::~CTilemap() 
+{
+    groundBrick = nullptr;
+    blueBrick = nullptr;
+}
+
+void CTilemap::Render(SDL_Renderer* renderer)
+{
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
             CTexture* textureToRender = nullptr;
 
-            if (data[y * width + x].id == 0) 
+            switch (data[y * width + x].id)
             {
-                textureToRender = groundBrick;
-            }
-            else if (data[y * width + x].id == 1) 
-            {
-                textureToRender = blueBrick;
+            case 0:
+                textureToRender = nullptr; 
+                break;
+            case 1:
+                textureToRender = blueBrick; 
+                break;
+            case 2:
+                textureToRender = nullptr;
+                break;
+            default:
+                break;
             }
 
             if (textureToRender)
             {
-                SDL_FPoint destinationRect
-                {
+                SDL_FPoint destinationRect{
                     x * tile_size,
                     y * tile_size
                 };
@@ -77,10 +80,22 @@ void CTilemap::Render(SDL_Renderer* renderer)
     }
 }
 
-void CTilemap::SetTile(int x, int y, int tile_id, bool solid)
+
+void CTilemap::SetTile(int x, int y, int tile_id, bool solid) 
 {
-    data[y * width + x].id = tile_id;
-    data[y * width + x].solid = solid;
+    if (x >= 0 && x < width && y >= 0 && y < height)
+    {
+        data[y * width + x].id = tile_id;
+        data[y * width + x].solid = solid;
+    }
 }
 
 
+bool CTilemap::isSolid(int x, int y) const 
+{
+    if (x >= 0 && x < width && y >= 0 && y < height)
+    {
+        return data[y * width + x].solid;
+    }
+    return false;
+}
