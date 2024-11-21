@@ -8,7 +8,7 @@ bool CTilemap::isSolid(int x, int y)
     return data[y * width + x].solid;
 }
 
- void CTilemap::Map(int width, int height)
+CTilemap::CTilemap()
  {
 		0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24,13 +24,28 @@ bool CTilemap::isSolid(int x, int y)
 		0,0,0,0,0,0,0,0,0,0,0,0;
  }
 
+CTilemap::~CTilemap()
+{
+	delete[] data;  
+}
+
 void CTilemap::Render()
 {
 	for (int y = 0; y < width; y++) 
 	{
 		for (int x = 0; x < height; x++)
 		{
-			//
+			switch (x)
+			{
+			case 0: 
+				break;
+
+			case 1:
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 }
