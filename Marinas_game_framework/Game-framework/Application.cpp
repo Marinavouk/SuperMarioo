@@ -32,7 +32,7 @@ bool CApplication::Create(void)
 	if (!m_TextureHandler.Create("Assets/Textures"))
 		return false;
 
-	m_pRenderTarget = m_TextureHandler.CreateEmptyTexture({1280, 720}, SDL_TextureAccess::SDL_TEXTUREACCESS_TARGET, "Render target");
+	m_pRenderTarget = m_TextureHandler.CreateEmptyTexture({ 512, 416 }, SDL_TextureAccess::SDL_TEXTUREACCESS_TARGET, "Render target");
 
 	m_TransitionRenderer = CTransitionRenderer(this, m_pRenderTarget->GetSize());
 
