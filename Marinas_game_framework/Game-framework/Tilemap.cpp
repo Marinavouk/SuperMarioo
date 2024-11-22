@@ -1,101 +1,91 @@
 #include "Pch.h"
 #include "Tilemap.h"
 
-CTilemap::CTilemap(CTextureHandler& textureHandler) 
+#include "Application.h"
+
+#define TILE_SIZE (32)
+
+bool CTilemap::Create(CApplication* application)
 {
-    width = 12;
-    height = 12;
+	m_pApplication = application;
 
-    // Initial tilemap layout
-    int initial_data[12][20] =
-    {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    };
+	m_pTexture = m_pApplication->GetTextureHandler().CreateTexture("tiles.png");
 
-    
-    data.resize(width * height);
-    for (int y = 0; y < height; y++) 
-    {
-        for (int x = 0; x < width; x++) 
-        {
-            data[y * width + x].id = initial_data[y][x];
-            data[y * width + x].solid = (initial_data[y][x] == 1);
-        }
-    }
+	const int32_t numRows = 13;
+	const int32_t numColumns = 16;
 
-    groundBrick = textureHandler.CreateTexture("groundTile.png");
-    blueBrick = textureHandler.CreateTexture("underGroundTile.png");
+	const int32_t map[numRows][numColumns] =
+	{
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+		{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+	};
 
+	for (int32_t i = 0; i < numRows; ++i)
+	{
+		std::vector<STile> Tiles = {};
+
+		for (int32_t j = 0; j < numColumns; ++j)
+		{
+			const int32_t TileType = map[i][j];
+
+			if (TileType != 0)
+			{
+				STile Tile = { .m_Position = {(float)(j * TILE_SIZE), (float)(i * TILE_SIZE)}, .m_TexCoord = {(TileType - 1) * TILE_SIZE, 0} };
+				Tiles.push_back(Tile);
+			}
+		}
+
+		if (!Tiles.empty())
+			m_Tiles.push_back(Tiles);
+	}
+
+	return true;
 }
 
-CTilemap::~CTilemap() 
+void CTilemap::Destroy(void)
 {
-    groundBrick = nullptr;
-    blueBrick = nullptr;
+	m_Tiles.clear();
+
+	m_pApplication->GetTextureHandler().DestroyTexture(m_pTexture->GetName());
+	m_pTexture = nullptr;
+
+	m_pApplication = nullptr;
 }
 
-void CTilemap::Render(SDL_Renderer* renderer)
+void CTilemap::Render(void)
 {
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            CTexture* textureToRender = nullptr;
+	/*
+	for (int i = 0; i < m_Tiles.size(); ++i)
+	{
+		for (int j = 0; j < m_Tiles[i].size(); ++j)
+		{
 
-            switch (data[y * width + x].id)
-            {
-            case 0:
-                textureToRender = nullptr; 
-                break;
-            case 1:
-                textureToRender = blueBrick; 
-                break;
-            case 2:
-                textureToRender = nullptr;
-                break;
-            default:
-                break;
-            }
+		}
+	}
+	*/
 
-            if (textureToRender)
-            {
-                SDL_FPoint destinationRect{
-                    x * tile_size,
-                    y * tile_size
-                };
-                textureToRender->Render(destinationRect);
-            }
-        }
-    }
-}
+	// Range-based for loop
+	// This loops the same way as the above double for-loop
+	for (const TileVector& row : m_Tiles)
+	{
+		for (const STile& tile : row)
+		{
+			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, TILE_SIZE, TILE_SIZE };
+			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, TILE_SIZE, TILE_SIZE };
 
-
-void CTilemap::SetTile(int x, int y, int tile_id, bool solid) 
-{
-    if (x >= 0 && x < width && y >= 0 && y < height)
-    {
-        data[y * width + x].id = tile_id;
-        data[y * width + x].solid = solid;
-    }
-}
-
-
-bool CTilemap::isSolid(int x, int y) const 
-{
-    if (x >= 0 && x < width && y >= 0 && y < height)
-    {
-        return data[y * width + x].solid;
-    }
-    return false;
+			m_pTexture->SetTextureCoords(clipRectangle);
+			m_pTexture->Render(tile.m_Position, &rectangle);
+		}
+	}
 }

@@ -1,33 +1,43 @@
 #pragma once
 
-#include "Handlers/TextureHandler.h"
-#include <vector>
+#include "Utilities/Texture.h"
 
-struct Tile 
-{
-    int id;      
-    bool solid;  
-};
+class CApplication;
 
-class CTilemap final 
+class CTilemap
 {
 public:
-    CTilemap(CTextureHandler& textureHandler);
-    ~CTilemap();
 
-    void Render(SDL_Renderer* renderer);
-    void SetTile(int x, int y, int tile_id, bool solid);
-    
+	CTilemap(void) {}
+	~CTilemap(void) {}
 
-    bool isSolid(int x, int y) const;
+	bool Create(CApplication* application);
+	void Destroy(void);
+
+	void Render(void);
 
 private:
-    const int tile_size = 64; 
-    int width = 12;           
-    int height = 12;          
 
-    CTexture* groundBrick = nullptr; 
-    CTexture* blueBrick = nullptr;   
+	enum ETileType
+	{
+		GROUND = 0,
+	};
 
-    std::vector<Tile> data; 
+	struct STile
+	{
+		SDL_FPoint	m_Position = { 0.0f, 0.0f };
+		SDL_Point	m_TexCoord = { 0, 0 };
+	};
+
+	typedef std::vector<STile>		TileVector;
+	typedef std::vector<TileVector> TileVector2D;
+
+private:
+
+	CApplication* m_pApplication = nullptr;
+
+	CTexture* m_pTexture = nullptr;
+
+	TileVector2D	m_Tiles = {};
+
 };
