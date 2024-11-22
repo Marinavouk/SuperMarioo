@@ -3,8 +3,8 @@
 #include "GameObjects/Button.h"
 #include "Utilities/Texture.h"
 #include "State.h"
-#include "Tilemap.h"
-#include "GameObject.h"
+#include "GameObjects/Tilemap.h"
+#include "GameObjects/GameObject.h"
 
 class CGameState final : public CState
 {

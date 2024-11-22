@@ -1,8 +1,8 @@
 #include "Pch.h"
 #include "GameState.h"
-#include "Pipe.h"
 #include "Globals.h"
-#include "Player.h"
+#include "GameObjects/Pipe.h"
+#include "GameObjects/Player.h"
 #include "Utilities/CollisionUtilities.h"
 
 #include "Application.h"
@@ -22,22 +22,20 @@ bool CGameState::OnEnter(void)
 	CAudioHandler&		audioHandler = m_pApplication->GetAudioHandler();
 	const SDL_FPoint	windowSize = m_pApplication->GetWindowSize();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
-
-
-	//create background
-	m_pBackground = textureHandler.CreateTexture("undergound.png");
-	m_pBackground->SetSize(windowSize);
-
-	// Initialize tilemap
-	m_pTilemap = new CTilemap(textureHandler);
-	if (!m_pTilemap) return false;
-
-	m_pPipe = new CPipe(m_pApplication);
-	if (!m_pPipe->Create("greenPipe.png", { 0.0f, 0.0f }, 0)) 
+	 
+	m_pTilemap = new CTilemap;
+	if (!m_pTilemap->Create(m_pApplication)) 
 	{
 		return false;
 	}
-	m_pPipe->SetPosition({-30.0f, windowSize.y - m_pPipe->GetRectangleSize().y });
+	
+
+	m_pPipe = new CPipe(m_pApplication);
+	if (!m_pPipe->Create("pipe.png", { 0.0f, 0.0f }, 0)) 
+	{
+		return false;
+	}
+	m_pPipe->SetPosition({0.0f, windowSize.y - m_pPipe->GetRectangleSize().y });
 
 	m_Obstacles.push_back(m_pPipe);
 
@@ -114,12 +112,9 @@ void CGameState::OnExit(void)
 	delete m_pPipe;
 	m_pPipe = nullptr;
 
+	m_pTilemap->Destroy();
 	delete m_pTilemap;
 	m_pTilemap = nullptr;
-
-	//Destroy texture background
-	textureHandler.DestroyTexture(m_pBackground->GetName());
-	m_pBackground = nullptr;
 
 }
 
@@ -191,10 +186,9 @@ void CGameState::Render(void)
 
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 
-	m_pBackground->Render({ 0.0f, 0.0f });
 	m_pPipe->Render();
 	m_pPlayer->Render();
-	m_pTilemap->Render(renderer);
+	m_pTilemap->Render();
 
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);

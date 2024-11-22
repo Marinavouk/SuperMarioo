@@ -27,7 +27,7 @@ bool CMainMenuState::OnEnter(void)
 	* Create objects that should be created/started when this state is entered/started (create textures, load/start game music etc)
 	* This function is called once, when the game is entering this state
 	*/
-	m_pBackground = textureHandler.CreateTexture("MainBack.png");
+	m_pBackground = textureHandler.CreateTexture("menu.png");
 	m_pBackground->SetSize(m_pApplication->GetWindowSize());
 	m_pBackground->SetAlphaMod(225);
 
