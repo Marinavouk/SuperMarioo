@@ -174,9 +174,6 @@
     <ClInclude Include="Pipe.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionUtilities.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Tilemap.h" />
   </ItemGroup>
 </Project>

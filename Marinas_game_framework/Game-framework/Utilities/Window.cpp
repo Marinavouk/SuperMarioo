@@ -5,13 +5,28 @@
 
 bool CWindow::Create(CApplication* application, const std::string& title, const bool fullscreen, const bool resizable)
 {
-	SDL_Point windowSize = {1280, 720};
+	SDL_Point windowSize = { 1024, 768 };
 
 	SDL_DisplayMode displayMode;
-	if(SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
+	if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
 	{
-		windowSize.x = (int32_t)((float)displayMode.w * 0.85f);
-		windowSize.y = (int32_t)((float)displayMode.h * 0.85f);
+		const float desiredAspectRatio = 4.0f / 3.0f;
+		const float maxHeightPercentage = 0.75f;
+
+		const float windowHeight = ((float)displayMode.h * maxHeightPercentage);
+		const float windowWidth = desiredAspectRatio * windowHeight;
+
+		if (windowWidth > (float)displayMode.w)
+		{
+			windowSize.x = displayMode.w;
+			windowSize.y = (int32_t)((float)displayMode.w / desiredAspectRatio);
+		}
+
+		else
+		{
+			windowSize.x = (int32_t)windowWidth;
+			windowSize.y = (int32_t)windowHeight;
+		}
 	}
 
 	else
@@ -55,9 +70,9 @@ bool CWindow::Create(CApplication* application, const std::string& title, const 
 		SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_WARNING, "Warning", message.c_str(), application->GetWindow().GetWindow());
 	}
 
-	m_Size = {(float)windowSize.x, (float)windowSize.y};
+	m_Size = { (float)windowSize.x, (float)windowSize.y };
 
-	m_Center = {m_Size.x * 0.5f, m_Size.y * 0.5f};
+	m_Center = { m_Size.x * 0.5f, m_Size.y * 0.5f };
 
 	if (BeginRender())
 		EndRender();
@@ -104,13 +119,13 @@ void CWindow::SetRenderTarget(CTexture* renderTarget)
 
 void CWindow::OnResized(void)
 {
-	int32_t windowWidth		= 0;
-	int32_t windowHeight	= 0;
+	int32_t windowWidth = 0;
+	int32_t windowHeight = 0;
 	SDL_GetWindowSize(m_pWindow, &windowWidth, &windowHeight);
 
-	m_Size = {(float)windowWidth, (float)windowHeight};
+	m_Size = { (float)windowWidth, (float)windowHeight };
 
-	m_Center = {m_Size.x * 0.5f, m_Size.y * 0.5f};
+	m_Center = { m_Size.x * 0.5f, m_Size.y * 0.5f };
 }
 
 void CWindow::ToggleFullscreen(void)
