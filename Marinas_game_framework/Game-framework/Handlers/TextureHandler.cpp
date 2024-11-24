@@ -10,7 +10,7 @@ bool CTextureHandler::Create(const std::string& basePath)
 
 	CTexture* defaultTexture = CreateTexture("default.png");
 
-	if(!defaultTexture)
+	if (!defaultTexture)
 		return false;
 
 	m_TextureMap["default"] = defaultTexture;
@@ -29,7 +29,7 @@ void CTextureHandler::Destroy(void)
 
 CTexture* CTextureHandler::CreateTexture(const std::string& fileName)
 {
-	if(fileName.empty())
+	if (fileName.empty())
 		return RetrieveTexture("default");
 
 	const std::string name = RemoveFileExtension(fileName);
@@ -41,7 +41,7 @@ CTexture* CTextureHandler::CreateTexture(const std::string& fileName)
 
 	texture = new CTexture;
 
-	if(!texture->Create(m_pApplication, m_pApplication->GetWindow().GetRenderer(), m_BasePath + "/" + fileName))
+	if (!texture->Create(m_pApplication, m_pApplication->GetWindow().GetRenderer(), m_BasePath + "/" + fileName))
 	{
 		delete texture;
 		texture = nullptr;
@@ -81,7 +81,7 @@ CTexture* CTextureHandler::CreateTextureFromSurface(SDL_Surface* surface, const 
 
 	texture = new CTexture;
 
-	if(!texture->CreateFromSurface(m_pApplication, m_pApplication->GetWindow().GetRenderer(), surface, name))
+	if (!texture->CreateFromSurface(m_pApplication, m_pApplication->GetWindow().GetRenderer(), surface, name))
 	{
 		delete texture;
 		texture = nullptr;
@@ -113,7 +113,7 @@ CTexture* CTextureHandler::CreateEmptyTexture(const SDL_Point& size, const SDL_T
 
 	texture = new CTexture;
 
-	if(!texture->CreateEmpty(m_pApplication, m_pApplication->GetWindow().GetRenderer(), size, textureAccess, name))
+	if (!texture->CreateEmpty(m_pApplication, m_pApplication->GetWindow().GetRenderer(), size, textureAccess, name))
 	{
 		delete texture;
 		texture = nullptr;
@@ -130,12 +130,12 @@ CTexture* CTextureHandler::CreateEmptyTexture(const SDL_Point& size, const SDL_T
 
 void CTextureHandler::DestroyTexture(const std::string& name)
 {
-	if(name.empty())
+	if (name.empty())
 		return;
 
 	TextureMap::iterator FindIt = m_TextureMap.find(name);
 
-	if(FindIt == m_TextureMap.end())
+	if (FindIt == m_TextureMap.end())
 	{
 		const std::string message = "Failed to destroy texture '" + name + "'. Texture not found";
 		SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Error", message.c_str(), m_pApplication->GetWindow().GetWindow());
@@ -143,10 +143,10 @@ void CTextureHandler::DestroyTexture(const std::string& name)
 		return;
 	}
 
-	if(FindIt->second->m_ReferenceCount > 0)
+	if (FindIt->second->m_ReferenceCount > 0)
 		FindIt->second->m_ReferenceCount--;
 
-	if(FindIt->second->m_ReferenceCount != 0)
+	if (FindIt->second->m_ReferenceCount != 0)
 		return;
 
 	FindIt->second->Destroy();
@@ -160,7 +160,7 @@ CTexture* CTextureHandler::RetrieveTexture(const std::string& name)
 {
 	TextureMap::const_iterator FindIt = m_TextureMap.find(name);
 
-	if(FindIt != m_TextureMap.end())
+	if (FindIt != m_TextureMap.end())
 	{
 		FindIt->second->m_ReferenceCount++;
 
