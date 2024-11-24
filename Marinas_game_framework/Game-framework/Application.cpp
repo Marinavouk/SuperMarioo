@@ -24,10 +24,10 @@ bool CApplication::Create(void)
 	// If you want to set the color that the renderer's (the big 'screen texture') is "cleared" to, you can use this function
 //	m_Window.SetClearColor({255, 0, 0, 255});
 
-	m_TextureHandler	= CTextureHandler(this);
-	m_FontHandler		= CFontHandler(this);
-	m_AudioHandler		= CAudioHandler(this);
-	m_InputHandler		= CInputHandler(this);
+	m_TextureHandler = CTextureHandler(this);
+	m_FontHandler = CFontHandler(this);
+	m_AudioHandler = CAudioHandler(this);
+	m_InputHandler = CInputHandler(this);
 
 	if (!m_TextureHandler.Create("Assets/Textures"))
 		return false;
@@ -39,23 +39,23 @@ bool CApplication::Create(void)
 	// If you want to set the speed of the state transition, you can use this function
 	// The lower the value is set to, the slower the transition effect will be
 	// NOTE: if a value lower than 0.1f is specified, the speed will be clamped to 0.1f
-	m_TransitionRenderer.SetSpeed(2.0f);
+	m_TransitionRenderer.SetSpeed(1000.0f);
 
 	/**
 	* Create the various states for the game.
 	* Here you can add more states if wanted, for example a Settings menu, a Guide menu that explains the game, a Credits menu showing who made the game etc
 	*/
 
-	m_pStates[EState::MAIN_MENU]	= new CMainMenuState(this);
-	m_pStates[EState::GAME]			= new CGameState(this);
-	m_pStates[EState::QUIT]			= new CQuitState(this);
+	m_pStates[EState::MAIN_MENU] = new CMainMenuState(this);
+	m_pStates[EState::GAME] = new CGameState(this);
+	m_pStates[EState::QUIT] = new CQuitState(this);
 
 	// Set the start state of the game
-	m_NextState	= EState::MAIN_MENU;
+	m_NextState = EState::GAME;
 	m_LastState = m_NextState;
 
 	m_pCurrentState = m_pStates[m_NextState];
-	if(!m_pCurrentState->OnEnter())
+	if (!m_pCurrentState->OnEnter())
 		return false;
 
 	return true;
@@ -63,12 +63,12 @@ bool CApplication::Create(void)
 
 void CApplication::Destroy(void)
 {
-	if(m_pCurrentState)
+	if (m_pCurrentState)
 		m_pCurrentState->OnExit();
 
-	for(uint32_t i = 0; i < EState::NUM_STATES; ++i)
+	for (uint32_t i = 0; i < EState::NUM_STATES; ++i)
 	{
-		if(m_pStates[i])
+		if (m_pStates[i])
 		{
 			delete m_pStates[i];
 			m_pStates[i] = nullptr;
@@ -86,7 +86,7 @@ void CApplication::Destroy(void)
 	m_pRandomNumberGenerator = nullptr;
 }
 
-void CApplication::Run(void) 
+void CApplication::Run(void)
 {
 	// Main loop - loops as long as the application/game is running
 	while (m_Running)
@@ -104,14 +104,14 @@ void CApplication::HandleEvents(void)
 	{
 		switch (event.type)
 		{
-			case SDL_QUIT:
-			{
-				SetState(EState::QUIT);				
+		case SDL_QUIT:
+		{
+			SetState(EState::QUIT);
 
-				break;
-			}
-			default:
-				break;
+			break;
+		}
+		default:
+			break;
 		}
 	}
 }
@@ -126,7 +126,7 @@ void CApplication::Update(void)
 
 	const float deltaTime = (float)m_Timer.GetDeltaTime();
 
-	if(m_pCurrentState)
+	if (m_pCurrentState)
 		m_pCurrentState->Update(deltaTime);
 
 	m_TransitionRenderer.Update(deltaTime);
@@ -136,16 +136,16 @@ void CApplication::Render(void)
 {
 	const SDL_Color clearColor = m_Window.GetClearColor();
 	m_Window.SetRenderTarget(m_pRenderTarget);
-	m_Window.SetClearColor({0, 0, 0, 255});
+	m_Window.SetClearColor({ 0, 0, 0, 255 });
 	m_Window.ClearBuffer();
 	m_Window.SetClearColor(clearColor);
 
-	if(m_pCurrentState)
+	if (m_pCurrentState)
 		m_pCurrentState->Render();
 
 	if (m_DebugRendering)
 	{
-		if(m_pCurrentState)
+		if (m_pCurrentState)
 			m_pCurrentState->RenderDebug();
 	}
 
@@ -153,14 +153,14 @@ void CApplication::Render(void)
 
 	m_Window.SetRenderTarget(nullptr);
 
-	if(m_Window.BeginRender())
+	if (m_Window.BeginRender())
 	{
-		const SDL_FPoint	windowSize				= m_Window.GetSize();
-		const SDL_FPoint	windowCenter			= m_Window.GetCenter();
-		const SDL_FPoint	renderTargetSize		= m_pRenderTarget->GetSize();
-		const SDL_FRect		renderTargetRectangle	= {0.0f, 0.0f, windowSize.x, windowSize.y};
+		const SDL_FPoint	windowSize = m_Window.GetSize();
+		const SDL_FPoint	windowCenter = m_Window.GetCenter();
+		const SDL_FPoint	renderTargetSize = m_pRenderTarget->GetSize();
+		const SDL_FRect		renderTargetRectangle = { 0.0f, 0.0f, windowSize.x, windowSize.y };
 
-		m_pRenderTarget->Render({0.0f, 0.0f}, &renderTargetRectangle);
+		m_pRenderTarget->Render({ 0.0f, 0.0f }, &renderTargetRectangle);
 
 		m_Window.EndRender();
 	}
@@ -169,10 +169,10 @@ void CApplication::Render(void)
 bool CApplication::SetState(const EState nextState)
 {
 	/**
-	* Make sure that no state transition is already occurring, i.e make sure that m_pNextState is nullptr
+	* Make sure that m_pNextState is nullptr before continuing
 	* If m_pNextState is not nullptr, it means a state transition is occurring
 	*/
-	if(m_pNextState)
+	if (m_pNextState)
 		return false;
 
 	m_pNextState = m_pStates[nextState];
@@ -180,7 +180,7 @@ bool CApplication::SetState(const EState nextState)
 	m_TransitionRenderer.StartTransition();
 
 	m_LastState = m_NextState;
-	m_NextState	= nextState;
+	m_NextState = nextState;
 
 	return true;
 }
@@ -188,17 +188,17 @@ bool CApplication::SetState(const EState nextState)
 void CApplication::OnTransitionOpaque(void)
 {
 	// If there's a pending state
-	if(m_pNextState)
+	if (m_pNextState)
 	{
 		// Stop/exit the current state (see 'OnExit' function in each state) 
-		if(m_pCurrentState)
+		if (m_pCurrentState)
 			m_pCurrentState->OnExit();
 
 		// Do the state change
 		m_pCurrentState = m_pNextState;
 
 		// And start/enter the new state (see 'OnEnter' function in each state) 
-		if(!m_pCurrentState->OnEnter())
+		if (!m_pCurrentState->OnEnter())
 			m_Running = false;
 
 		m_pNextState = nullptr;
@@ -209,5 +209,5 @@ SDL_FPoint CApplication::GetWindowCenter(void) const
 {
 	const SDL_FPoint windowSize = m_pRenderTarget->GetSize();
 
-	return {windowSize.x * 0.5f, windowSize.y * 0.5f};
+	return { windowSize.x * 0.5f, windowSize.y * 0.5f };
 }
