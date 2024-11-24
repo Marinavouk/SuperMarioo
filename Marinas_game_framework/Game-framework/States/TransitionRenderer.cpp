@@ -14,13 +14,13 @@ CTransitionRenderer::CTransitionRenderer(CApplication* application, const SDL_FP
 
 	m_pRenderer = application->GetWindow().GetRenderer();
 
-	m_Transition = {0.0f, 0.0f, size.x, size.y};
+	m_Transition = { 0.0f, 0.0f, size.x, size.y };
 }
 
 CTransitionRenderer::~CTransitionRenderer(void)
 {
-	m_pRenderer		= nullptr;
-	m_pApplication	= nullptr;
+	m_pRenderer = nullptr;
+	m_pApplication = nullptr;
 }
 
 void CTransitionRenderer::Update(const float deltaTime)
@@ -32,11 +32,11 @@ void CTransitionRenderer::Update(const float deltaTime)
 	{
 		m_TransitionValue = std::clamp(m_TransitionValue - (m_FadeSpeed * std::min(deltaTime, 0.0333f)), 0.0f, 1.0f);
 
-		if(m_TransitionValue <= 0.0f)
+		if (m_TransitionValue <= 0.0f)
 			m_State = EState::IDLE;
 	}
 
-	else if(m_State == EState::FADING_OUT)
+	else if (m_State == EState::FADING_OUT)
 	{
 		m_TransitionValue = std::clamp(m_TransitionValue + (m_FadeSpeed * std::min(deltaTime, 0.0333f)), 0.0f, 1.0f);
 
