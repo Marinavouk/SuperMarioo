@@ -26,6 +26,7 @@ public:
 	virtual void		HandleInput(const float deltaTime) {}
 	virtual void		HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) {}
 	virtual void		HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime) {}
+	virtual void		HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders) {}
 
 public:
 
