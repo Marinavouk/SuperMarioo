@@ -3,16 +3,16 @@
 
 void CAnimator::Set(CTexture* texture, const uint32_t numFrames, const uint32_t startFrame, const uint32_t endFrame, const uint32_t row, const SDL_FPoint& frameSize, const float speed, const bool loop, const EDirection direction)
 {
-	m_pTexture		= texture;
-	m_FrameSize		= frameSize;
-	m_Speed			= speed;
-	m_NumFrames		= numFrames;
-	m_StartFrame	= startFrame;
-	m_EndFrame		= endFrame;
-	m_Row			= row;
-	m_CurrentFrame	= startFrame;
-	m_Loop			= loop;
-	m_Direction		= direction;
+	m_pTexture = texture;
+	m_FrameSize = frameSize;
+	m_Speed = speed;
+	m_NumFrames = numFrames;
+	m_StartFrame = startFrame;
+	m_EndFrame = endFrame;
+	m_Row = row;
+	m_CurrentFrame = startFrame;
+	m_Loop = loop;
+	m_Direction = direction;
 
 	Reset();
 
@@ -36,7 +36,7 @@ void CAnimator::Update(const float deltaTime)
 			{
 				m_CurrentFrame = (m_Loop ? m_StartFrame : m_EndFrame);
 
-				if(m_pAnimationEndCallback)
+				if (m_pAnimationEndCallback)
 					m_pAnimationEndCallback();
 			}
 		}
@@ -47,7 +47,7 @@ void CAnimator::Update(const float deltaTime)
 			{
 				m_CurrentFrame = (m_Loop ? m_StartFrame : m_EndFrame);
 
-				if(m_pAnimationEndCallback)
+				if (m_pAnimationEndCallback)
 					m_pAnimationEndCallback();
 			}
 		}
@@ -72,6 +72,6 @@ void CAnimator::Reset(void)
 
 void CAnimator::SetClipRectangle(void)
 {
-	m_ClipRectangle.x = (uint32_t)m_FrameSize.x	* m_CurrentFrame;
-	m_ClipRectangle.y = (uint32_t)m_FrameSize.y	* m_Row;
+	m_ClipRectangle.x = (uint32_t)m_FrameSize.x * m_CurrentFrame;
+	m_ClipRectangle.y = (uint32_t)m_FrameSize.y * m_Row;
 }
