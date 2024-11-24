@@ -9,20 +9,20 @@ void CInputHandler::Update(void)
 
 	for (size_t i = 0; i < SDL_NUM_SCANCODES; i++)
 	{
-		m_PreviousKeyboardState[i]	= m_CurrentKeyboardState[i];
-		m_CurrentKeyboardState[i]		= (keyboardState[i] == SDL_TRUE);
+		m_PreviousKeyboardState[i] = m_CurrentKeyboardState[i];
+		m_CurrentKeyboardState[i] = (keyboardState[i] == SDL_TRUE);
 	}
 
-	int				mouseX		= 0;
-	int				mouseY		= 0;
-	const Uint32	mouseState	= SDL_GetMouseState(&mouseX, &mouseY);	
+	int				mouseX = 0;
+	int				mouseY = 0;
+	const Uint32	mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
-	m_MousePosition = {(float)mouseX, (float)mouseY};
+	m_MousePosition = { (float)mouseX, (float)mouseY };
 
 	for (size_t i = 0; i < 8; i++)
 	{
-		m_previousMouseState[i]	= m_CurrentMouseState[i];
-		m_CurrentMouseState[i]	= ((mouseState & SDL_BUTTON(i)) ? true : false);
+		m_previousMouseState[i] = m_CurrentMouseState[i];
+		m_CurrentMouseState[i] = ((mouseState & SDL_BUTTON(i)) ? true : false);
 	}
 }
 
@@ -58,9 +58,9 @@ bool CInputHandler::MouseButtonReleased(const int32_t mouseButton)
 
 SDL_FPoint CInputHandler::GetMousePosition(void)
 {
-	const SDL_FPoint windowSize			= m_pApplication->GetWindow().GetSize();
-	const SDL_FPoint renderTargetSize	= m_pApplication->GetWindowSize();
-	const SDL_FPoint scaleFactor		= {windowSize.x / renderTargetSize.x, windowSize.y / renderTargetSize.y};
+	const SDL_FPoint windowSize = m_pApplication->GetWindow().GetSize();
+	const SDL_FPoint renderTargetSize = m_pApplication->GetWindowSize();
+	const SDL_FPoint scaleFactor = { windowSize.x / renderTargetSize.x, windowSize.y / renderTargetSize.y };
 
-	return {m_MousePosition.x / scaleFactor.x, m_MousePosition.y / scaleFactor.y};
+	return { m_MousePosition.x / scaleFactor.x, m_MousePosition.y / scaleFactor.y };
 }
