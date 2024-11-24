@@ -8,7 +8,7 @@ class CTexture
 
 public:
 
-	 CTexture(void) {}
+	CTexture(void) {}
 	~CTexture(void) {}
 
 	bool				Create(CApplication* application, SDL_Renderer* renderer, const std::string& fileName);
@@ -29,37 +29,37 @@ public:
 
 public:
 
-	SDL_Texture*		GetTexture(void) const								{return m_pTexture;}
+	SDL_Texture* GetTexture(void) const { return m_pTexture; }
 
-	SDL_Rect*			GetClipRectangle(void) const						{return m_pClipRectangle;}
+	SDL_Rect* GetClipRectangle(void) const { return m_pClipRectangle; }
 
-	SDL_RendererFlip	GetFlipMethod(void)	const							{return m_FlipMethod;}
-	void				SetFlipMethod(const SDL_RendererFlip flipMethod)	{m_FlipMethod = flipMethod;} //
+	SDL_RendererFlip	GetFlipMethod(void)	const { return m_FlipMethod; }
+	void				SetFlipMethod(const SDL_RendererFlip flipMethod) { m_FlipMethod = flipMethod; } //
 
-	SDL_FPoint&			GetSize(void) const									{return (SDL_FPoint&)m_Size;}
-	void				SetSize(const SDL_FPoint& size)						{m_Size = size;}
+	SDL_FPoint& GetSize(void) const { return (SDL_FPoint&)m_Size; }
+	void				SetSize(const SDL_FPoint& size) { m_Size = size; }
 
-	float				GetAngle(void) const								{return m_Angle;}
-	void				SetAngle(const float angle)							{m_Angle = angle;}
+	float				GetAngle(void) const { return m_Angle; }
+	void				SetAngle(const float angle) { m_Angle = angle; }
 
-	std::string&		GetName(void) const									{return (std::string&)m_Name;}
+	std::string& GetName(void) const { return (std::string&)m_Name; }
 
 private:
 
-	SDL_Renderer*		m_pRenderer			= nullptr;
+	SDL_Renderer* m_pRenderer = nullptr;
 
-	SDL_Texture*		m_pTexture			= nullptr;
+	SDL_Texture* m_pTexture = nullptr;
 
-	SDL_Rect*			m_pClipRectangle	= nullptr;
+	SDL_Rect* m_pClipRectangle = nullptr;
 
-	SDL_RendererFlip	m_FlipMethod		= SDL_RendererFlip::SDL_FLIP_NONE;
+	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
 
-	SDL_FPoint			m_Size				= {0.0f, 0.0f};
+	SDL_FPoint			m_Size = { 0.0f, 0.0f };
 
-	float				m_Angle				= 0.0f;
+	float				m_Angle = 0.0f;
 
-	uint32_t			m_ReferenceCount	= 0;
+	uint32_t			m_ReferenceCount = 0;
 
-	std::string			m_Name				= "";
+	std::string			m_Name = "";
 
 };
