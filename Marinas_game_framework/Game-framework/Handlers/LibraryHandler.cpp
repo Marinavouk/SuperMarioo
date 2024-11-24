@@ -37,7 +37,7 @@ bool CLibraryHandler::Create(CApplication* application)
 		return false;
 	}
 
-	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
 	{
 		const std::string message = "Failed to open audio device. " + std::string(Mix_GetError());
 		SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Error", message.c_str(), application->GetWindow().GetWindow());
@@ -58,7 +58,7 @@ void CLibraryHandler::Destroy(void)
 
 
 
-	Mix_Quit();	
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
