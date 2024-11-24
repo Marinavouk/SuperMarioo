@@ -3,9 +3,9 @@
 
 #include "Application.h"
 #include "Utilities/CollisionUtilities.h"
+
 bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth)
 {
-
 	if (!CGameObject::Create(textureFileName, position, maxHealth))
 		return false;
 
@@ -16,11 +16,11 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pAnimatorRunning = new CAnimator;
 	m_pAnimatorJumping = new CAnimator;
 	m_pAnimatorDying = new CAnimator;
-	m_pAnimatorIdle->Set(m_pTexture,    1, 0, 0, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorWalking->Set(m_pTexture, 3, 1, 3, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
-	m_pAnimatorRunning->Set(m_pTexture, 3, 1, 3, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorIdle->Set(m_pTexture, 1, 0, 0, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorWalking->Set(m_pTexture, 3, 1, 3, 0, frameSize, 8.0f, true, CAnimator::EDirection::FORWARD);
+	m_pAnimatorRunning->Set(m_pTexture, 3, 1, 3, 0, frameSize, 16.0f, true, CAnimator::EDirection::FORWARD);
 	m_pAnimatorJumping->Set(m_pTexture, 1, 5, 5, 0, frameSize, 8.0f, false, CAnimator::EDirection::FORWARD);
-	m_pAnimatorDying->Set(m_pTexture,   1, 7, 7, 0, frameSize, 1.0f, false, CAnimator::EDirection::FORWARD);
+	m_pAnimatorDying->Set(m_pTexture, 1, 7, 7, 0, frameSize, 1.0f, false, CAnimator::EDirection::FORWARD);
 
 	ActivateAnimator(m_pAnimatorIdle);
 
@@ -34,23 +34,25 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
-    return true;
+	return true;
 }
 
 void CPlayer::Destroy(void)
 {
-	m_pDyingCallback   = nullptr;
+	m_pDyingCallback = nullptr;
 
 	delete m_pAnimatorDying;
 	delete m_pAnimatorJumping;
 	delete m_pAnimatorRunning;
 	delete m_pAnimatorWalking;
 	delete m_pAnimatorIdle;
-	m_pAnimatorIdle    = nullptr;
+
+	m_pAnimatorIdle = nullptr;
 	m_pAnimatorWalking = nullptr;
 	m_pAnimatorRunning = nullptr;
 	m_pAnimatorJumping = nullptr;
-	m_pAnimatorDying   = nullptr;
+	m_pAnimatorDying = nullptr;
+	m_pCurrentAnimator = nullptr;
 
 	CGameObject::Destroy();
 }
@@ -67,11 +69,6 @@ void CPlayer::Kill(void)
 
 	if (m_pDyingCallback)
 		m_pDyingCallback();
-}
-
-void CPlayer::Render(void)
-{
-	CGameObject::Render();
 }
 
 void CPlayer::RenderDebug(void)
@@ -147,7 +144,7 @@ void CPlayer::Update(const float deltaTime)
 			m_IsJumping = false;
 		}
 
-	
+
 	}
 
 	else if (m_State == EState::DEAD)
@@ -183,10 +180,9 @@ void CPlayer::HandleInput(const float deltaTime)
 
 		m_pCurrentAnimator = m_pAnimatorJumping;
 		m_pCurrentAnimator->Reset();
-		
+
 		m_IsJumping = true;
 	}
-
 
 	// Held keys
 
@@ -265,17 +261,9 @@ void CPlayer::HandleInput(const float deltaTime)
 		ActivateAnimator(m_pAnimatorIdle);
 }
 
-void CPlayer::HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime)
+void CPlayer::HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders)
 {
-}
 
-void CPlayer::HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime)
-{
-}
-
-bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
-{
-	return false;
 }
 
 void CPlayer::SyncColliders(void)
@@ -296,4 +284,3 @@ void CPlayer::ActivateAnimator(CAnimator* animator)
 		m_pCurrentAnimator->Reset();
 	}
 }
- 

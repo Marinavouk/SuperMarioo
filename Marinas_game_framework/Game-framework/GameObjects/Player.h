@@ -12,18 +12,16 @@ public:
 public:
 
 	CPlayer(void) {}
-	CPlayer(CApplication* application) : CGameObject(application) {} //
+	CPlayer(CApplication* application) : CGameObject(application) {}
 	~CPlayer(void) {}
 
 	virtual bool	Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth) override;
 	virtual void	Destroy(void) override;
 	virtual void	Kill(void) override;
-	virtual void	Render(void) override;
 	virtual void	RenderDebug(void) override;
 	virtual void	Update(const float deltaTime) override;
 	virtual void	HandleInput(const float deltaTime) override;
-	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
-	virtual void	HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime) override;
+	virtual void	HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders) override;
 
 public:
 
@@ -31,10 +29,6 @@ public:
 
 private:
 
-	bool			ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
-	bool			ResolveObstacleYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
-	bool			ResolveEnemyXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
-	bool			ResolveEnemyYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
 	void			SyncColliders(void);
 	void			ActivateAnimator(CAnimator* animator);
 
@@ -61,8 +55,8 @@ private:
 	CAnimator* m_pAnimatorWalking = nullptr;
 	CAnimator* m_pAnimatorRunning = nullptr;
 	CAnimator* m_pAnimatorJumping = nullptr;
-	CAnimator* m_pCurrentAnimator = nullptr;
 	CAnimator* m_pAnimatorDying = nullptr;
+	CAnimator* m_pCurrentAnimator = nullptr;
 
 	float		m_AccelerationSpeedWalking = 800.0f;
 	float		m_DeaccelerationSpeedWalking = 500.0f;
@@ -71,10 +65,10 @@ private:
 	float		m_MaxWalkingVelocity = 200.0f;
 	float		m_MaxRunningVelocity = 400.0f;
 	float		m_MaxFallVelocity = 600.0f;
-	float		m_JumpStrength = 660.0f;
+	float		m_JumpStrength = 600.0f;
 
 	float		m_Gravity = 1500.0f;
-	float		m_Scale = 2.0f;
+	float		m_Scale = 1.6f;
 
 	int32_t		m_HorizontalDirection = EMovementState::IDLE;
 	int32_t		m_VerticalDirection = EMovementState::IDLE;
@@ -90,4 +84,5 @@ private:
 
 	bool		m_IsRunning = false;
 	bool		m_IsJumping = false;
+
 };
