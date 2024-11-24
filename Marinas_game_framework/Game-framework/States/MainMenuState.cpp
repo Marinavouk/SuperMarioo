@@ -22,9 +22,9 @@ bool CMainMenuState::OnEnter(void)
 	m_pBackground->SetAlphaMod(225);
 
 	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
-	m_pCoinTexture->SetSize({ 24.f, 24.f });
+	m_pCoinTexture->SetSize({ 10.f, 16.f });
 
-	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 50); if (!m_pButtonFont)	return false;
+	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 25); if (!m_pButtonFont)	return false;
 
 	const SDL_Color buttonBackgroundColor = { 0,		0,		0,		0 };	// nothing		<-- Background color when the button is not held
 	const SDL_Color buttonBackgroundPressedColor = { 0,		0,		0,		0 };	// nothing		<-- Background color when the button is held
@@ -34,7 +34,7 @@ bool CMainMenuState::OnEnter(void)
 
 	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor))
 		return false;
-	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 50.0f });
+	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 40.0f });
 	m_1PlayerGame.SetBackgroundColor(buttonBackgroundColor);
 	m_1PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
 	m_1PlayerGame.SetTextColorHovered(buttonTextColorHovered);
@@ -42,7 +42,7 @@ bool CMainMenuState::OnEnter(void)
 
 	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
 		return false;
-	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 120.0f });
+	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 80.0f });
 	m_2PlayerGame.SetBackgroundColor(buttonBackgroundColor);
 	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
 	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
@@ -98,7 +98,7 @@ void CMainMenuState::Update(const float deltaTime)
 	m_2PlayerGame.Update(inputHandler);
 
 	m_CoinToggleTimer += deltaTime;
-	if (m_CoinToggleTimer >= 1.0f)
+	if (m_CoinToggleTimer >= 0.5f)
 	{
 		m_CoinToggleTimer = 0.0f;
 		m_CoinVisible = !m_CoinVisible;
@@ -109,11 +109,12 @@ void CMainMenuState::Render(void)
 {
 	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
 	const SDL_FPoint mousePosition = m_pApplication->GetInputHandler().GetMousePosition();
+	const SDL_FPoint windowCenter = m_pApplication->GetWindowCenter();
 
 	m_pBackground->Render({ 0.0f, 0.0f });
 
 	if (m_CoinVisible)
-		m_pCoinTexture->Render({ 10.0f, 200.0f });
+		m_pCoinTexture->Render({ 208.f, 20.0f });
 
 	m_1PlayerGame.Render(renderer, &mousePosition);
 	m_2PlayerGame.Render(renderer, &mousePosition);
