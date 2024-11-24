@@ -3,8 +3,6 @@
 
 #include "Application.h"
 
-#define TILE_SIZE (32)
-
 bool CTilemap::Create(CApplication* application)
 {
 	m_pApplication = application;
@@ -41,7 +39,7 @@ bool CTilemap::Create(CApplication* application)
 
 			if (TileType != 0)
 			{
-				STile Tile = { .m_Position = {(float)(j * TILE_SIZE), (float)(i * TILE_SIZE)}, .m_TexCoord = {(TileType - 1) * TILE_SIZE, 0} };
+				STile Tile = { .m_Position = {(float)(j * m_TileSize.x), (float)(i * m_TileSize.y)}, .m_TexCoord = {(TileType - 1) * m_TileSize.x, 0} };
 				Tiles.push_back(Tile);
 			}
 		}
@@ -81,11 +79,43 @@ void CTilemap::Render(void)
 	{
 		for (const STile& tile : row)
 		{
-			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, TILE_SIZE, TILE_SIZE };
-			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, TILE_SIZE, TILE_SIZE };
+			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y };
+			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, (int)m_TileSize.x, m_TileSize.y };
 
 			m_pTexture->SetTextureCoords(clipRectangle);
 			m_pTexture->Render(tile.m_Position, &rectangle);
 		}
 	}
+}
+
+void CTilemap::RenderDebug(void)
+{
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+	for (const TileVector& row : m_Tiles)
+	{
+		for (const STile& tile : row)
+		{
+			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y };
+
+			SDL_RenderDrawRectF(renderer, &rectangle);
+		}
+	}
+}
+
+std::vector<SDL_FRect> CTilemap::GetCollisionRectangles(void) const
+{
+	std::vector<SDL_FRect> collisionRectangles = {};
+
+	for (const TileVector& row : m_Tiles)
+	{
+		for (const STile& tile : row)
+		{
+			collisionRectangles.push_back({ tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y });
+		}
+	}
+
+	return collisionRectangles;
 }
