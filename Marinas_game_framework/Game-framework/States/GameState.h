@@ -41,6 +41,7 @@ private:
 
 	CGameObject* m_pPlayer = nullptr;
 	CGameObject* m_pPipe = nullptr;
+	CGameObject* m_pPipe2 = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 

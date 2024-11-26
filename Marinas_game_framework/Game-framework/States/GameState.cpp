@@ -29,12 +29,18 @@ bool CGameState::OnEnter(void)
 	if (!m_pPipe->Create("pipe.png", { 0.0f, 0.0f }, 0))
 		return false;
 	m_pPipe->SetPosition({ 0.0f, (windowSize.y - m_pPipe->GetRectangleSize().y) - m_pTilemap->GetTileSize().y });
+	
+	m_pPipe2 = new CPipe(m_pApplication);
+	if (!m_pPipe2->Create("pipe.png", { 0.0f, 0.0f }, 0))
+		return false;
+	m_pPipe2->SetPosition({ windowCenter.x + 195.0f, (windowSize.y - m_pPipe2->GetRectangleSize().y) - m_pTilemap->GetTileSize().y});
 
 	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
 	if (!m_pTextFont)
 		return false;
-
+	
 	m_Obstacles.push_back(m_pPipe);
+	m_Obstacles.push_back(m_pPipe2);
 
 	const SDL_Color titleTextColor = { 255,	255, 255, 255 }; // White
 
@@ -80,6 +86,10 @@ void CGameState::OnExit(void)
 	m_pApplication->GetFontHandler().DestroyFont(m_pTextFont);
 	m_pTextFont = nullptr;
 
+	m_pPipe2->Destroy();
+	delete m_pPipe2;
+	m_pPipe2 = nullptr;
+	
 	m_pPipe->Destroy();
 	delete m_pPipe;
 	m_pPipe = nullptr;
@@ -161,6 +171,7 @@ void CGameState::Render(void)
 	m_pTilemap->Render();
 	m_pPlayer->Render();
 	m_pPipe->Render();
+	m_pPipe2->Render();
 
 	m_MarioTextBlock.Render(renderer);
 	m_WorldTextBlock.Render(renderer);
@@ -177,6 +188,7 @@ void CGameState::RenderDebug(void)
 	m_pTilemap->RenderDebug();
 	m_pPlayer->RenderDebug();
 	m_pPipe->RenderDebug();
+	m_pPipe2->RenderDebug();
 }
 
 // This function is called whenever the player is playing its dying animation
