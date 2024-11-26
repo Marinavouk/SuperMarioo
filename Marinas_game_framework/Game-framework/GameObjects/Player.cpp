@@ -27,7 +27,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pTexture->SetSize({ frameSize.x * m_Scale, frameSize.y * m_Scale });
 	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
 
-	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale };
+	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale + 30.0f};
 
 	m_HorizontalCollider = { m_Rectangle.x + m_HorizontalColliderOffset.x,	m_Rectangle.y + m_HorizontalColliderOffset.y,	15.0f * m_Scale, 9.0f * m_Scale };
 	m_VerticalCollider = { m_Rectangle.x + m_VerticalColliderOffset.x,		m_Rectangle.y + m_VerticalColliderOffset.y,		10.0f * m_Scale, 24.0f * m_Scale };
@@ -273,7 +273,7 @@ void CPlayer::SyncColliders(void)
 	m_VerticalCollider.x = m_Rectangle.x + m_VerticalColliderOffset.x;
 	m_VerticalCollider.y = m_Rectangle.y + m_VerticalColliderOffset.y;
 
-	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
+	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y , m_VerticalCollider.w, m_VerticalCollider.h};
 }
 
 void CPlayer::ActivateAnimator(CAnimator* animator)
