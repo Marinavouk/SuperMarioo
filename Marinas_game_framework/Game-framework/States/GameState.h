@@ -40,8 +40,10 @@ private:
 	CTilemap* m_pTilemap = nullptr;
 
 	CGameObject* m_pPlayer = nullptr;
-	CGameObject* m_pPipe = nullptr;
-	CGameObject* m_pPipe2 = nullptr;
+	CGameObject* m_pPipeDownL = nullptr;
+	CGameObject* m_pPipeDownR = nullptr;
+	CGameObject* m_pPipeUpR = nullptr;
+	CGameObject* m_pPipeUpL = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 
