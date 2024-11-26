@@ -46,13 +46,15 @@ public:
 
 	bool				GetIsDead(void) const { return m_IsDead; }
 
-	SDL_RendererFlip	GetFlipMethod(void) const { return m_pTexture->GetFlipMethod(); }
-
+	SDL_RendererFlip	GetFlipMethod(void) const { return m_FlipMethod; }
+	
 protected:
 
 	CApplication* m_pApplication = nullptr;
 
-	CTexture* m_pTexture = nullptr;
+	CTexture*	  m_pTexture = nullptr;
+
+	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 
 	SDL_FRect		m_Rectangle = { 0.0f, 0.0f, 0.0f, 0.0f };
 	SDL_FRect		m_Collider = { 0.0f, 0.0f, 0.0f, 0.0f };

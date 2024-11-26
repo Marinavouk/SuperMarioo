@@ -6,6 +6,7 @@
 #include "GameObjects/Player.h"
 #include "Globals.h"
 #include "Utilities/CollisionUtilities.h"
+#
 
 bool CGameState::OnEnter(void)
 {
@@ -192,6 +193,7 @@ void CGameState::Render(void)
 	m_pPlayer->Render();
 	m_pPipeDownL->Render();
 	m_pPipeDownR->Render();
+	m_pPipeDownR->GetFlipMethod();
 	m_pPipeUpR->Render();
 	m_pPipeUpL->Render();
 
