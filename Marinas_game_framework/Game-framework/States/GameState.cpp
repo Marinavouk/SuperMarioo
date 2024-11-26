@@ -14,6 +14,7 @@ bool CGameState::OnEnter(void)
 
 	const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
 	const SDL_FPoint windowCenter = m_pApplication->GetWindowCenter();
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
 	m_pTilemap = new CTilemap;
 	if (!m_pTilemap->Create(m_pApplication))
@@ -86,11 +87,28 @@ bool CGameState::OnEnter(void)
 
 	e_EndOfRoundPlayerKilled = false;
 
+	e_pMusic = audioHandler.CreateMusic("Assets/Audio/UndergroundTheme.mp3");
+	if (!e_pMusic)
+		return false;
+
+	audioHandler.PlayMusic(e_pMusic, -1);
+	audioHandler.SetMusicVolume(15);
+
 	return true;
 }
 
 void CGameState::OnExit(void)
 {
+
+	if (m_pApplication->GetNextState() == CApplication::EState::QUIT)
+	{
+		CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+		audioHandler.StopMusic();
+		audioHandler.DestroyMusic(e_pMusic);
+		e_pMusic = nullptr;
+	}
+
 	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
