@@ -30,7 +30,7 @@ bool CGameState::OnEnter(void)
 		return false;
 	m_pPipe->SetPosition({ 0.0f, (windowSize.y - m_pPipe->GetRectangleSize().y) - m_pTilemap->GetTileSize().y });
 
-	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 30);
+	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
 	if (!m_pTextFont)
 		return false;
 
@@ -46,17 +46,17 @@ bool CGameState::OnEnter(void)
 
 	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "WORLD", titleTextColor))
 		return false;
-	m_WorldTextBlock.SetPosition({ windowCenter.x + 100.0f, 10.0f });
+	m_WorldTextBlock.SetPosition({ windowCenter.x + 50.0f, 10.0f });
 	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	if (!m_TimeTextBlock.Create(m_pApplication, m_pTextFont, "TIME", titleTextColor))
 		return false;
-	m_TimeTextBlock.SetPosition({ windowCenter.x + 100.0f, 30.0f });
+	m_TimeTextBlock.SetPosition({ windowCenter.x + 140.0f, 10.0f });
 	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "0-88", titleTextColor))
 		return false;
-	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 200.0f, 35.0f });
+	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 50.0f, 35.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	m_Timer = m_TimerDefault;
@@ -169,7 +169,7 @@ void CGameState::Render(void)
 
 	const std::string timerText = std::to_string((uint32_t)ceilf(m_Timer));
 	SDL_FPoint textSize = fontHandler.GetTextSize(m_pTextFont, timerText);
-	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + textSize.x * 0.5f, 25.0f }, { 250, 250, 250, 255 });
+	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + textSize.x * 3.8f, 25.0f }, { 250, 250, 250, 255 });
 }
 
 void CGameState::RenderDebug(void)
