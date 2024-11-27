@@ -30,13 +30,13 @@ bool CGameState::OnEnter(void)
 	m_pPipeUpperLeft = new CPipe(m_pApplication);
 	if (!m_pPipeUpperLeft->Create("pipe.png", { 0.0f, 0.0f }, 0))
 		return false;
-	m_pPipeUpperLeft->SetPosition({ 0.0f, 0.0f });
+	m_pPipeUpperLeft->SetPosition({ 0.0f, tileSize.y * 2.0f });
 	m_pPipeUpperLeft->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
 
 	m_pPipeUpperRight = new CPipe(m_pApplication);
 	if (!m_pPipeUpperRight->Create("pipe.png", { 0.0f, 0.0f }, 0))
 		return false;
-	m_pPipeUpperRight->SetPosition({ windowSize.x - m_pPipeUpperRight->GetRectangleSize().x, 0.0f });
+	m_pPipeUpperRight->SetPosition({ windowSize.x - m_pPipeUpperRight->GetRectangleSize().x, tileSize.y * 2.0f });
 	m_pPipeUpperRight->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
 
 	m_pPipeLowerLeft = new CPipe(m_pApplication);
