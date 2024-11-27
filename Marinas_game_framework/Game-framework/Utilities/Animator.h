@@ -16,7 +16,7 @@ public:
 
 public:
 
-	CAnimator(void) {}
+	 CAnimator(void) {}
 	~CAnimator(void) {}
 
 	void		Set(CTexture* texture, const uint32_t numFrames, const uint32_t startFrame, const uint32_t endFrame, const uint32_t row, const SDL_FPoint& frameSize, const float speed, const bool loop, const EDirection direction);
@@ -29,7 +29,7 @@ public:
 
 	void		SetAnimationEndCallback(AnimationEndedCB callback) { m_pAnimationEndCallback = callback; }
 
-	SDL_Rect& GetClipRectangle(void) const { return (SDL_Rect&)m_ClipRectangle; }
+	SDL_Rect&	GetClipRectangle(void) const { return (SDL_Rect&)m_ClipRectangle; }
 
 	SDL_FPoint& GetFrameSize(void) const { return (SDL_FPoint&)m_FrameSize; }
 
@@ -44,7 +44,7 @@ private:
 
 private:
 
-	CTexture* m_pTexture = nullptr;
+	CTexture*			m_pTexture = nullptr;
 
 	AnimationEndedCB	m_pAnimationEndCallback = nullptr;
 

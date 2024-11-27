@@ -10,7 +10,7 @@ public:
 
 public:
 
-	CTilemap(void) {}
+	 CTilemap(void) {}
 	~CTilemap(void) {}
 
 	bool			Create(CApplication* application);
@@ -21,9 +21,9 @@ public:
 
 public:
 
-	SDL_FPoint& GetTileSize(void) const { return (SDL_FPoint&)m_TileSize; }
+	SDL_FPoint&		GetTileSize(void) const { return (SDL_FPoint&)m_TileSize; }
 
-	TileColliders& GetColliders(void) const { return (TileColliders&)m_TileColliders; }
+	TileColliders&	GetColliders(void) const { return (TileColliders&)m_TileColliders; }
 
 private:
 
@@ -43,9 +43,9 @@ private:
 
 private:
 
-	CApplication* m_pApplication = nullptr;
+	CApplication*	m_pApplication = nullptr;
 
-	CTexture* m_pTexture = nullptr;
+	CTexture*		m_pTexture = nullptr;
 
 	SDL_FPoint		m_TileSize = { 32.0f, 32.0f };
 

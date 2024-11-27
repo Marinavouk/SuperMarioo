@@ -9,7 +9,7 @@ class CButton
 {
 public:
 
-	CButton(void) {}
+	 CButton(void) {}
 	~CButton(void) {}
 
 	bool		Create(CApplication* application, TTF_Font* font, const std::string& text, const SDL_Color& textColor);
@@ -47,7 +47,7 @@ private:
 
 private:
 
-	CTexture* m_pTexture = nullptr;
+	CTexture*	m_pTexture = nullptr;
 
 	SDL_FPoint	m_Position = { 0.0f, 0.0f };
 

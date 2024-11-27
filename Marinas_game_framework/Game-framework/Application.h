@@ -28,7 +28,7 @@ public:
 
 public:
 
-	CApplication(void) {}
+	 CApplication(void) {}
 	~CApplication(void) {}
 
 	bool					Create(void);
@@ -49,18 +49,18 @@ public:
 
 	// Place getters and setters in their own public field
 
-	CRandom* GetRandomNumberGenerator(void) const { return m_pRandomNumberGenerator; }
+	CRandom*				GetRandomNumberGenerator(void) const { return m_pRandomNumberGenerator; }
 
-	CWindow& GetWindow(void)	const { return (CWindow&)m_Window; }
+	CWindow&				GetWindow(void)	const { return (CWindow&)m_Window; }
 
-	CTextureHandler& GetTextureHandler(void) const { return (CTextureHandler&)m_TextureHandler; }
-	CFontHandler& GetFontHandler(void) const { return (CFontHandler&)m_FontHandler; }
-	CAudioHandler& GetAudioHandler(void) const { return (CAudioHandler&)m_AudioHandler; }
-	CInputHandler& GetInputHandler(void) const { return (CInputHandler&)m_InputHandler; }
+	CTextureHandler&		GetTextureHandler(void) const { return (CTextureHandler&)m_TextureHandler; }
+	CFontHandler&			GetFontHandler(void) const { return (CFontHandler&)m_FontHandler; }
+	CAudioHandler&			GetAudioHandler(void) const { return (CAudioHandler&)m_AudioHandler; }
+	CInputHandler&			GetInputHandler(void) const { return (CInputHandler&)m_InputHandler; }
 
-	CTransitionRenderer& GetTransitionRenderer(void) const { return (CTransitionRenderer&)m_TransitionRenderer; }
+	CTransitionRenderer&	GetTransitionRenderer(void) const { return (CTransitionRenderer&)m_TransitionRenderer; }
 
-	SDL_FPoint& GetWindowSize(void) const { return (SDL_FPoint&)m_pRenderTarget->GetSize(); }
+	SDL_FPoint&				GetWindowSize(void) const { return (SDL_FPoint&)m_pRenderTarget->GetSize(); }
 	SDL_FPoint				GetWindowCenter(void) const;
 
 	EState					GetNextState(void) const { return m_NextState; }
@@ -71,13 +71,13 @@ public:
 
 private:
 
-	CState* m_pStates[NUM_STATES] = { nullptr };
-	CState* m_pCurrentState = nullptr;
-	CState* m_pNextState = nullptr;
+	CState*				m_pStates[NUM_STATES] = { nullptr };
+	CState*				m_pCurrentState = nullptr;
+	CState*				m_pNextState = nullptr;
 
-	CTexture* m_pRenderTarget = nullptr;
+	CTexture*			m_pRenderTarget = nullptr;
 
-	CRandom* m_pRandomNumberGenerator = nullptr;
+	CRandom*			m_pRandomNumberGenerator = nullptr;
 
 	CWindow				m_Window = {};
 

@@ -6,12 +6,12 @@ class CAudioHandler
 {
 public:
 
-	CAudioHandler(void) {}
-	CAudioHandler(CApplication* application) : m_pApplication(application) {}
+	 CAudioHandler(void) {}
+	 CAudioHandler(CApplication* application) : m_pApplication(application) {}
 	~CAudioHandler(void) {}
 
-	Mix_Chunk* CreateSound(const std::string& fileName);
-	Mix_Music* CreateMusic(const std::string& fileName);
+	Mix_Chunk*  CreateSound(const std::string& fileName);
+	Mix_Music*  CreateMusic(const std::string& fileName);
 
 	void		DestroySound(Mix_Chunk* chunk);
 	void		DestroyMusic(Mix_Music* music);

@@ -10,8 +10,8 @@ class CGameState final : public CState
 {
 public:
 
-	CGameState(void) {}
-	CGameState(CApplication* application) : CState(application) {}
+	 CGameState(void) {}
+	 CGameState(CApplication* application) : CState(application) {}
 	~CGameState(void) {}
 
 	virtual bool	OnEnter(void) override;
@@ -37,15 +37,15 @@ private:
 
 private:
 
-	CTilemap* m_pTilemap = nullptr;
+	CTilemap*		m_pTilemap = nullptr;
 
-	CGameObject* m_pPlayer = nullptr;
-	CGameObject* m_pPipeUpperLeft = nullptr;
-	CGameObject* m_pPipeUpperRight = nullptr;
-	CGameObject* m_pPipeLowerLeft = nullptr;
-	CGameObject* m_pPipeLowerRight = nullptr;
+	CGameObject*	m_pPlayer = nullptr;
+	CGameObject*	m_pPipeUpperLeft = nullptr;
+	CGameObject*	m_pPipeUpperRight = nullptr;
+	CGameObject*	m_pPipeLowerLeft = nullptr;
+	CGameObject*	m_pPipeLowerRight = nullptr;
 
-	TTF_Font* m_pTextFont = nullptr;
+	TTF_Font*		m_pTextFont = nullptr;
 
 	CButton			m_MarioTextBlock = {};
 	CButton			m_WorldTextBlock = {};

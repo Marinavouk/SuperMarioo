@@ -6,8 +6,8 @@ class CTransitionRenderer
 {
 public:
 
-	CTransitionRenderer(void);
-	CTransitionRenderer(CApplication* application, const SDL_FPoint& size);
+	 CTransitionRenderer(void);
+	 CTransitionRenderer(CApplication* application, const SDL_FPoint& size);
 	~CTransitionRenderer(void);
 
 	void	Update(const float deltaTime);
@@ -38,9 +38,9 @@ private:
 
 private:
 
-	CApplication* m_pApplication = nullptr;
+	CApplication*	m_pApplication = nullptr;
 
-	SDL_Renderer* m_pRenderer = nullptr;
+	SDL_Renderer*	m_pRenderer = nullptr;
 
 	SDL_FRect		m_Transition = { 0.0f, 0.0f, 0.0f, 0.0f };
 

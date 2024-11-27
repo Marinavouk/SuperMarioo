@@ -6,11 +6,11 @@ class CFontHandler
 {
 public:
 
-	CFontHandler(void) {}
-	CFontHandler(CApplication* application) : m_pApplication(application) {}
+	 CFontHandler(void) {}
+	 CFontHandler(CApplication* application) : m_pApplication(application) {}
 	~CFontHandler(void) {}
 
-	TTF_Font* CreateFont(const std::string& fileName, const int32_t textSize);
+	TTF_Font*	CreateFont(const std::string& fileName, const int32_t textSize);
 	void		DestroyFont(TTF_Font* font);
 
 	bool		RenderText(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, const SDL_FPoint& position, const SDL_Color& color);

@@ -12,8 +12,8 @@ public:
 
 public:
 
-	CPlayer(void) {}
-	CPlayer(CApplication* application) : CGameObject(application) {}
+	 CPlayer(void) {}
+	 CPlayer(CApplication* application) : CGameObject(application) {}
 	~CPlayer(void) {}
 
 	virtual bool	Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth) override;
@@ -52,12 +52,12 @@ private:
 
 	Callback	m_pDyingCallback = nullptr;
 
-	CAnimator* m_pAnimatorIdle = nullptr;
-	CAnimator* m_pAnimatorWalking = nullptr;
-	CAnimator* m_pAnimatorRunning = nullptr;
-	CAnimator* m_pAnimatorJumping = nullptr;
-	CAnimator* m_pAnimatorDying = nullptr;
-	CAnimator* m_pCurrentAnimator = nullptr;
+	CAnimator*	m_pAnimatorIdle = nullptr;
+	CAnimator*	m_pAnimatorWalking = nullptr;
+	CAnimator*	m_pAnimatorRunning = nullptr;
+	CAnimator*	m_pAnimatorJumping = nullptr;
+	CAnimator*	m_pAnimatorDying = nullptr;
+	CAnimator*	m_pCurrentAnimator = nullptr;
 
 	float		m_AccelerationSpeedWalking = 800.0f;
 	float		m_DeaccelerationSpeedWalking = 500.0f;

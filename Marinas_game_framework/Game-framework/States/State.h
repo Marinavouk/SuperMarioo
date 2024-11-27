@@ -7,8 +7,8 @@ class CState
 {
 public:
 
-	CState(void) {}
-	CState(CApplication* application) : m_pApplication(application) {}
+			 CState(void) {}
+			 CState(CApplication* application) : m_pApplication(application) {}
 	virtual ~CState(void) {}
 
 	virtual bool OnEnter(void) { return true; }

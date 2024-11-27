@@ -6,7 +6,7 @@ class CLibraryHandler
 {
 public:
 
-	CLibraryHandler(void) {}
+	 CLibraryHandler(void) {}
 	~CLibraryHandler(void) {}
 
 	bool Create(CApplication* application);

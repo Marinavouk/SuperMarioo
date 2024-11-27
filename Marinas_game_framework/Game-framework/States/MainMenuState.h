@@ -8,8 +8,8 @@ class CMainMenuState final : public CState
 {
 public:
 
-	CMainMenuState(void) {}
-	CMainMenuState(CApplication* application) : CState(application) {}
+	 CMainMenuState(void) {}
+	 CMainMenuState(CApplication* application) : CState(application) {}
 	~CMainMenuState(void) {}
 
 	virtual bool OnEnter(void) override;
@@ -24,11 +24,11 @@ public:
 
 private:
 
-	CTexture* m_pBackground = nullptr;
+	CTexture*	m_pBackground = nullptr;
 
-	CTexture* m_pCoinTexture = nullptr;
+	CTexture*	m_pCoinTexture = nullptr;
 
-	TTF_Font* m_pButtonFont = nullptr;
+	TTF_Font*	m_pButtonFont = nullptr;
 
 	CButton		m_1PlayerGame = {};
 	CButton		m_2PlayerGame = {};

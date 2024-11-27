@@ -6,8 +6,8 @@ class CInputHandler
 {
 public:
 
-	CInputHandler(void) {}
-	CInputHandler(CApplication* application) : m_pApplication(application) {}
+	 CInputHandler(void) {}
+	 CInputHandler(CApplication* application) : m_pApplication(application) {}
 	~CInputHandler(void) {}
 
 	void		Update(void);
@@ -28,7 +28,7 @@ public:
 
 private:
 
-	CApplication* m_pApplication = nullptr;
+	CApplication*	m_pApplication = nullptr;
 
 	SDL_FPoint		m_MousePosition = { 0.0f, 0.0f };
 

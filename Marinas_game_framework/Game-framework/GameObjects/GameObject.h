@@ -13,8 +13,8 @@ public:
 
 public:
 
-	CGameObject(void) {}
-	CGameObject(CApplication* application) : m_pApplication(application) {}
+			 CGameObject(void) {}
+			 CGameObject(CApplication* application) : m_pApplication(application) {}
 	virtual ~CGameObject(void) {}
 
 	virtual bool		Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth);
@@ -39,7 +39,7 @@ public:
 	SDL_FPoint			GetColliderCenterPosition(void) const { return { m_Collider.x + (m_Collider.w * 0.5f), m_Collider.y + (m_Collider.h * 0.5f) }; }
 	SDL_FPoint			GetColliderSize(void) const { return { m_Collider.w, m_Collider.h }; }
 
-	SDL_FRect& GetCollider(void) const { return (SDL_FRect&)m_Collider; }
+	SDL_FRect&			GetCollider(void) const { return (SDL_FRect&)m_Collider; }
 
 	uint32_t			GetCurrentHealth(void) const { return m_CurrentHealth; }
 
@@ -50,9 +50,9 @@ public:
 
 protected:
 
-	CApplication* m_pApplication = nullptr;
+	CApplication*		m_pApplication = nullptr;
 
-	CTexture* m_pTexture = nullptr;
+	CTexture*			m_pTexture = nullptr;
 
 	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
 

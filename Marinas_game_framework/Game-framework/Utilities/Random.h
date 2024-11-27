@@ -5,7 +5,7 @@ class CRandom
 {
 public:
 
-	CRandom(void) {}
+	 CRandom(void) {}
 	~CRandom(void) {}
 
 	void		Seed(void);

@@ -4,7 +4,7 @@ class CTimer
 {
 public:
 
-	CTimer(void) {}
+	 CTimer(void) {}
 	~CTimer(void) {}
 
 	void	Update();

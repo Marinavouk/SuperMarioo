@@ -6,8 +6,8 @@ class CPipe final : public CGameObject
 {
 public:
 
-	CPipe(void) {}
-	CPipe(CApplication* application) : CGameObject(application) {}
+	 CPipe(void) {}
+	 CPipe(CApplication* application) : CGameObject(application) {}
 	~CPipe(void) {}
 
 };
