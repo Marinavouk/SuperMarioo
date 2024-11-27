@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Utilities\Animator.h"
+#include "Tilemap.h"
 
 class CPlayer final : public CGameObject
 {
@@ -21,7 +22,7 @@ public:
 	virtual void	RenderDebug(void) override;
 	virtual void	Update(const float deltaTime) override;
 	virtual void	HandleInput(const float deltaTime) override;
-	virtual void	HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders) override;
+	virtual void	HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders) override;
 
 public:
 

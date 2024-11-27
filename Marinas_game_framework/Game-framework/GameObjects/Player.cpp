@@ -9,7 +9,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	if (!CGameObject::Create(textureFileName, position, maxHealth))
 		return false;
 
-	SDL_FPoint frameSize = { 28.0f , 28.0f };
+	SDL_FPoint frameSize = { 28.0f, 28.0f };
 
 	m_pAnimatorIdle = new CAnimator;
 	m_pAnimatorWalking = new CAnimator;
@@ -27,7 +27,7 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 	m_pTexture->SetSize({ frameSize.x * m_Scale, frameSize.y * m_Scale });
 	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
 
-	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale + 30.0f};
+	m_Rectangle = { position.x, position.y, frameSize.x * m_Scale, frameSize.y * m_Scale };
 
 	m_HorizontalCollider = { m_Rectangle.x + m_HorizontalColliderOffset.x,	m_Rectangle.y + m_HorizontalColliderOffset.y,	15.0f * m_Scale, 9.0f * m_Scale };
 	m_VerticalCollider = { m_Rectangle.x + m_VerticalColliderOffset.x,		m_Rectangle.y + m_VerticalColliderOffset.y,		10.0f * m_Scale, 24.0f * m_Scale };
@@ -41,18 +41,17 @@ void CPlayer::Destroy(void)
 {
 	m_pDyingCallback = nullptr;
 
-	delete m_pAnimatorDying;
-	delete m_pAnimatorJumping;
-	delete m_pAnimatorRunning;
-	delete m_pAnimatorWalking;
-	delete m_pAnimatorIdle;
+#define DELETE_ANIMATOR(Animator) delete Animator; Animator = nullptr;
 
-	m_pAnimatorIdle = nullptr;
-	m_pAnimatorWalking = nullptr;
-	m_pAnimatorRunning = nullptr;
-	m_pAnimatorJumping = nullptr;
-	m_pAnimatorDying = nullptr;
+	DELETE_ANIMATOR(m_pAnimatorDying);
+	DELETE_ANIMATOR(m_pAnimatorJumping);
+	DELETE_ANIMATOR(m_pAnimatorRunning);
+	DELETE_ANIMATOR(m_pAnimatorWalking);
+	DELETE_ANIMATOR(m_pAnimatorIdle);
+
 	m_pCurrentAnimator = nullptr;
+
+#undef DELETE_ANIMATOR
 
 	CGameObject::Destroy();
 }
@@ -143,8 +142,6 @@ void CPlayer::Update(const float deltaTime)
 
 			m_IsJumping = false;
 		}
-
-
 	}
 
 	else if (m_State == EState::DEAD)
@@ -197,6 +194,8 @@ void CPlayer::HandleInput(const float deltaTime)
 
 		m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
 
+		m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+
 		m_HorizontalDirection = EMovementState::MOVING_LEFT;
 
 		if (!m_IsJumping)
@@ -218,6 +217,8 @@ void CPlayer::HandleInput(const float deltaTime)
 
 		m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
 
+		m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
+
 		m_HorizontalDirection = EMovementState::MOVING_RIGHT;
 
 		if (!m_IsJumping)
@@ -229,7 +230,6 @@ void CPlayer::HandleInput(const float deltaTime)
 				ActivateAnimator(m_pAnimatorWalking);
 		}
 	}
-
 
 	else
 	{
@@ -261,7 +261,7 @@ void CPlayer::HandleInput(const float deltaTime)
 		ActivateAnimator(m_pAnimatorIdle);
 }
 
-void CPlayer::HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders)
+void CPlayer::HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders)
 {
 
 }
@@ -273,7 +273,7 @@ void CPlayer::SyncColliders(void)
 	m_VerticalCollider.x = m_Rectangle.x + m_VerticalColliderOffset.x;
 	m_VerticalCollider.y = m_Rectangle.y + m_VerticalColliderOffset.y;
 
-	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y , m_VerticalCollider.w, m_VerticalCollider.h};
+	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y , m_VerticalCollider.w, m_VerticalCollider.h };
 }
 
 void CPlayer::ActivateAnimator(CAnimator* animator)
