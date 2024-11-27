@@ -74,7 +74,7 @@ void CMainMenuState::OnExit(void)
 		audioHandler.DestroyMusic(e_pMusic);
 		e_pMusic = nullptr;
 	}
-	
+
 	m_2PlayerGame.Destroy(m_pApplication);
 	m_1PlayerGame.Destroy(m_pApplication);
 

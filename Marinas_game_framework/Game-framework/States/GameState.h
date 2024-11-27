@@ -40,10 +40,10 @@ private:
 	CTilemap* m_pTilemap = nullptr;
 
 	CGameObject* m_pPlayer = nullptr;
-	CGameObject* m_pPipeDownL = nullptr;
-	CGameObject* m_pPipeDownR = nullptr;
-	CGameObject* m_pPipeUpR = nullptr;
-	CGameObject* m_pPipeUpL = nullptr;
+	CGameObject* m_pPipeUpperLeft = nullptr;
+	CGameObject* m_pPipeUpperRight = nullptr;
+	CGameObject* m_pPipeLowerLeft = nullptr;
+	CGameObject* m_pPipeLowerRight = nullptr;
 
 	TTF_Font* m_pTextFont = nullptr;
 
@@ -52,12 +52,10 @@ private:
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
 
-	float			m_TimerDefault = 35.0f;
+	float			m_TimerDefault = 300.0f;
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;
-
-	bool			m_HurryMusicPlaying = false;
 
 	bool			m_SwitchToGameState = false;
 
