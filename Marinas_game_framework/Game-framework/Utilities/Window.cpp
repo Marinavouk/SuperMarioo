@@ -81,6 +81,7 @@ bool CWindow::Create(CApplication* application, const std::string& title, const 
 
 	return true;
 }
+
 void CWindow::Destroy(void)
 {
 	SDL_DestroyRenderer(m_pRenderer);

@@ -11,8 +11,6 @@ public:
 
 public:
 
-	// Place getters and setters in their own public field
-
 	double	GetDeltaTime(void) const { return m_DeltaTime; }
 
 private:
@@ -22,4 +20,3 @@ private:
 	double m_DeltaTime = 0.0;
 
 };
-
