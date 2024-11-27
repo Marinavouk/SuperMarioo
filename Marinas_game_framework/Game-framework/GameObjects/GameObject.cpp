@@ -43,6 +43,7 @@ void CGameObject::SetPosition(const SDL_FPoint& position)
 
 void CGameObject::Render(void)
 {
+	m_pTexture->SetFlipMethod(m_FlipMethod);
 	m_pTexture->Render({ m_Rectangle.x, m_Rectangle.y });
 }
 

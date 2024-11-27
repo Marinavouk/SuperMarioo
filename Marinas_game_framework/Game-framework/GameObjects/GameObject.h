@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Tilemap.h"
 #include "Utilities/Texture.h"
 
 class CApplication;
@@ -26,7 +27,7 @@ public:
 	virtual void		HandleInput(const float deltaTime) {}
 	virtual void		HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) {}
 	virtual void		HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime) {}
-	virtual void		HandleTilemapCollision(const std::vector<SDL_FRect>& tilemapColliders) {}
+	virtual void		HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders) {}
 
 public:
 
@@ -38,30 +39,29 @@ public:
 	SDL_FPoint			GetColliderCenterPosition(void) const { return { m_Collider.x + (m_Collider.w * 0.5f), m_Collider.y + (m_Collider.h * 0.5f) }; }
 	SDL_FPoint			GetColliderSize(void) const { return { m_Collider.w, m_Collider.h }; }
 
-	SDL_FRect& GetRectangle(void) const { return (SDL_FRect&)m_Rectangle; }
 	SDL_FRect& GetCollider(void) const { return (SDL_FRect&)m_Collider; }
 
-	uint32_t			GetMaxHealth(void) const { return m_MaxHealth; }
 	uint32_t			GetCurrentHealth(void) const { return m_CurrentHealth; }
+
+	SDL_RendererFlip	GetFlipMethod(void) const { return m_FlipMethod; }
+	void				SetFlipMethod(const SDL_RendererFlip flipMethod) { m_FlipMethod = flipMethod; }
 
 	bool				GetIsDead(void) const { return m_IsDead; }
 
-	SDL_RendererFlip	GetFlipMethod(void) const { return m_FlipMethod; }
-	
 protected:
 
 	CApplication* m_pApplication = nullptr;
 
-	CTexture*	  m_pTexture = nullptr;
+	CTexture* m_pTexture = nullptr;
 
-	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
 
-	SDL_FRect		m_Rectangle = { 0.0f, 0.0f, 0.0f, 0.0f };
-	SDL_FRect		m_Collider = { 0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_FRect			m_Rectangle = { 0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_FRect			m_Collider = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	uint32_t		m_MaxHealth = 0;
-	uint32_t		m_CurrentHealth = 0;
+	uint32_t			m_MaxHealth = 0;
+	uint32_t			m_CurrentHealth = 0;
 
-	bool			m_IsDead = false;
+	bool				m_IsDead = false;
 
 };
