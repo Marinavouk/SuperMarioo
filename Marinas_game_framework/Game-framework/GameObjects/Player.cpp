@@ -95,21 +95,30 @@ void CPlayer::Update(const float deltaTime)
 	const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
 
 	// Make sure that the player can't leave the left edge of the window
-	if (m_HorizontalCollider.x < 0.0f)
+	/*if (m_HorizontalCollider.x < 0.0f)
 	{
 		m_Rectangle.x = -m_HorizontalColliderOffset.x;
 
 		m_Velocity.x = 0.0f;
-	}
+	}*/
 
 	// Make sure that the player can't leave the right edge of the window
-	else if (m_HorizontalCollider.x > (windowSize.x - m_HorizontalCollider.w))
+	/*else if (m_HorizontalCollider.x > (windowSize.x - m_HorizontalCollider.w))
 	{
 		const float rightOffset = m_Rectangle.w - (m_HorizontalCollider.w + m_HorizontalColliderOffset.x);
 
 		m_Rectangle.x = windowSize.x - (m_Rectangle.w - rightOffset);
 
 		m_Velocity.x = 0.0f;
+	}*/
+
+	if (m_Rectangle.x < 0.0f)
+	{
+		m_Rectangle.x = windowSize.x - m_HorizontalCollider.w;
+	}
+	else if(m_Rectangle.x > (windowSize.x - m_HorizontalCollider.w)) 
+	{
+		m_Rectangle.x = -m_HorizontalColliderOffset.x;
 	}
 
 	if (m_State == EState::ALIVE)
