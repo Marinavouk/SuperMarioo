@@ -53,13 +53,13 @@ private:
 
 	SDL_FRect	m_TextRectangle = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	SDL_Color	m_BackgroundColor = { 0,	0,		0,		255 };
-	SDL_Color	m_BackgroundColorPressed = { 0,	0,		0,		255 };
-	SDL_Color	m_BackgroundColorDisabled = { 0,	0,		0,		255 };
-	SDL_Color	m_TextColor = { 255, 255,	255,	255 };
-	SDL_Color	m_TextColorHovered = { 255, 255,	255,	255 };
-	SDL_Color	m_TextColorPressed = { 255, 255,	255,	255 };
-	SDL_Color	m_TextColorDisabled = { 100, 100,	100,	255 };
+	SDL_Color	m_BackgroundColor = { 0, 0, 0, 255 };
+	SDL_Color	m_BackgroundColorPressed = { 0,	0, 0, 255 };
+	SDL_Color	m_BackgroundColorDisabled = { 0, 0, 0, 255 };
+	SDL_Color	m_TextColor = { 255, 255, 255, 255 };
+	SDL_Color	m_TextColorHovered = { 255, 255, 255, 255 };
+	SDL_Color	m_TextColorPressed = { 255, 255, 255, 255 };
+	SDL_Color	m_TextColorDisabled = { 100, 100, 100, 255 };
 
 	float		m_ScaleDefault = 1.0f;
 	float		m_ScalePressed = 1.1f;
