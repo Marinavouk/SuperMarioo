@@ -49,9 +49,9 @@ void CPlayer::Destroy(void)
 	DELETE_ANIMATOR(m_pAnimatorWalking);
 	DELETE_ANIMATOR(m_pAnimatorIdle);
 
-	m_pCurrentAnimator = nullptr;
-
 #undef DELETE_ANIMATOR
+
+	m_pCurrentAnimator = nullptr;
 
 	CGameObject::Destroy();
 }

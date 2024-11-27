@@ -6,7 +6,6 @@
 #include "GameObjects/Player.h"
 #include "Globals.h"
 #include "Utilities/CollisionUtilities.h"
-#
 
 bool CGameState::OnEnter(void)
 {
