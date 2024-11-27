@@ -79,6 +79,28 @@ bool CGameState::OnEnter(void)
 	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 50.0f, 35.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
+	if (m_Timer <= 30.0f && !m_HurryMusicPlaying) 
+	{
+		e_pMusic = audioHandler.CreateMusic("Assets/Audio/UndergroundThemeHurry.mp3");
+		if (!e_pMusic)
+			return false;
+
+		audioHandler.PlayMusic(e_pMusic, -1);
+		audioHandler.SetMusicVolume(15);
+
+		m_HurryMusicPlaying = true;
+	}
+	else
+	{
+		e_pMusic = audioHandler.CreateMusic("Assets/Audio/UndergroundTheme.mp3");
+		if (!e_pMusic)
+			return false;
+		audioHandler.PlayMusic(e_pMusic, -1);
+		audioHandler.SetMusicVolume(15);
+
+		m_HurryMusicPlaying = false;
+	}
+
 	m_Timer = m_TimerDefault;
 
 	m_DeathFadeout = false;
@@ -87,12 +109,6 @@ bool CGameState::OnEnter(void)
 
 	e_EndOfRoundPlayerKilled = false;
 
-	e_pMusic = audioHandler.CreateMusic("Assets/Audio/UndergroundTheme.mp3");
-	if (!e_pMusic)
-		return false;
-
-	audioHandler.PlayMusic(e_pMusic, -1);
-	audioHandler.SetMusicVolume(15);
 
 	return true;
 }
