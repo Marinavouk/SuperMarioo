@@ -112,14 +112,14 @@ void CPlayer::Update(const float deltaTime)
 		m_Velocity.x = 0.0f;
 	}*/
 
-	if (m_Rectangle.x < 0.0f)
-	{
-		m_Rectangle.x = windowSize.x - m_HorizontalCollider.w;
-	}
-	else if(m_Rectangle.x > (windowSize.x - m_HorizontalCollider.w)) 
-	{
-		m_Rectangle.x = -m_HorizontalColliderOffset.x;
-	}
+	// Left side of the window
+	if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) < 0.0f)
+		m_Rectangle.x = windowSize.x - (m_Rectangle.w * 0.5f);
+
+	// Right side of the window
+	else if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) > windowSize.x)
+		m_Rectangle.x = -(m_Rectangle.w * 0.5f);
+
 
 	if (m_State == EState::ALIVE)
 	{
