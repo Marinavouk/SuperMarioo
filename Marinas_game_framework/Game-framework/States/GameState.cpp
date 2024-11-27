@@ -143,7 +143,7 @@ void CGameState::Update(const float deltaTime)
 
 		m_pPlayer->HandleInput(deltaTime);
 		m_pPlayer->Update(deltaTime);
-		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders());
+		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 
 		//	m_Timer -= deltaTime;
 

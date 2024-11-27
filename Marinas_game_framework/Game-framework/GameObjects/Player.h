@@ -22,7 +22,7 @@ public:
 	virtual void	RenderDebug(void) override;
 	virtual void	Update(const float deltaTime) override;
 	virtual void	HandleInput(const float deltaTime) override;
-	virtual void	HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders) override;
+	virtual void	HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders, const float deltaTime) override;
 
 public:
 
@@ -30,6 +30,8 @@ public:
 
 private:
 
+	bool			ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
+	bool			ResolveObstacleYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
 	void			SyncColliders(void);
 	void			ActivateAnimator(CAnimator* animator);
 

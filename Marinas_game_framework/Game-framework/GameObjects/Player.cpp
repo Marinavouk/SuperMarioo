@@ -261,9 +261,116 @@ void CPlayer::HandleInput(const float deltaTime)
 		ActivateAnimator(m_pAnimatorIdle);
 }
 
-void CPlayer::HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders)
+void CPlayer::HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders, const float deltaTime)
 {
+	const SDL_FPoint moveAmount = {m_Velocity.x * deltaTime, m_Velocity.y * deltaTime};
 
+	for (const SDL_FRect& collider : tilemapColliders)
+	{
+		if (ResolveObstacleXCollision(collider, moveAmount))
+			break;
+
+		if (ResolveObstacleYCollision(collider, moveAmount))
+			break;
+	}
+}
+
+bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
+{
+	bool hasCollided = false;
+
+	// The player is moving to the left
+	if (moveAmount.x < 0.0f)
+	{
+		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x += intersection.w;
+
+			m_Velocity.x = 0.0f;
+
+			hasCollided = true;
+		}
+	}
+
+	// The player is moving to the right
+	else if (moveAmount.x > 0.0f)
+	{
+		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x -= intersection.w;
+
+			m_Velocity.x = 0.0f;
+
+			hasCollided = true;
+		}
+	}
+
+	if (hasCollided)
+		SyncColliders();
+
+	if (moveAmount.y > 0.0f)
+	{
+		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x += ((m_HorizontalCollider.x < collider.x) ? -intersection.w : intersection.w);
+
+			SyncColliders();
+
+			m_Velocity.x = 0.0f;
+
+			hasCollided = true;
+		}
+	}
+
+	return hasCollided;
+}
+
+bool CPlayer::ResolveObstacleYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
+{
+	bool hasCollided = false;
+
+	// The player is moving up (jumping)
+	if (moveAmount.y < 0.0f)
+	{
+		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
+
+		if (QuadVsQuad(m_VerticalCollider, collider, &intersection))
+		{
+			m_Rectangle.y += intersection.h;
+
+			m_Velocity.y = 0.0f;
+
+			hasCollided = true;
+		}
+	}
+
+	// The player is moving down
+	else if (moveAmount.y > 0.0f)
+	{
+		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
+
+		if (QuadVsQuad(m_VerticalCollider, collider, &intersection))
+		{
+			m_Rectangle.y -= intersection.h;
+
+			m_Velocity.y = 0.0f;
+
+			m_IsJumping = false;
+
+			hasCollided = true;
+		}
+	}
+
+	if (hasCollided)
+		SyncColliders();
+
+	return hasCollided;
 }
 
 void CPlayer::SyncColliders(void)
