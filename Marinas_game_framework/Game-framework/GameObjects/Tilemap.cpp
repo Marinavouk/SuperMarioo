@@ -39,8 +39,10 @@ bool CTilemap::Create(CApplication* application)
 
 			if (TileType != 0)
 			{
-				STile Tile = { .m_Position = {(float)(j * m_TileSize.x), (float)(i * m_TileSize.y)}, .m_TexCoord = {(TileType - 1) * m_TileSize.x, 0} };
-				Tiles.push_back(Tile);
+				STile tile = { .m_Position = { (j * m_TileSize.x), (i * m_TileSize.y)}, .m_TexCoord = {(TileType - 1) * (int)m_TileSize.x, 0} };
+				Tiles.push_back(tile);
+
+				m_TileColliders.push_back({ tile.m_Position.x, tile.m_Position.y, m_TileSize.x, m_TileSize.y });
 			}
 		}
 
@@ -74,13 +76,14 @@ void CTilemap::Render(void)
 	*/
 
 	// Range-based for loop
-	// This loops the same way as the above double for-loop
+	// This works the same as the outer-most for-loop commented out above
 	for (const TileVector& row : m_Tiles)
 	{
+		// This works the same as the inner-most for-loop commented out above
 		for (const STile& tile : row)
 		{
-			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y };
-			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, (int)m_TileSize.x, m_TileSize.y };
+			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, m_TileSize.x, m_TileSize.y };
+			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, (int)m_TileSize.x, (int)m_TileSize.y };
 
 			m_pTexture->SetTextureCoords(clipRectangle);
 			m_pTexture->Render(tile.m_Position, &rectangle);
@@ -94,28 +97,8 @@ void CTilemap::RenderDebug(void)
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-	for (const TileVector& row : m_Tiles)
+	for (const SDL_FRect& collider : m_TileColliders)
 	{
-		for (const STile& tile : row)
-		{
-			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y };
-
-			SDL_RenderDrawRectF(renderer, &rectangle);
-		}
+		SDL_RenderDrawRectF(renderer, &collider);
 	}
-}
-
-std::vector<SDL_FRect> CTilemap::GetCollisionRectangles(void) const
-{
-	std::vector<SDL_FRect> collisionRectangles = {};
-
-	for (const TileVector& row : m_Tiles)
-	{
-		for (const STile& tile : row)
-		{
-			collisionRectangles.push_back({ tile.m_Position.x, tile.m_Position.y, (float)m_TileSize.x, (float)m_TileSize.y });
-		}
-	}
-
-	return collisionRectangles;
 }

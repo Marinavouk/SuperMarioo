@@ -2,26 +2,28 @@
 
 #include "Utilities/Texture.h"
 
-class CApplication;
-
 class CTilemap
 {
+public:
+
+	typedef std::vector<SDL_FRect> TileColliders;
+
 public:
 
 	CTilemap(void) {}
 	~CTilemap(void) {}
 
-	bool					Create(CApplication* application);
-	void					Destroy(void);
+	bool			Create(CApplication* application);
+	void			Destroy(void);
 
-	void					Render(void);
-	void					RenderDebug(void);
+	void			Render(void);
+	void			RenderDebug(void);
 
 public:
 
-	SDL_Point& GetTileSize(void) const { return (SDL_Point&)m_TileSize; }
+	SDL_FPoint& GetTileSize(void) const { return (SDL_FPoint&)m_TileSize; }
 
-	std::vector<SDL_FRect>	GetCollisionRectangles(void) const;
+	TileColliders& GetColliders(void) const { return (TileColliders&)m_TileColliders; }
 
 private:
 
@@ -45,8 +47,10 @@ private:
 
 	CTexture* m_pTexture = nullptr;
 
-	SDL_Point		m_TileSize = { 32, 32 };
+	SDL_FPoint		m_TileSize = { 32.0f, 32.0f };
 
 	TileVector2D	m_Tiles = {};
+
+	TileColliders	m_TileColliders = {};
 
 };
