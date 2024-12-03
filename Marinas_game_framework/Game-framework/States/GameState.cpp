@@ -83,6 +83,10 @@ bool CGameState::OnEnter(void)
 	if (!e_pMusic)
 		return false;
 
+	e_pHurryMusic = audioHandler.CreateMusic("Assets/Audio/Underground (Hurry!).mp3");
+	if (!e_pHurryMusic)
+		return false;
+
 	audioHandler.PlayMusic(e_pMusic, -1);
 	audioHandler.SetMusicVolume(15);
 
@@ -101,6 +105,12 @@ bool CGameState::OnEnter(void)
 void CGameState::OnExit(void)
 {
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+	if (e_pHurryMusic || m_pApplication->GetNextState() == CApplication::EState::QUIT)
+	{
+		audioHandler.DestroyMusic(e_pHurryMusic);
+		e_pHurryMusic = nullptr;
+	}
 
 	if (m_pApplication->GetNextState() == CApplication::EState::QUIT)
 	{
@@ -146,6 +156,8 @@ void CGameState::OnExit(void)
 
 void CGameState::Update(const float deltaTime)
 {
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
 	if (m_pApplication->GetInputHandler().KeyPressed(SDL_SCANCODE_ESCAPE))
 		m_pApplication->SetState(CApplication::EState::QUIT);
 
@@ -163,7 +175,15 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 
-		//	m_Timer -= deltaTime;
+			m_Timer -= deltaTime;
+
+		if (m_Timer <= 60.0f && !m_HurryMusicPlayed) 
+		{
+			audioHandler.StopMusic();
+			audioHandler.PlayMusic(e_pHurryMusic, -1);
+			audioHandler.SetMusicVolume(15);
+			m_HurryMusicPlayed = true;
+		}
 
 		if (m_Timer <= 0.0f)
 		{

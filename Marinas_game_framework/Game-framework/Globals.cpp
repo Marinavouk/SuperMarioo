@@ -3,6 +3,8 @@
 
 Mix_Music* e_pMusic = nullptr;
 
+Mix_Music* e_pHurryMusic = nullptr;
+
 uint32_t	e_KoombasCount = 0;
 
 bool		e_EndOfRoundPlayerKilled = true;
