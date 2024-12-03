@@ -51,7 +51,7 @@ bool CApplication::Create(void)
 	m_pStates[EState::QUIT] = new CQuitState(this);
 
 	// Set the start state of the game
-	m_NextState = EState::GAME;
+	m_NextState = EState::MAIN_MENU;
 	m_LastState = m_NextState;
 
 	m_pCurrentState = m_pStates[m_NextState];

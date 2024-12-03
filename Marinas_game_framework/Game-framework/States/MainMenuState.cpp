@@ -103,6 +103,9 @@ void CMainMenuState::Update(const float deltaTime)
 		m_CoinToggleTimer = 0.0f;
 		m_CoinVisible = !m_CoinVisible;
 	}
+
+	if (m_1PlayerGame.IsPressed(inputHandler)) m_pApplication->SetState(CApplication::EState::GAME);
+	else if (m_2PlayerGame.IsPressed(inputHandler)) m_pApplication->SetState(CApplication::EState::GAME);
 }
 
 void CMainMenuState::Render(void)
