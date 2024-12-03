@@ -87,6 +87,10 @@ bool CGameState::OnEnter(void)
 	if (!e_pHurryMusic)
 		return false;
 
+	e_pDeathSound = audioHandler.CreateMusic("Assets/Audio/Mario_Death.mp3");
+	if (!e_pDeathSound)
+		return false;
+
 	audioHandler.PlayMusic(e_pMusic, -1);
 	audioHandler.SetMusicVolume(15);
 
@@ -106,6 +110,12 @@ void CGameState::OnExit(void)
 {
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
+	if (e_pDeathSound || m_pApplication->GetNextState() == CApplication::EState::QUIT)
+	{
+		audioHandler.DestroyMusic(e_pDeathSound);
+		e_pDeathSound = nullptr;
+	}
+	
 	if (e_pHurryMusic || m_pApplication->GetNextState() == CApplication::EState::QUIT)
 	{
 		audioHandler.DestroyMusic(e_pHurryMusic);
@@ -177,7 +187,7 @@ void CGameState::Update(const float deltaTime)
 
 			m_Timer -= deltaTime;
 
-		if (m_Timer <= 60.0f && !m_HurryMusicPlayed) 
+		if (m_Timer <= 60.0f && !m_HurryMusicPlayed && m_Timer >= 1.0f)
 		{
 			audioHandler.StopMusic();
 			audioHandler.PlayMusic(e_pHurryMusic, -1);
@@ -185,11 +195,12 @@ void CGameState::Update(const float deltaTime)
 			m_HurryMusicPlayed = true;
 		}
 
-		if (m_Timer <= 0.0f)
-		{
+		else if (m_Timer <= 0.0f)
+		{		
 			m_Timer = 0.0f;
 
 			m_State = Estate::ROUND_ENDED;
+
 			e_EndOfRoundPlayerKilled = false;
 
 			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
@@ -251,6 +262,14 @@ void CGameState::RenderDebug(void)
 // This function is called whenever the player is playing its dying animation
 void CGameState::OnPlayerDying(void)
 {
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+	audioHandler.StopMusic();
+	audioHandler.PlayMusic(e_pDeathSound, -1);
+	audioHandler.SetMusicVolume(15);
+
+
+
 	m_DeathFadeDelay = m_DeathFadeDelayDefault;
 	m_DeathFadeout = true;
 
