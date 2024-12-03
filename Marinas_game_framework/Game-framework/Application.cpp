@@ -39,7 +39,7 @@ bool CApplication::Create(void)
 	// If you want to set the speed of the state transition, you can use this function
 	// The lower the value is set to, the slower the transition effect will be
 	// NOTE: if a value lower than 0.1f is specified, the speed will be clamped to 0.1f
-	m_TransitionRenderer.SetSpeed(1000.0f);
+	m_TransitionRenderer.SetSpeed(2.0f);
 
 	/**
 	* Create the various states for the game.

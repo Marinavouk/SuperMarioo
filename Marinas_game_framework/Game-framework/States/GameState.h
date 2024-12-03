@@ -52,7 +52,7 @@ private:
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
 
-	float			m_TimerDefault = 10.0f;
+	float			m_TimerDefault = 300.0f;
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;
@@ -60,6 +60,7 @@ private:
 	bool			m_SwitchToGameState = false;
 
 	bool			m_HurryMusicPlayed  = false;
+	bool			m_isDeadSound		= false;
 
 	// When the player has died, the game waits this long before fading out and changing to the end-of-round state
 	float			m_DeathFadeDelayDefault = 2.0f;

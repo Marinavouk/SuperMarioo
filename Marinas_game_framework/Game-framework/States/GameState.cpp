@@ -185,7 +185,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 
-			m_Timer -= deltaTime;
+		//m_Timer -= deltaTime;
 
 		if (m_Timer <= 60.0f && !m_HurryMusicPlayed && m_Timer >= 1.0f)
 		{
@@ -201,9 +201,11 @@ void CGameState::Update(const float deltaTime)
 
 			m_State = Estate::ROUND_ENDED;
 
+			m_HurryMusicPlayed = false;
+
 			e_EndOfRoundPlayerKilled = false;
 
-			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
+			m_pApplication->SetState(CApplication::EState::MAIN_MENU);
 		}
 	}
 
@@ -211,7 +213,6 @@ void CGameState::Update(const float deltaTime)
 	{
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
-
 		if (m_DeathFadeout)
 		{
 			m_DeathFadeDelay -= deltaTime;
@@ -222,7 +223,7 @@ void CGameState::Update(const float deltaTime)
 
 				m_DeathFadeout = false;
 
-				m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
+				m_pApplication->SetState(CApplication::EState::MAIN_MENU);
 			}
 		}
 	}
@@ -264,11 +265,12 @@ void CGameState::OnPlayerDying(void)
 {
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
-	audioHandler.StopMusic();
-	audioHandler.PlayMusic(e_pDeathSound, -1);
-	audioHandler.SetMusicVolume(15);
-
-
+	if (!m_isDeadSound) 
+	{
+		audioHandler.StopMusic();
+		audioHandler.PlayMusic(e_pDeathSound, -1);
+		audioHandler.SetMusicVolume(15);
+	}
 
 	m_DeathFadeDelay = m_DeathFadeDelayDefault;
 	m_DeathFadeout = true;
