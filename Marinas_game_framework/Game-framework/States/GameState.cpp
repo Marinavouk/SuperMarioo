@@ -11,8 +11,9 @@ bool CGameState::OnEnter(void)
 {
 	m_pApplication->GetWindow().SetClearColor({ 0, 0, 0, 255 });
 
-	const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
+	const SDL_FPoint windowSize   = m_pApplication->GetWindowSize();
 	const SDL_FPoint windowCenter = m_pApplication->GetWindowCenter();
+	CAudioHandler&   audioHandler  = m_pApplication->GetAudioHandler();
 
 	m_pTilemap = new CTilemap;
 	if (!m_pTilemap->Create(m_pApplication))
@@ -78,6 +79,14 @@ bool CGameState::OnEnter(void)
 	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 50.0f, 35.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
+	e_pMusic = audioHandler.CreateMusic("Assets/Audio/Underground.mp3");
+	if (!e_pMusic)
+		return false;
+
+	audioHandler.PlayMusic(e_pMusic, -1);
+	audioHandler.SetMusicVolume(15);
+
+
 	m_Timer = m_TimerDefault;
 
 	m_DeathFadeout = false;
@@ -91,6 +100,15 @@ bool CGameState::OnEnter(void)
 
 void CGameState::OnExit(void)
 {
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+	if (m_pApplication->GetNextState() == CApplication::EState::QUIT)
+	{
+		audioHandler.StopMusic();
+		audioHandler.DestroyMusic(e_pMusic);
+		e_pMusic = nullptr;
+	}
+
 	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
@@ -177,11 +195,6 @@ void CGameState::Update(const float deltaTime)
 			}
 		}
 	}
-
-	const CTransitionRenderer& transitionRenderer = m_pApplication->GetTransitionRenderer();
-
-	if (transitionRenderer.IsTransitioning())
-		m_pApplication->GetAudioHandler().SetMusicVolume((MIX_MAX_VOLUME - m_VolumeLimiter) - (int)((float)(MIX_MAX_VOLUME - m_VolumeLimiter) * transitionRenderer.GetTransitionValue()));
 }
 
 void CGameState::Render(void)
