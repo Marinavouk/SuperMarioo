@@ -36,4 +36,6 @@ private:
 	CButton		m_ScoreTextBlock = {};
 	CButton		m_LevelNumberTextBlock = {};
 
+	float       timer = 0;
+
 };

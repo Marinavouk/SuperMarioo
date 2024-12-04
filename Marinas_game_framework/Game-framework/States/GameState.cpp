@@ -207,7 +207,7 @@ void CGameState::Update(const float deltaTime)
 
 			e_EndOfRoundPlayerKilled = false;
 
-			m_pApplication->SetState(CApplication::EState::MAIN_MENU);
+			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
 		}
 	}
 
@@ -225,7 +225,7 @@ void CGameState::Update(const float deltaTime)
 
 				m_DeathFadeout = false;
 
-				m_pApplication->SetState(CApplication::EState::MAIN_MENU);
+				m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
 			}
 		}
 	}
