@@ -52,7 +52,7 @@ private:
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
 
-	float			m_TimerDefault = 300.0f;
+	float			m_TimerDefault = 103.0f;
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;

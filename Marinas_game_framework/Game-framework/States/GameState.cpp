@@ -1,5 +1,7 @@
 #include "Pch.h"
 #include "GameState.h"
+#include <iomanip>
+#include <sstream>
 
 #include "Application.h"
 #include "GameObjects/Pipe.h"
@@ -185,7 +187,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 
-		//m_Timer -= deltaTime;
+		m_Timer -= deltaTime;
 
 		if (m_Timer <= 60.0f && !m_HurryMusicPlayed && m_Timer >= 1.0f)
 		{
@@ -246,7 +248,9 @@ void CGameState::Render(void)
 	m_TimeTextBlock.Render(renderer);
 	m_WorldNumberTextBlock.Render(renderer);
 
-	const std::string timerText = std::to_string((uint32_t)ceilf(m_Timer));
+	std::stringstream timerStream;
+	timerStream << std::setw(3) << std::setfill('0') << (uint32_t)ceilf(m_Timer);
+	const std::string timerText = timerStream.str();
 	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + fontHandler.GetTextSize(m_pTextFont, timerText).x * 3.8f, 25.0f }, { 250, 250, 250, 255 });
 }
 
