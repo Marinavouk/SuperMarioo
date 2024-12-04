@@ -161,6 +161,8 @@ void CPlayer::Update(const float deltaTime)
 		{
 			m_Rectangle.y = windowSize.y - m_Rectangle.h;
 
+			//Add 1 inch velocity upwards when mario dies
+
 			m_Velocity.y = 0.0f;
 		}
 	}

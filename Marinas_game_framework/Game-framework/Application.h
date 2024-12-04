@@ -22,6 +22,7 @@ public:
 		MAIN_MENU = 0,
 		GAME,
 		QUIT,
+		END_OF_ROUND,
 		NUM_STATES,
 	};
 
