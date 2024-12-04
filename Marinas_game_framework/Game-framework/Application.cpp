@@ -5,6 +5,7 @@
 #include "States/GameState.h"
 #include "States/MainMenuState.h"
 #include "States/QuitState.h"
+#include "States/EndOfRoundState.h"
 
 bool CApplication::Create(void)
 {
@@ -49,6 +50,7 @@ bool CApplication::Create(void)
 	m_pStates[EState::MAIN_MENU] = new CMainMenuState(this);
 	m_pStates[EState::GAME] = new CGameState(this);
 	m_pStates[EState::QUIT] = new CQuitState(this);
+	m_pStates[EState::END_OF_ROUND] = new CEndOfRoundState(this);
 
 	// Set the start state of the game
 	m_NextState = EState::GAME;

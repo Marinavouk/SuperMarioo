@@ -5,7 +5,6 @@
 #include "States/State.h"
 #include "Utilities/Texture.h"
 
-
 class CEndOfRoundState final : public CState
 {
 public:
@@ -20,13 +19,21 @@ public:
 	virtual void Render(void) override;
 
 private:
-
-	CTexture* m_pBackground = nullptr;
-
+	
 	TTF_Font* m_pButtonFont = nullptr;
+	TTF_Font* m_pGameOverFont = nullptr;
 
-	CButton		m_TitleTextBlock = {};
+
+	CTexture* m_pCoinTexture = nullptr;
+
+	CButton		m_GameOverTextBlock = {};
+	CButton		m_MarioTextBlock = {};
+	CButton		m_LevelTextBlock = {};
+	CButton		m_TimeTextBlock = {};
+
+
+	CButton		m_CoinNumberTextBlock = {};
 	CButton		m_ScoreTextBlock = {};
+	CButton		m_LevelNumberTextBlock = {};
 
 };
-

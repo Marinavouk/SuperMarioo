@@ -102,6 +102,7 @@
     <ClCompile Include="GameObjects\Pipe.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="States\EndOfRoundState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -179,5 +180,6 @@
     <ClInclude Include="Utilities\CollisionUtilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="States\EndOfRoundState.h" />
   </ItemGroup>
 </Project>
