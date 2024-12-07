@@ -28,13 +28,13 @@ private:
 
 	CButton		m_GameOverTextBlock = {};
 	CButton		m_MarioTextBlock = {};
-	CButton		m_LevelTextBlock = {};
+	CButton		m_WorldTextBlock = {};
 	CButton		m_TimeTextBlock = {};
-
-
+	CButton		m_WorldNumberTextBlock = {};
 	CButton		m_CoinNumberTextBlock = {};
+
 	CButton		m_ScoreTextBlock = {};
-	CButton		m_LevelNumberTextBlock = {};
+
 
 	float       timer = 0;
 
