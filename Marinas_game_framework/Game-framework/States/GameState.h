@@ -47,10 +47,13 @@ private:
 
 	TTF_Font*		m_pTextFont = nullptr;
 
+	CTexture*		m_pCoinTexture = nullptr;
+
 	CButton			m_MarioTextBlock = {};
 	CButton			m_WorldTextBlock = {};
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
+	CButton		    m_CoinNumberTextBlock = {};
 
 	float			m_TimerDefault = 3.0f;
 	float			m_Timer = m_TimerDefault;

@@ -16,6 +16,7 @@ bool CGameState::OnEnter(void)
 	const SDL_FPoint windowSize   = m_pApplication->GetWindowSize();
 	const SDL_FPoint windowCenter = m_pApplication->GetWindowCenter();
 	CAudioHandler&   audioHandler  = m_pApplication->GetAudioHandler();
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 
 	m_pTilemap = new CTilemap;
 	if (!m_pTilemap->Create(m_pApplication))
@@ -29,6 +30,9 @@ bool CGameState::OnEnter(void)
 	m_pPlayer->SetPosition({ 250.0f, (windowSize.y - m_pPlayer->GetRectangleSize().y) - tileSize.y });
 	CPlayer* player = (CPlayer*)m_pPlayer;
 	player->SetDyingCallback(std::bind(&CGameState::OnPlayerDying, this));
+
+	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
+	m_pCoinTexture->SetSize({ 16.f, 16.f });
 
 	m_pPipeUpperLeft = new CPipe(m_pApplication);
 	if (!m_pPipeUpperLeft->Create("pipe.png", { 0.0f, 0.0f }, 0))
@@ -80,6 +84,11 @@ bool CGameState::OnEnter(void)
 		return false;
 	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 50.0f, 35.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
+	
+	if (!m_CoinNumberTextBlock.Create(m_pApplication, m_pTextFont, "x00", titleTextColor))
+		return false;
+	m_CoinNumberTextBlock.SetPosition({ 205.0f, 18.0f });
+	m_CoinNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	e_pMusic = audioHandler.CreateMusic("Assets/Audio/Underground.mp3");
 	if (!e_pMusic)
@@ -110,6 +119,7 @@ bool CGameState::OnEnter(void)
 
 void CGameState::OnExit(void)
 {
+	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
 	if (e_pDeathSound || m_pApplication->GetNextState() == CApplication::EState::QUIT)
@@ -130,7 +140,8 @@ void CGameState::OnExit(void)
 		audioHandler.DestroyMusic(e_pMusic);
 		e_pMusic = nullptr;
 	}
-
+	
+	m_CoinNumberTextBlock.Destroy(m_pApplication);
 	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
@@ -154,6 +165,9 @@ void CGameState::OnExit(void)
 	m_pPipeLowerLeft->Destroy();
 	delete m_pPipeLowerLeft;
 	m_pPipeLowerLeft = nullptr;
+
+	textureHandler.DestroyTexture(m_pCoinTexture->GetName());
+	m_pCoinTexture = nullptr;
 
 	m_pPlayer->Destroy();
 	delete m_pPlayer;
@@ -238,6 +252,7 @@ void CGameState::Render(void)
 
 	m_pTilemap->Render();
 	m_pPlayer->Render();
+	m_pCoinTexture->Render({ 175.f, 10.0f });
 	m_pPipeUpperLeft->Render();
 	m_pPipeUpperRight->Render();
 	m_pPipeLowerLeft->Render();
@@ -247,6 +262,7 @@ void CGameState::Render(void)
 	m_WorldTextBlock.Render(renderer);
 	m_TimeTextBlock.Render(renderer);
 	m_WorldNumberTextBlock.Render(renderer);
+	m_CoinNumberTextBlock.Render(renderer);
 
 	std::stringstream timerStream;
 	timerStream << std::setw(3) << std::setfill('0') << (uint32_t)ceilf(m_Timer);
