@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Goombas.cpp" />
     <ClCompile Include="States\EndOfRoundState.cpp" />
     <ClCompile Include="GameObjects\Button.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Goombas.h" />
     <ClInclude Include="States\EndOfRoundState.h" />
     <ClInclude Include="GameObjects\Button.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
