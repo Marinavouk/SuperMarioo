@@ -9,7 +9,7 @@ bool CGoombas::Create(const std::string& textureFileName, const SDL_FPoint& posi
 	if (!CGameObject::Create(textureFileName, position, maxHealth))
 		return false;
 
-	const SDL_FPoint frameSize = { 30.0f, 30.0f };
+	const SDL_FPoint frameSize = { 28.0f, 28.0f };
 
 	m_pAnimatorWalking = new CAnimator;
 	m_pAnimatorDying = new CAnimator;

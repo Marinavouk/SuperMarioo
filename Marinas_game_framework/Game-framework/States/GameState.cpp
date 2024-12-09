@@ -212,7 +212,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 
-		m_Timer -= deltaTime;
+		//m_Timer -= deltaTime;
 
 		if (m_Timer <= 60.0f && !m_HurryMusicPlayed && m_Timer >= 1.0f)
 		{
