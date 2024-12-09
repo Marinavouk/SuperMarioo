@@ -18,7 +18,7 @@ public:
 	virtual bool	Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth) override;
 	virtual void	Destroy(void);
 	virtual void	Kill(void) override;
-	virtual void	Render(void) override;
+	virtual void	RenderDebug(void) override;
 	virtual void	Update(const float deltaTime) override;
 	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
 public:
