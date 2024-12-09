@@ -28,7 +28,6 @@ bool CGoombas::Create(const std::string& textureFileName, const SDL_FPoint& posi
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
-
 	return true;
 }
 
@@ -59,7 +58,30 @@ void CGoombas::RenderDebug(void)
 
 void CGoombas::Update(const float deltaTime)
 {
+	const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
 
+	if (!m_IsDead)
+	{
+		const float acceleration = m_EnemyWalkSpeed * deltaTime;
+		const float maxVelocity = -m_MaxWalkingVelocity;
+
+		m_Velocity.x = std::max(m_Velocity.x - acceleration, maxVelocity);
+
+		// Update position based on velocity
+		m_Rectangle.x += m_Velocity.x * deltaTime;
+
+		m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
+		m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+
+		m_HorizontalDirection = EMovementState::MOVING_LEFT;
+
+		SyncCollider();
+	}
+	if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) < 0.0f)
+		m_Rectangle.x = windowSize.x - (m_Rectangle.w * 0.5f);
+
+	if (m_pCurrentAnimator)
+		m_pCurrentAnimator->Update(deltaTime);
 }
 
 void CGoombas::HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime)

@@ -32,8 +32,14 @@ private:
 
 	enum EState
 	{
-		ACTIVE,
+		ACTIVE = 0,
 		DEAD
+	};
+
+	enum EMovementState
+	{
+		MOVING_LEFT,
+		MOVING_RIGHT
 	};
 
 private:
@@ -43,6 +49,8 @@ private:
 	CAnimator* m_pAnimatorDying = nullptr;
 
 	float				m_Scale = 1.2f;
+	float				m_EnemyWalkSpeed = 50.0f;
+	float               m_MaxWalkingVelocity = 80.0f;
 
 	bool				m_IsActive = false;
 
@@ -53,11 +61,12 @@ private:
 	SDL_FPoint			m_HorizontalColliderOffset = { 6.0f * m_Scale, 10.0f * m_Scale };
 	SDL_FPoint			m_VerticalColliderOffset = { 9.0f * m_Scale, 3.0f * m_Scale };
 
+	int32_t				m_HorizontalDirection = EMovementState::MOVING_RIGHT;
 
 	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
 
-	SDL_FRect	m_HorizontalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
-	SDL_FRect	m_VerticalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_FRect			m_HorizontalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_FRect			m_VerticalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 };
 
