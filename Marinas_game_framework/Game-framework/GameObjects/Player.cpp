@@ -286,6 +286,20 @@ void CPlayer::HandleTilemapCollision(const CTilemap::TileColliders& tilemapColli
 	}
 }
 
+void CPlayer::HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime)
+{
+	const SDL_FPoint moveAmount = { m_Velocity.x * deltaTime, m_Velocity.y * deltaTime };
+
+	for (CGameObject* obstacle : obstacles)
+	{
+		if (ResolveObstacleXCollision(obstacle->GetCollider(), moveAmount))
+			break;
+
+		if (ResolveObstacleYCollision(obstacle->GetCollider(), moveAmount))
+			break;
+	}
+}
+
 bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
 {
 	bool hasCollided = false;

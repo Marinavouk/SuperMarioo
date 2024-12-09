@@ -23,6 +23,7 @@ public:
 	virtual void	Update(const float deltaTime) override;
 	virtual void	HandleInput(const float deltaTime) override;
 	virtual void	HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders, const float deltaTime) override;
+	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
 
 public:
 

@@ -65,6 +65,11 @@ bool CGameState::OnEnter(void)
 	m_pPipeLowerRight->SetPosition({ windowSize.x - m_pPipeLowerRight->GetRectangleSize().x, (windowSize.y - m_pPipeLowerRight->GetRectangleSize().y) - tileSize.y });
 	m_pPipeLowerRight->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
 
+	m_Obstacles.push_back(m_pPipeUpperLeft);
+	m_Obstacles.push_back(m_pPipeUpperRight);
+	m_Obstacles.push_back(m_pPipeLowerRight);
+	m_Obstacles.push_back(m_pPipeLowerLeft);
+
 	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
 	if (!m_pTextFont)
 		return false;
@@ -211,6 +216,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->HandleInput(deltaTime);
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
+		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
 
 		m_pGoombas->Update(deltaTime);
 
