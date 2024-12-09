@@ -8,9 +8,6 @@
 class CGoombas final : public CGameObject
 {
 public:
-	typedef std::function<void(const uint32_t index)> Callback;
-
-public:
 	CGoombas(void)												   {}
 	CGoombas(CApplication* application) : CGameObject(application) {}
 	~CGoombas(void)												   {}
@@ -23,8 +20,7 @@ public:
 	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
 public:
 
-	void			SetDyingCallback(Callback dyingCallback) { m_pDyingCallback = dyingCallback; }
-
+	
 private:
 
 	bool			ResolveObstacleYCollision(const SDL_FRect& collider);
@@ -41,8 +37,6 @@ private:
 	};
 
 private:
-
-	Callback			m_pDyingCallback = nullptr;
 
 	CAnimator* m_pAnimatorWalking = nullptr;
 	CAnimator* m_pCurrentAnimator = nullptr;

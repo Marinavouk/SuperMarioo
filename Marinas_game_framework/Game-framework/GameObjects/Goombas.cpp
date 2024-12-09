@@ -16,8 +16,6 @@ bool CGoombas::Create(const std::string& textureFileName, const SDL_FPoint& posi
 	m_pAnimatorWalking->Set(m_pTexture, 2, 0, 1, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
 	m_pAnimatorDying->Set(m_pTexture, 1, 2, 2, 0, frameSize, 7.0f, false, CAnimator::EDirection::FORWARD);
 
-	m_pAnimatorDying->SetAnimationEndCallback(std::bind(&CGoombas::OnDyingAnimationEnd, this));
-
 	ActivateAnimator(m_pAnimatorWalking);
 
 	m_pTexture->SetSize({ frameSize.x * m_Scale, frameSize.y * m_Scale });
