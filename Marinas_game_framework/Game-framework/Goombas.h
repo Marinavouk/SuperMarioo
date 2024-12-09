@@ -8,9 +8,9 @@
 class CGoombas final : public CGameObject
 {
 public:
-	CGoombas(void)												   {}
+	CGoombas(void) {}
 	CGoombas(CApplication* application) : CGameObject(application) {}
-	~CGoombas(void)												   {}
+	~CGoombas(void) {}
 
 	virtual bool	Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth) override;
 	virtual void	Destroy(void);
@@ -20,7 +20,7 @@ public:
 	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
 public:
 
-	
+
 private:
 
 	bool			ResolveObstacleYCollision(const SDL_FRect& collider);
@@ -50,8 +50,15 @@ private:
 	SDL_FPoint			m_Velocity = { 0.0f, 0.0f };
 	SDL_FPoint			m_ColliderOffset = { 16.0f * m_Scale, 15.0f * m_Scale };
 
+	SDL_FPoint			m_HorizontalColliderOffset = { 6.0f * m_Scale, 10.0f * m_Scale };
+	SDL_FPoint			m_VerticalColliderOffset = { 9.0f * m_Scale, 3.0f * m_Scale };
+
+
 	SDL_RendererFlip	m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
 
+	SDL_FRect	m_HorizontalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_FRect	m_VerticalCollider = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 };
+
 

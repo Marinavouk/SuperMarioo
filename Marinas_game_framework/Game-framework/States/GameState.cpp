@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "GameObjects/Pipe.h"
 #include "GameObjects/Player.h"
+#include "Goombas.h"
 #include "Globals.h"
 #include "Utilities/CollisionUtilities.h"
 
@@ -30,6 +31,12 @@ bool CGameState::OnEnter(void)
 	m_pPlayer->SetPosition({ 250.0f, (windowSize.y - m_pPlayer->GetRectangleSize().y) - tileSize.y });
 	CPlayer* player = (CPlayer*)m_pPlayer;
 	player->SetDyingCallback(std::bind(&CGameState::OnPlayerDying, this));
+
+	m_pGoombas = new CGoombas(m_pApplication);
+	if (!m_pGoombas->Create("goomba.png", { 0.0f, 0.0f }, 1))
+		return false;
+	m_pGoombas->SetPosition({ 250.0f, (windowSize.y - m_pGoombas->GetRectangleSize().y) - tileSize.y });
+	CGoombas* goombas = (CGoombas*)m_pGoombas;
 
 	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
 	m_pCoinTexture->SetSize({ 16.f, 16.f });
@@ -169,6 +176,10 @@ void CGameState::OnExit(void)
 	textureHandler.DestroyTexture(m_pCoinTexture->GetName());
 	m_pCoinTexture = nullptr;
 
+	m_pGoombas->Destroy();
+	delete m_pGoombas;
+	m_pGoombas = nullptr;
+
 	m_pPlayer->Destroy();
 	delete m_pPlayer;
 	m_pPlayer = nullptr;
@@ -252,6 +263,7 @@ void CGameState::Render(void)
 
 	m_pTilemap->Render();
 	m_pPlayer->Render();
+	m_pGoombas->Render();
 	m_pCoinTexture->Render({ 175.f, 10.0f });
 	m_pPipeUpperLeft->Render();
 	m_pPipeUpperRight->Render();

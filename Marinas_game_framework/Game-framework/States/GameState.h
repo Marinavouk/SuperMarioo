@@ -39,6 +39,8 @@ private:
 
 	CTilemap*		m_pTilemap = nullptr;
 
+	CGameObject*	m_pGoombas = nullptr;
+
 	CGameObject*	m_pPlayer = nullptr;
 	CGameObject*	m_pPipeUpperLeft = nullptr;
 	CGameObject*	m_pPipeUpperRight = nullptr;

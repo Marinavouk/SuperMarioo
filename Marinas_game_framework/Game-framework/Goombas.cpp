@@ -34,7 +34,6 @@ bool CGoombas::Create(const std::string& textureFileName, const SDL_FPoint& posi
 
 void CGoombas::Destroy(void)
 {
-	m_pDyingCallback = nullptr;
 
 #define DELETE_ANIMATOR(Animator) delete Animator; Animator = nullptr;
 
