@@ -288,6 +288,7 @@ void CGameState::RenderDebug(void)
 {
 	m_pTilemap->RenderDebug();
 	m_pPlayer->RenderDebug();
+	m_pGoombas->RenderDebug();
 	m_pPipeUpperLeft->RenderDebug();
 	m_pPipeUpperRight->RenderDebug();
 	m_pPipeLowerLeft->RenderDebug();

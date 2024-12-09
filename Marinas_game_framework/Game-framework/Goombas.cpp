@@ -53,7 +53,15 @@ void CGoombas::Kill(void)
 
 void CGoombas::RenderDebug(void)
 {
+	CGameObject::RenderDebug();
 
+	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+
+	SDL_SetRenderDrawColor(renderer, 200, 255, 0, 255);
+	SDL_RenderDrawRectF(renderer, &m_HorizontalCollider);
+
+	SDL_SetRenderDrawColor(renderer, 0, 200, 200, 255);
+	SDL_RenderDrawRectF(renderer, &m_VerticalCollider);
 }
 
 void CGoombas::Update(const float deltaTime)
@@ -90,8 +98,12 @@ void CGoombas::HandleObstacleCollision(const GameObjectList& obstacles, const fl
 
 void CGoombas::SyncCollider(void)
 {
-	m_Collider.x = m_Rectangle.x + m_ColliderOffset.x;
-	m_Collider.y = m_Rectangle.y + m_ColliderOffset.y;
+	m_HorizontalCollider.x = m_Rectangle.x + m_HorizontalColliderOffset.x;
+	m_HorizontalCollider.y = m_Rectangle.y + m_HorizontalColliderOffset.y;
+	m_VerticalCollider.x = m_Rectangle.x + m_VerticalColliderOffset.x;
+	m_VerticalCollider.y = m_Rectangle.y + m_VerticalColliderOffset.y;
+
+	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y , m_VerticalCollider.w, m_VerticalCollider.h };
 }
 
 void CGoombas::ActivateAnimator(CAnimator* animator)

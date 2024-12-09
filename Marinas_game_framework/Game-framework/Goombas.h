@@ -23,6 +23,7 @@ public:
 
 private:
 
+	bool			ResolveObstacleXCollision(const SDL_FRect& collider);
 	bool			ResolveObstacleYCollision(const SDL_FRect& collider);
 	void			SyncCollider(void);
 	void			ActivateAnimator(CAnimator* animator);
@@ -58,7 +59,7 @@ private:
 	SDL_FPoint			m_Velocity = { 0.0f, 0.0f };
 	SDL_FPoint			m_ColliderOffset = { 16.0f * m_Scale, 15.0f * m_Scale };
 
-	SDL_FPoint			m_HorizontalColliderOffset = { 6.0f * m_Scale, 10.0f * m_Scale };
+	SDL_FPoint			m_HorizontalColliderOffset = { 6.0f * m_Scale, 12.0f * m_Scale };
 	SDL_FPoint			m_VerticalColliderOffset = { 9.0f * m_Scale, 3.0f * m_Scale };
 
 	int32_t				m_HorizontalDirection = EMovementState::MOVING_RIGHT;
