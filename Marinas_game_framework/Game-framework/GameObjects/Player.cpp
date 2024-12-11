@@ -288,15 +288,35 @@ void CPlayer::HandleTilemapCollision(const CTilemap::TileColliders& tilemapColli
 
 void CPlayer::HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime)
 {
+	static bool isRandSeeded = false;
+	if (!isRandSeeded)
+	{
+		srand(static_cast<unsigned>(time(0)));
+		isRandSeeded = true;
+	}
+
 	const SDL_FPoint moveAmount = { m_Velocity.x * deltaTime, m_Velocity.y * deltaTime };
 
-	for (CGameObject* obstacle : obstacles)
+	for (size_t i = 0; i < obstacles.size(); ++i)
 	{
-		if (ResolveObstacleXCollision(obstacle->GetCollider(), moveAmount))
-			break;
+		CGameObject* pipe = obstacles[i];
 
-		if (ResolveObstacleYCollision(obstacle->GetCollider(), moveAmount))
-			break;
+		if (ResolveObstacleXCollision(pipe->GetCollider(), moveAmount) || ResolveObstacleYCollision(pipe->GetCollider(), moveAmount))
+		{
+			
+			size_t randomIndex;
+			do
+			{
+				randomIndex = rand() % obstacles.size();
+			} while (randomIndex == i);
+
+			CGameObject* randomPipe = obstacles[randomIndex];
+
+			m_Rectangle.x = randomPipe->GetCollider().x + randomOffset; // Offset to place near the pipe
+			m_Rectangle.y = randomPipe->GetCollider().y;
+
+			return;
+		}
 	}
 }
 

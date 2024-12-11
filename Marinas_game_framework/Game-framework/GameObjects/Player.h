@@ -71,6 +71,8 @@ private:
 	float		m_MaxFallVelocity = 600.0f;
 	float		m_JumpStrength = 600.0f;
 
+	const float randomOffset = 70.0f;
+
 	float		m_Gravity = 1500.0f;
 	float		m_Scale = 1.6f;
 
