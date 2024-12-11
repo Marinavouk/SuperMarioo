@@ -79,27 +79,27 @@ bool CGameState::OnEnter(void)
 	// Buttons can be used as text blocks too, without mouse interaction
 	if (!m_MarioTextBlock.Create(m_pApplication, m_pTextFont, "MARIO", titleTextColor))
 		return false;
-	m_MarioTextBlock.SetPosition({ 100.0f, 10.0f });
+	m_MarioTextBlock.SetPosition({ 30.0f, 10.0f });
 	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
 
 	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "WORLD", titleTextColor))
 		return false;
-	m_WorldTextBlock.SetPosition({ windowCenter.x + 50.0f, 10.0f });
+	m_WorldTextBlock.SetPosition({ windowCenter.x + 10.0f, 10.0f });
 	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	if (!m_TimeTextBlock.Create(m_pApplication, m_pTextFont, "TIME", titleTextColor))
 		return false;
-	m_TimeTextBlock.SetPosition({ windowCenter.x + 140.0f, 10.0f });
+	m_TimeTextBlock.SetPosition({ windowCenter.x + 150.0f, 10.0f });
 	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "0-88", titleTextColor))
 		return false;
-	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 50.0f, 35.0f });
+	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 70.0f, 20.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 	
 	if (!m_CoinNumberTextBlock.Create(m_pApplication, m_pTextFont, "x00", titleTextColor))
 		return false;
-	m_CoinNumberTextBlock.SetPosition({ 205.0f, 18.0f });
+	m_CoinNumberTextBlock.SetPosition({ 185.0f, 18.0f });
 	m_CoinNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	e_pMusic = audioHandler.CreateMusic("Assets/Audio/Underground.mp3");
@@ -272,7 +272,7 @@ void CGameState::Render(void)
 	m_pTilemap->Render();
 	m_pPlayer->Render();
 	m_pGoombas->Render();
-	m_pCoinTexture->Render({ 175.f, 10.0f });
+	m_pCoinTexture->Render({ 155.f, 10.0f });
 	m_pPipeUpperLeft->Render();
 	m_pPipeUpperRight->Render();
 	m_pPipeLowerLeft->Render();
@@ -287,7 +287,7 @@ void CGameState::Render(void)
 	std::stringstream timerStream;
 	timerStream << std::setw(3) << std::setfill('0') << (uint32_t)ceilf(m_Timer);
 	const std::string timerText = timerStream.str();
-	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + fontHandler.GetTextSize(m_pTextFont, timerText).x * 3.8f, 25.0f }, { 250, 250, 250, 255 });
+	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + fontHandler.GetTextSize(m_pTextFont, timerText).x * 5.5f, 12.0f }, { 250, 250, 250, 255 });
 }
 
 void CGameState::RenderDebug(void)
