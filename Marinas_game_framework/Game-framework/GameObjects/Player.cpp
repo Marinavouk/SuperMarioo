@@ -62,7 +62,9 @@ void CPlayer::Kill(void)
 
 	ActivateAnimator(m_pAnimatorDying);
 
-	m_Velocity = { 0.0f, 0.0f };
+	m_Velocity = { 0.0f, m_DyingJumpVelocity }; 
+	m_IsDyingJumping = true;                   
+
 
 	m_State = EState::DEAD;
 
@@ -157,13 +159,16 @@ void CPlayer::Update(const float deltaTime)
 	{
 		const SDL_FPoint windowSize = m_pApplication->GetWindowSize();
 
-		if (m_Rectangle.y > windowSize.y - m_Rectangle.h)
+		if (m_IsDyingJumping)
 		{
-			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+			m_Velocity.y = std::min(m_Velocity.y + m_DyingGravity * deltaTime, m_MaxFallVelocity);
 
-			//Add 1 inch velocity upwards when mario dies
-
-			m_Velocity.y = 0.0f;
+			if (m_Velocity.y >= 0.0f)
+				m_IsDyingJumping = false;
+		}
+		else
+		{
+			m_Velocity.y = std::min(m_Velocity.y + m_Gravity * deltaTime, m_MaxFallVelocity);
 		}
 	}
 
@@ -460,6 +465,20 @@ bool CPlayer::ResolveEnemyXCollision(const SDL_FRect& collider, const SDL_FPoint
 
 	// The player is moving to the right
 	else if (moveAmount.x > 0.0f)
+	{
+		SDL_FRect intersection = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x -= intersection.w;
+
+			m_Velocity.x = 0.0f;
+
+			hasCollidedX = true;
+		}
+	}
+	
+	else if (moveAmount.x == 0.0f)
 	{
 		SDL_FRect intersection = { 0.0f, 0.0f, 0.0f, 0.0f };
 

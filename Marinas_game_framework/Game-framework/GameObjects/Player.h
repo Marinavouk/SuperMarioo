@@ -74,6 +74,10 @@ private:
 	float		m_MaxFallVelocity = 600.0f;
 	float		m_JumpStrength = 600.0f;
 
+	bool		m_IsDyingJumping = false; 
+	float		m_DyingJumpVelocity = -500.0f; 
+	float		m_DyingGravity = 200.0f; 
+
 	const float randomOffset = 70.0f;
 
 	float		m_Gravity = 1500.0f;
