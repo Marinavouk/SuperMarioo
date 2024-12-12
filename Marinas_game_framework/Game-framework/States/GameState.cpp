@@ -70,6 +70,8 @@ bool CGameState::OnEnter(void)
 	m_Obstacles.push_back(m_pPipeLowerRight);
 	m_Obstacles.push_back(m_pPipeLowerLeft);
 
+	m_Enemies.push_back(m_pGoombas);
+
 	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
 	if (!m_pTextFont)
 		return false;
@@ -217,6 +219,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
+		m_pPlayer->HandleEnemyCollision(m_Enemies, deltaTime);
 
 		m_pGoombas->Update(deltaTime);
 		m_pGoombas->HandleObstacleCollision(m_Obstacles, deltaTime);

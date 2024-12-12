@@ -76,5 +76,6 @@ private:
 	Estate			m_State = Estate::IDLE;
 
 	GameObjectList	m_Obstacles = {};
+	GameObjectList	m_Enemies = {};
 
 };
