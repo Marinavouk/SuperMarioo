@@ -24,6 +24,7 @@ public:
 	virtual void	HandleInput(const float deltaTime) override;
 	virtual void	HandleTilemapCollision(const CTilemap::TileColliders& tilemapColliders, const float deltaTime) override;
 	virtual void	HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime) override;
+	virtual void	HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime);
 
 public:
 
@@ -33,6 +34,8 @@ private:
 
 	bool			ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
 	bool			ResolveObstacleYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
+	bool			ResolveEnemyXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
+	bool			ResolveEnemyYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
 	void			SyncColliders(void);
 	void			ActivateAnimator(CAnimator* animator);
 

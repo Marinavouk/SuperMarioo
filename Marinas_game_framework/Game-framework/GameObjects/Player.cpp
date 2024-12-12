@@ -320,6 +320,43 @@ void CPlayer::HandleObstacleCollision(const GameObjectList& obstacles, const flo
 	}
 }
 
+void CPlayer::HandleEnemyCollision(const GameObjectList& enemies, const float deltaTime)
+{
+	if (m_IsDead)
+		return;
+
+	const SDL_FPoint	moveAmount = { m_Velocity.x * deltaTime, m_Velocity.y * deltaTime };
+	bool				hasCollided = false;
+
+	for (CGameObject* enemy : enemies)
+	{
+		if (enemy->GetIsDead())
+			continue;
+
+		if (ResolveEnemyXCollision(enemy->GetCollider(), moveAmount))
+		{
+			hasCollided = true;
+
+			break;
+		}
+
+
+		if (hasCollided)
+		{
+			if (m_CurrentHealth > 0)
+			{
+				m_CurrentHealth--;
+
+				if (m_CurrentHealth == 0)
+				{
+					if (m_CurrentHealth == 0)
+						Kill();
+				}
+			}
+		}
+	}
+}
+
 bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
 {
 	bool hasCollided = false;
@@ -330,7 +367,7 @@ bool CPlayer::ResolveObstacleXCollision(const SDL_FRect& collider, const SDL_FPo
 		SDL_FRect intersection = {0.0f, 0.0f, 0.0f, 0.0f};
 
 		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
-		{
+		{ 
 			m_Rectangle.x += intersection.w;
 
 			m_Velocity.x = 0.0f;
@@ -416,6 +453,51 @@ bool CPlayer::ResolveObstacleYCollision(const SDL_FRect& collider, const SDL_FPo
 		SyncColliders();
 
 	return hasCollided;
+}
+
+bool CPlayer::ResolveEnemyXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
+{
+	bool hasCollidedX = false;
+
+	// The player is moving to the left
+	if (moveAmount.x < 0.0f)
+	{
+		SDL_FRect intersection = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x += intersection.w;
+
+			m_Velocity.x = 0.0f;
+
+			hasCollidedX = true;
+		}
+	}
+
+	// The player is moving to the right
+	else if (moveAmount.x > 0.0f)
+	{
+		SDL_FRect intersection = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		if (QuadVsQuad(m_HorizontalCollider, collider, &intersection))
+		{
+			m_Rectangle.x -= intersection.w;
+
+			m_Velocity.x = 0.0f;
+
+			hasCollidedX = true;
+		}
+	}
+
+	if (hasCollidedX)
+		SyncColliders();
+
+	return hasCollidedX;
+}
+
+bool CPlayer::ResolveEnemyYCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
+{
+	return false;
 }
 
 void CPlayer::SyncColliders(void)

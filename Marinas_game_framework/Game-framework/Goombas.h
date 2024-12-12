@@ -24,7 +24,6 @@ public:
 private:
 
 	bool			ResolveObstacleXCollision(const SDL_FRect& collider);
-	bool			ResolveObstacleYCollision(const SDL_FRect& collider);
 	void			SyncCollider(void);
 	void			ActivateAnimator(CAnimator* animator);
 	void			OnDyingAnimationEnd(void);
