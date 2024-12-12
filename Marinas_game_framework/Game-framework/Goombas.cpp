@@ -71,29 +71,93 @@ void CGoombas::Update(const float deltaTime)
 	if (!m_IsDead)
 	{
 		const float acceleration = m_EnemyWalkSpeed * deltaTime;
-		const float maxVelocity = -m_MaxWalkingVelocity;
 
-		m_Velocity.x = std::max(m_Velocity.x - acceleration, maxVelocity);
+		if (m_HorizontalDirection == EMovementState::MOVING_LEFT)
+		{
+			m_Velocity.x = std::max(m_Velocity.x - acceleration, -m_MaxWalkingVelocity);
+		}
+		else if (m_HorizontalDirection == EMovementState::MOVING_RIGHT)
+		{
+			m_Velocity.x = std::min(m_Velocity.x + acceleration, m_MaxWalkingVelocity);
+		}
 
-		// Update position based on velocity
 		m_Rectangle.x += m_Velocity.x * deltaTime;
 
-		m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
-		m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-
-		m_HorizontalDirection = EMovementState::MOVING_LEFT;
+		if (m_HorizontalDirection == EMovementState::MOVING_LEFT)
+		{
+			m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
+			m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (m_HorizontalDirection == EMovementState::MOVING_RIGHT)
+		{
+			m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
+			m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
 
 		SyncCollider();
 	}
+
 	if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) < 0.0f)
+	{
 		m_Rectangle.x = windowSize.x - (m_Rectangle.w * 0.5f);
+	}
+	else if ((m_Rectangle.x - (m_Rectangle.w * 0.5f)) > windowSize.x)
+	{
+		m_Rectangle.x = -(m_Rectangle.w * 0.5f);
+	}
 
 	if (m_pCurrentAnimator)
+	{
 		m_pCurrentAnimator->Update(deltaTime);
+	}
 }
 
 void CGoombas::HandleObstacleCollision(const GameObjectList& obstacles, const float deltaTime)
 {
+	for (CGameObject* obstacle : obstacles)
+	{
+		if (ResolveObstacleXCollision(obstacle->GetCollider()))
+		{
+			break;
+		}
+	}
+}
+
+bool CGoombas::ResolveObstacleXCollision(const SDL_FRect& collider)
+{
+	bool hasCollided = false;
+
+	SDL_FRect intersection = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	if (QuadVsQuad(m_Collider, collider, &intersection))
+	{
+		m_Velocity.x = -m_Velocity.x;
+		m_HorizontalDirection = (m_HorizontalDirection == EMovementState::MOVING_LEFT)
+			? EMovementState::MOVING_RIGHT
+			: EMovementState::MOVING_LEFT;
+
+		if (m_HorizontalDirection == EMovementState::MOVING_RIGHT)
+		{
+			m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
+			m_FlipMethod = SDL_RendererFlip::SDL_FLIP_NONE;
+		}
+		else
+		{
+			m_pTexture->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
+			m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+
+		if (intersection.w > 0.0f) 
+		{
+			m_Rectangle.x -= intersection.w * (m_HorizontalDirection == EMovementState::MOVING_LEFT ? 1 : -1);
+		}
+
+		SyncCollider();
+
+		hasCollided = true;
+	}
+
+	return hasCollided;
 }
 
 void CGoombas::SyncCollider(void)

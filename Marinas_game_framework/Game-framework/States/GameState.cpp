@@ -219,6 +219,7 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->HandleObstacleCollision(m_Obstacles, deltaTime);
 
 		m_pGoombas->Update(deltaTime);
+		m_pGoombas->HandleObstacleCollision(m_Obstacles, deltaTime);
 
 		//m_Timer -= deltaTime;
 
