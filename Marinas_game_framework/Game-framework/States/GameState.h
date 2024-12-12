@@ -23,6 +23,8 @@ public:
 private:
 
 	void			OnPlayerDying(void);
+	void			SpawnGoombas(void);
+	void			OnGoombasDying(const uint32_t index);
 
 private:
 
@@ -61,6 +63,7 @@ private:
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;
+	uint32_t		m_GoombasPoints = 0;
 
 	bool			m_SwitchToGameState = false;
 
@@ -76,6 +79,7 @@ private:
 	Estate			m_State = Estate::IDLE;
 
 	GameObjectList	m_Obstacles = {};
-	GameObjectList	m_Enemies = {};
-
+	GameObjectList	m_Goombas = {};
+	GameObjectList	m_GoombasPool = {};
+	GameObjectList	m_ActiveGoombas = {};
 };

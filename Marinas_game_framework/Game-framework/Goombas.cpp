@@ -16,6 +16,8 @@ bool CGoombas::Create(const std::string& textureFileName, const SDL_FPoint& posi
 	m_pAnimatorWalking->Set(m_pTexture, 2, 0, 1, 0, frameSize, 7.0f, true, CAnimator::EDirection::FORWARD);
 	m_pAnimatorDying->Set(m_pTexture, 1, 2, 2, 0, frameSize, 7.0f, false, CAnimator::EDirection::FORWARD);
 
+	m_pAnimatorDying->SetAnimationEndCallback(std::bind(&CGoombas::OnDyingAnimationEnd, this));
+
 	ActivateAnimator(m_pAnimatorWalking);
 
 	m_pTexture->SetSize({ frameSize.x * m_Scale, frameSize.y * m_Scale });
@@ -123,6 +125,29 @@ void CGoombas::HandleObstacleCollision(const GameObjectList& obstacles, const fl
 	}
 }
 
+void CGoombas::Activate(const SDL_FPoint& spawnPosition, const uint32_t index)
+{
+	ActivateAnimator(m_pAnimatorWalking);
+
+	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
+
+	m_Rectangle.x = spawnPosition.x;
+	m_Rectangle.y = spawnPosition.y;
+
+	SyncCollider();
+
+	m_StartPosition = spawnPosition;
+
+	m_Index = index;
+
+	m_IsActive = true;
+	m_IsDead = false;
+
+	m_Velocity.x = m_MaxWalkingVelocity;
+
+	m_State = EState::ACTIVE;
+}
+
 bool CGoombas::ResolveObstacleXCollision(const SDL_FRect& collider)
 {
 	bool hasCollided = false;
@@ -177,4 +202,15 @@ void CGoombas::ActivateAnimator(CAnimator* animator)
 		m_pCurrentAnimator = animator;
 		m_pCurrentAnimator->Reset();
 	}
+}
+
+void CGoombas::OnDyingAnimationEnd(void)
+{
+	if (!m_IsActive)
+		return;
+
+	if (m_pDyingCallback)
+		m_pDyingCallback(m_Index);
+
+	m_IsActive = false;
 }
