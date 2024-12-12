@@ -172,7 +172,7 @@ bool CGoombas::ResolveObstacleXCollision(const SDL_FRect& collider)
 			m_FlipMethod = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 		}
 
-		if (intersection.w > 0.0f) 
+		if (intersection.w > 0.0f)
 		{
 			m_Rectangle.x -= intersection.w * (m_HorizontalDirection == EMovementState::MOVING_LEFT ? 1 : -1);
 		}

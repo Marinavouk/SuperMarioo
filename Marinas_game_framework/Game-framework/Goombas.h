@@ -15,7 +15,7 @@ public:
 
 	CGoombas(void) {}
 	CGoombas(CApplication* application) : CGameObject(application) {}
-	~CGoombas(void) {}	
+	~CGoombas(void) {}
 
 public:
 
