@@ -1,6 +1,7 @@
 #include "Pch.h"
 #include "Player.h"
 
+#include "Globals.h"
 #include "Application.h"
 #include "Utilities/CollisionUtilities.h"
 
@@ -59,6 +60,8 @@ void CPlayer::Destroy(void)
 void CPlayer::Kill(void)
 {
 	CGameObject::Kill();
+
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
 	ActivateAnimator(m_pAnimatorDying);
 

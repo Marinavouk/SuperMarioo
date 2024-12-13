@@ -35,7 +35,7 @@ bool CGameState::OnEnter(void)
 	m_pGoombas = new CGoombas(m_pApplication);
 	if (!m_pGoombas->Create("goomba.png", { 0.0f, 0.0f }, 1))
 		return false;
-	m_pGoombas->SetPosition({ 250.0f, (windowSize.y - m_pGoombas->GetRectangleSize().y) - tileSize.y });
+	m_pGoombas->SetPosition({ 150.0f, (windowSize.y - m_pGoombas->GetRectangleSize().y) - tileSize.y });
 	CGoombas* goombas = (CGoombas*)m_pGoombas;
 
 	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
@@ -234,13 +234,19 @@ void CGameState::Update(const float deltaTime)
 			m_HurryMusicPlayed = true;
 		}
 
-		else if (m_Timer <= 0.0f)
+		else if (m_Timer <= 1.0f)
 		{		
 			m_Timer = 0.0f;
 
 			m_State = Estate::ROUND_ENDED;
 
 			m_HurryMusicPlayed = false;
+
+			m_isDeadSound = true;
+
+			audioHandler.StopMusic();
+			audioHandler.PlayMusic(e_pDeathSound, -1);
+			audioHandler.SetMusicVolume(15);
 
 			e_EndOfRoundPlayerKilled = false;
 
@@ -310,12 +316,9 @@ void CGameState::OnPlayerDying(void)
 {
 	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
-	if (!m_isDeadSound) 
-	{
-		audioHandler.StopMusic();
-		audioHandler.PlayMusic(e_pDeathSound, -1);
-		audioHandler.SetMusicVolume(15);
-	}
+	audioHandler.StopMusic();
+	audioHandler.PlayMusic(e_pDeathSound, -1);
+	audioHandler.SetMusicVolume(15);
 
 	m_DeathFadeDelay = m_DeathFadeDelayDefault;
 	m_DeathFadeout = true;
