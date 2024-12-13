@@ -7,6 +7,8 @@
 
 bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& position, const uint32_t maxHealth)
 {
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
 	if (!CGameObject::Create(textureFileName, position, maxHealth))
 		return false;
 
@@ -35,11 +37,20 @@ bool CPlayer::Create(const std::string& textureFileName, const SDL_FPoint& posit
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
+	e_JumpSound = audioHandler.CreateMusic("Assets/Audio/Super Mario Jump.mp3");
+	if (!e_JumpSound)
+		return false;
+
 	return true;
 }
 
 void CPlayer::Destroy(void)
 {
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+
+	audioHandler.DestroyMusic(e_JumpSound);
+	e_JumpSound = nullptr;
+
 	m_pDyingCallback = nullptr;
 
 #define DELETE_ANIMATOR(Animator) delete Animator; Animator = nullptr;
