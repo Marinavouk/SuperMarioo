@@ -1,6 +1,8 @@
 #pragma once
 
+
 // Pre-compiled header
+
 
 #include <algorithm>
 #include <functional>
@@ -11,6 +13,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+
 
 #include <SDL.h> 
 #include <SDL_image.h>
