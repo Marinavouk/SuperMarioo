@@ -1,18 +1,22 @@
 #pragma once
 
+
 #include "GameObjects/Button.h"
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Tilemap.h"
 #include "State.h"
 #include "Utilities/Texture.h"
 
+
 class CGameState final : public CState
 {
 public:
 
+
 	 CGameState(void) {}
 	 CGameState(CApplication* application) : CState(application) {}
 	~CGameState(void) {}
+
 
 	virtual bool	OnEnter(void) override;
 	virtual void	OnExit(void) override;
@@ -20,13 +24,20 @@ public:
 	virtual void	Render(void) override;
 	virtual void	RenderDebug(void) override;
 
+
 private:
 
+
+	void			OnPlayerJumping(void);
 	void			OnPlayerDying(void);
-	void			SpawnGoombas(void);
-	void			OnGoombasDying(const uint32_t index);
+	void			OnPlayerEnteringPipe(void);
+	void			OnPlayerExitingPipe(void);
+	void			OnPlayerEnemyStomp(void);
+	void			OnEnemyDead(CGameObject* enemy);
+
 
 private:
+
 
 	enum Estate
 	{
@@ -35,23 +46,39 @@ private:
 		ROUND_ENDED,
 	};
 
+
 	typedef std::vector<CGameObject*> GameObjectList;
+
 
 private:
 
+
 	CTilemap*		m_pTilemap = nullptr;
 
-	CGameObject*	m_pGoombas = nullptr;
 
 	CGameObject*	m_pPlayer = nullptr;
+	CGameObject*	m_pGoomba1 = nullptr;
 	CGameObject*	m_pPipeUpperLeft = nullptr;
 	CGameObject*	m_pPipeUpperRight = nullptr;
 	CGameObject*	m_pPipeLowerLeft = nullptr;
 	CGameObject*	m_pPipeLowerRight = nullptr;
 
+
+	CTexture*		m_pCoin = nullptr;
+
+
 	TTF_Font*		m_pTextFont = nullptr;
 
-	CTexture*		m_pCoinTexture = nullptr;
+
+	Mix_Music*		m_pMusic = nullptr;
+	Mix_Music*		m_pHurryMusic = nullptr;
+
+
+	Mix_Chunk*		m_pJumpSound = nullptr;
+	Mix_Chunk*		m_pPipeSound = nullptr;
+	Mix_Chunk*		m_pDeathSound = nullptr;
+	Mix_Chunk*		m_pGoombaSound = nullptr;
+
 
 	CButton			m_MarioTextBlock = {};
 	CButton			m_WorldTextBlock = {};
@@ -59,27 +86,28 @@ private:
 	CButton			m_WorldNumberTextBlock = {};
 	CButton		    m_CoinNumberTextBlock = {};
 
-	float			m_TimerDefault = 3.0f;
+
+	float			m_TimerDefault = 300.0f;
 	float			m_Timer = m_TimerDefault;
 
+
 	uint32_t		m_VolumeLimiter = 100;
-	uint32_t		m_GoombasPoints = 0;
 
-	bool			m_SwitchToGameState = false;
 
-	bool			m_HurryMusicPlayed  = false;
-	bool			m_isDeadSound		= false;
-
-	// When the player has died, the game waits this long before fading out and changing to the end-of-round state
-	float			m_DeathFadeDelayDefault = 2.0f;
+	// When the player has died, the game waits this long (in seconds) before fading out and changing to the end-of-round state
+	float			m_DeathFadeDelayDefault = 3.0f;
 	float			m_DeathFadeDelay = m_DeathFadeDelayDefault;
 
+
 	bool			m_DeathFadeout = false;
+	bool			m_HurryMusicStarted = false;
+
 
 	Estate			m_State = Estate::IDLE;
 
-	GameObjectList	m_Obstacles = {};
-	GameObjectList	m_Goombas = {};
-	GameObjectList	m_GoombasPool = {};
-	GameObjectList	m_ActiveGoombas = {};
+
+	GameObjectList	m_Pipes = {};
+	GameObjectList	m_Enemies = {};
+
+
 };

@@ -1,8 +1,10 @@
 #include "Pch.h"
 #include "EndOfRoundState.h"
 
+
 #include "Application.h"
 #include "Globals.h"
+
 
 bool CEndOfRoundState::OnEnter(void)
 {
@@ -10,17 +12,22 @@ bool CEndOfRoundState::OnEnter(void)
 	CFontHandler& fontHandler = m_pApplication->GetFontHandler();
 	const SDL_FPoint	windowCenter = m_pApplication->GetWindowCenter();
 
+
 	m_pApplication->GetWindow().SetClearColor({ 0, 0, 0, 255 });
+
 
 	const SDL_Color buttonBackgroundColor = { 0,		0,		0,		0 };	// nothing		<-- Background color when the button is not held
 	const SDL_Color buttonBackgroundPressedColor = { 0,		0,		0,		0 };	// nothing		<-- Background color when the button is held
 	const SDL_Color buttonTextColor = { 255,	255,	255,	255 };	// WHITE		<-- Text color when the mouse pointer is outside the button
 
-	m_pCoinTexture = textureHandler.CreateTexture("CoinIdle.png");
+
+	m_pCoinTexture = textureHandler.CreateTexture("coin.png");
 	m_pCoinTexture->SetSize({ 20.f, 20.f });
+
 
 	m_pButtonFont   = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 20); if (!m_pButtonFont)		return false;
 	m_pGameOverFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 50); if (!m_pGameOverFont)    return false;
+
 
 	if (!m_GameOverTextBlock.Create(m_pApplication, m_pButtonFont, "GAME OVER", buttonTextColor))
 		return false;
@@ -52,8 +59,10 @@ bool CEndOfRoundState::OnEnter(void)
 	m_CoinNumberTextBlock.SetPosition({ 210.0f, 30.0f });
 	m_CoinNumberTextBlock.SetBackgroundColor(buttonBackgroundColor);
 
+
 	return true;
 }
+
 
 void CEndOfRoundState::OnExit(void)
 {
@@ -66,15 +75,19 @@ void CEndOfRoundState::OnExit(void)
 	m_MarioTextBlock.Destroy(m_pApplication);
 	m_GameOverTextBlock.Destroy(m_pApplication);
 
+
 	textureHandler.DestroyTexture(m_pCoinTexture->GetName());
 	m_pCoinTexture = nullptr;
+
 
 	m_pApplication->GetFontHandler().DestroyFont(m_pGameOverFont);
 	m_pGameOverFont = nullptr;
 
+
 	m_pApplication->GetFontHandler().DestroyFont(m_pButtonFont);
 	m_pButtonFont = nullptr;
 }
+
 
 void CEndOfRoundState::Update(const float deltaTime)
 {
@@ -82,19 +95,24 @@ void CEndOfRoundState::Update(const float deltaTime)
 	
 	timer += deltaTime;
 
+
 	if (timer >= 3) 
 	{
 		m_pApplication->SetState(CApplication::EState::MAIN_MENU);
 	}
 
 
+
+
 	if (transitionRenderer.IsTransitioning())
 		m_pApplication->GetAudioHandler().SetMusicVolume(MIX_MAX_VOLUME - (int)((float)MIX_MAX_VOLUME * transitionRenderer.GetTransitionValue()));
 }
 
+
 void CEndOfRoundState::Render(void)
 {
 	SDL_Renderer* renderer = m_pApplication->GetWindow().GetRenderer();
+
 
 	m_pCoinTexture->Render({ 175.f, 20.0f });
 	m_GameOverTextBlock.Render(renderer,nullptr);
@@ -103,5 +121,6 @@ void CEndOfRoundState::Render(void)
 	m_TimeTextBlock.Render(renderer,nullptr);
 	m_WorldNumberTextBlock.Render(renderer,nullptr);
 	m_CoinNumberTextBlock.Render(renderer,nullptr);
+
 
 }
