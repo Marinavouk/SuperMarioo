@@ -28,11 +28,11 @@ public:
 
 public:
 
-	void			SetJumpingCallback(Callback dyingCallback) { m_pJumpingCallback = dyingCallback; }
+	void			SetJumpingCallback(Callback jumpingCallback) { m_pJumpingCallback = jumpingCallback; }
 	void			SetDyingCallback(Callback dyingCallback) { m_pDyingCallback = dyingCallback; }
-	void			SetEnteringPipeCallback(Callback dyingCallback) { m_pEnteringPipeCallback = dyingCallback; }
-	void			SetExitingPipeCallback(Callback dyingCallback) { m_pExitingPipeCallback = dyingCallback; }
-	void			SetEnemyStompCallback(Callback dyingCallback) { m_pEnemyStompCallback = dyingCallback; }
+	void			SetEnteringPipeCallback(Callback pipeEnteringCallback) { m_pEnteringPipeCallback = pipeEnteringCallback; }
+	void			SetExitingPipeCallback(Callback pipexitingCallback) { m_pExitingPipeCallback = pipexitingCallback; }
+	void			SetEnemyStompCallback(Callback enemyStompCallback) { m_pEnemyStompCallback = enemyStompCallback; }
 
 private:
 
