@@ -1,27 +1,22 @@
 #pragma once
 
-
 #include "GameObjects/Button.h"
 #include "Handlers/TextureHandler.h"
 #include "States/State.h"
 #include "Utilities/Texture.h"
 
-
 class CEndOfRoundState final : public CState
 {
 public:
-
 
 	CEndOfRoundState(void) {}
 	CEndOfRoundState(CApplication* application) : CState(application) {}
 	~CEndOfRoundState(void) {}
 
-
 	virtual bool OnEnter(void) override;
 	virtual void OnExit(void) override;
 	virtual void Update(const float deltaTime) override;
 	virtual void Render(void) override;
-
 
 private:
 	
@@ -29,10 +24,7 @@ private:
 	TTF_Font* m_pGameOverFont = nullptr;
 
 
-
-
 	CTexture* m_pCoinTexture = nullptr;
-
 
 	CButton		m_GameOverTextBlock = {};
 	CButton		m_MarioTextBlock = {};
@@ -41,13 +33,9 @@ private:
 	CButton		m_WorldNumberTextBlock = {};
 	CButton		m_CoinNumberTextBlock = {};
 
-
 	CButton		m_ScoreTextBlock = {};
 
 
-
-
 	float       timer = 0;
-
 
 };

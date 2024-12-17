@@ -1,22 +1,18 @@
 #pragma once
 
-
 #include "GameObjects/Button.h"
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Tilemap.h"
 #include "State.h"
 #include "Utilities/Texture.h"
 
-
 class CGameState final : public CState
 {
 public:
 
-
 	 CGameState(void) {}
 	 CGameState(CApplication* application) : CState(application) {}
 	~CGameState(void) {}
-
 
 	virtual bool	OnEnter(void) override;
 	virtual void	OnExit(void) override;
@@ -24,9 +20,7 @@ public:
 	virtual void	Render(void) override;
 	virtual void	RenderDebug(void) override;
 
-
 private:
-
 
 	void			OnPlayerJumping(void);
 	void			OnPlayerDying(void);
@@ -35,9 +29,7 @@ private:
 	void			OnPlayerEnemyStomp(void);
 	void			OnEnemyDead(CGameObject* enemy);
 
-
 private:
-
 
 	enum Estate
 	{
@@ -46,15 +38,11 @@ private:
 		ROUND_ENDED,
 	};
 
-
 	typedef std::vector<CGameObject*> GameObjectList;
-
 
 private:
 
-
 	CTilemap*		m_pTilemap = nullptr;
-
 
 	CGameObject*	m_pPlayer = nullptr;
 	CGameObject*	m_pGoomba1 = nullptr;
@@ -63,22 +51,17 @@ private:
 	CGameObject*	m_pPipeLowerLeft = nullptr;
 	CGameObject*	m_pPipeLowerRight = nullptr;
 
-
 	CTexture*		m_pCoin = nullptr;
-
 
 	TTF_Font*		m_pTextFont = nullptr;
 
-
 	Mix_Music*		m_pMusic = nullptr;
 	Mix_Music*		m_pHurryMusic = nullptr;
-
 
 	Mix_Chunk*		m_pJumpSound = nullptr;
 	Mix_Chunk*		m_pPipeSound = nullptr;
 	Mix_Chunk*		m_pDeathSound = nullptr;
 	Mix_Chunk*		m_pGoombaSound = nullptr;
-
 
 	CButton			m_MarioTextBlock = {};
 	CButton			m_WorldTextBlock = {};
@@ -86,28 +69,21 @@ private:
 	CButton			m_WorldNumberTextBlock = {};
 	CButton		    m_CoinNumberTextBlock = {};
 
-
 	float			m_TimerDefault = 300.0f;
 	float			m_Timer = m_TimerDefault;
 
-
 	uint32_t		m_VolumeLimiter = 100;
-
 
 	// When the player has died, the game waits this long (in seconds) before fading out and changing to the end-of-round state
 	float			m_DeathFadeDelayDefault = 3.0f;
 	float			m_DeathFadeDelay = m_DeathFadeDelayDefault;
 
-
 	bool			m_DeathFadeout = false;
 	bool			m_HurryMusicStarted = false;
 
-
 	Estate			m_State = Estate::IDLE;
-
 
 	GameObjectList	m_Pipes = {};
 	GameObjectList	m_Enemies = {};
-
 
 };
