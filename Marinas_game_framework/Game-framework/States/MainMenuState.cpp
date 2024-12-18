@@ -22,7 +22,10 @@ bool CMainMenuState::OnEnter(void)
 	m_pBackground->SetAlphaMod(225);
 
 	m_pCoinTexture = textureHandler.CreateTexture("coin.png");
-	m_pCoinTexture->SetSize({ 10.f, 16.f });
+	m_pCoinTexture->SetSize({ 11.f, 12.f });
+
+	m_pMario = textureHandler.CreateTexture("MarioIdle.png");
+	m_pMario->SetSize({ 40.f, 40.f });
 
 	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 25);
 	if (!m_pButtonFont)
@@ -72,8 +75,10 @@ void CMainMenuState::OnExit(void)
 
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
 
+	textureHandler.DestroyTexture(m_pMario->GetName());
 	textureHandler.DestroyTexture(m_pCoinTexture->GetName());
 	textureHandler.DestroyTexture(m_pBackground->GetName());
+	m_pMario = nullptr;
 	m_pCoinTexture = nullptr;
 	m_pBackground = nullptr;
 }
@@ -103,9 +108,11 @@ void CMainMenuState::Render(void)
 	const SDL_FPoint mousePosition = m_pApplication->GetInputHandler().GetMousePosition();
 
 	m_pBackground->Render({ 0.0f, 0.0f });
+	m_pMario->Render({ 50.0f, 350.f });
 
 	if (m_CoinVisible)
-		m_pCoinTexture->Render({ 208.f, 20.0f });
+		m_pCoinTexture->Render({ 202.f, 23.0f });
+
 
 	m_1PlayerGame.Render(renderer, &mousePosition);
 }
