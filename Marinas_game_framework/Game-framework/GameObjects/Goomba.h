@@ -28,6 +28,11 @@ public:
 
 	void			SetDyingCallback(Callback dyingCallback) { m_pDyingCallback = dyingCallback; }
 
+public:
+
+	void			Activate(const SDL_FPoint& spawnPosition, const uint32_t index);
+
+
 private:
 
 	bool			ResolveXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount);
@@ -72,6 +77,10 @@ private:
 	int32_t		m_HorizontalDirection = EMovementState::MOVING_LEFT;
 
 	uint32_t	m_ExitPipeDirection = EMovementState::MOVING_LEFT;
+
+	uint32_t	m_Index = 0;
+
+	SDL_FPoint	m_StartPosition = { 0.0f, 0.0f };
 
 	SDL_FPoint	m_Velocity = { 0.0f, 0.0f };
 	SDL_FPoint	m_HorizontalColliderOffset = { 5.0f * m_Scale, 14.0f * m_Scale };

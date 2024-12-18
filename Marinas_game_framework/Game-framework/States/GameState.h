@@ -22,6 +22,7 @@ public:
 
 private:
 
+	void			SpawnGoombas(void);
 	void			OnPlayerJumping(void);
 	void			OnPlayerDying(void);
 	void			OnPlayerEnteringPipe(void);
@@ -73,6 +74,7 @@ private:
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;
+	uint32_t		m_GoombaCount = 0;
 
 	// When the player has died, the game waits this long (in seconds) before fading out and changing to the end-of-round state
 	float			m_DeathFadeDelayDefault = 3.0f;
@@ -85,5 +87,6 @@ private:
 
 	GameObjectList	m_Pipes = {};
 	GameObjectList	m_Enemies = {};
+	GameObjectList	m_EnemiesPool = {};
 
 };

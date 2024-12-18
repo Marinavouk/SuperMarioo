@@ -39,6 +39,7 @@ public:
 	SDL_FPoint			GetColliderCenterPosition(void) const { return { m_Collider.x + (m_Collider.w * 0.5f), m_Collider.y + (m_Collider.h * 0.5f) }; }
 	SDL_FPoint			GetColliderSize(void) const { return { m_Collider.w, m_Collider.h }; }
 
+	SDL_FRect&			GetRectangle(void) const { return (SDL_FRect&)m_Rectangle; }
 	SDL_FRect&			GetCollider(void) const { return (SDL_FRect&)m_Collider; }
 
 	uint32_t			GetCurrentHealth(void) const { return m_CurrentHealth; }

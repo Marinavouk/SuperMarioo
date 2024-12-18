@@ -223,7 +223,7 @@ void CGameState::Update(const float deltaTime)
 		m_pGoomba1->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pGoomba1->HandlePipeCollision(m_Pipes, deltaTime);
 
-	//	m_Timer -= deltaTime;
+		//m_Timer -= deltaTime;
 
 		if (m_Timer <= 60.0f && !m_HurryMusicStarted)
 		{
@@ -308,6 +308,29 @@ void CGameState::RenderDebug(void)
 	m_pPipeUpperRight->RenderDebug();
 	m_pPipeLowerLeft->RenderDebug();
 	m_pPipeLowerRight->RenderDebug();
+}
+
+void CGameState::SpawnGoombas(void)
+{
+	CRandom*            RNG              = m_pApplication->GetRandomNumberGenerator();
+	
+	// Loop through the goomba pool and try to retrieve an inactive/unused spider that can be spawned on the screen
+	for (CGameObject* gameObject : m_EnemiesPool)
+	{
+		CGoomba* goomba = (CGoomba*)gameObject;
+
+		if (!goomba->GetIsActive())
+		{
+			
+			
+			//goomba->Activate(spawnPosition,(uint32_t)m_Enemies.size());
+
+			m_Enemies.push_back(goomba);
+
+			// Should break out of the for loop now since an inactive/unused spider has been found
+			break;
+		}
+	}
 }
 
 // This function is called once, when Mario is jumping

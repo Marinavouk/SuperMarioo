@@ -239,6 +239,28 @@ void CGoomba::HandlePipeCollision(const GameObjectList& pipes, const float delta
 	}
 }
 
+void CGoomba::Activate(const SDL_FPoint& spawnPosition, const uint32_t index)
+{
+	ActivateAnimator(m_pAnimatorWalking);
+
+	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
+
+	m_Rectangle.x = spawnPosition.x;
+	m_Rectangle.y = spawnPosition.y;
+
+	SyncColliders();
+
+	m_StartPosition = spawnPosition;
+
+
+	m_Index = index;
+
+	m_IsActive = true;
+	m_IsDead = false;
+
+	m_State = EState::EXITING_PIPE;
+}
+
 bool CGoomba::ResolveXCollision(const SDL_FRect& collider, const SDL_FPoint& moveAmount)
 {
 	bool hasCollided = false;
