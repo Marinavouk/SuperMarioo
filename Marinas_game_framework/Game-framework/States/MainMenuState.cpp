@@ -42,14 +42,6 @@ bool CMainMenuState::OnEnter(void)
 	m_1PlayerGame.SetTextColorHovered(buttonTextColorHovered);
 	m_1PlayerGame.SetTextColorPressed(buttonTextColorPressed);
 
-	if (!m_2PlayerGame.Create(m_pApplication, m_pButtonFont, "2 PLAYER GAME", buttonTextColor))
-		return false;
-	m_2PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 80.0f });
-	m_2PlayerGame.SetBackgroundColor(buttonBackgroundColor);
-	m_2PlayerGame.SetBackgroundPressedColor(buttonBackgroundPressedColor);
-	m_2PlayerGame.SetTextColorHovered(buttonTextColorHovered);
-	m_2PlayerGame.SetTextColorPressed(buttonTextColorPressed);
-
 	m_pMusic = audioHandler.CreateMusic("Assets/Audio/menu.mp3");
 	if (!m_pMusic)
 		return false;
@@ -73,8 +65,6 @@ void CMainMenuState::OnExit(void)
 		audioHandler.DestroyMusic(m_pMusic);
 		m_pMusic = nullptr;
 	}
-
-	m_2PlayerGame.Destroy(m_pApplication);
 	m_1PlayerGame.Destroy(m_pApplication);
 
 	m_pApplication->GetFontHandler().DestroyFont(m_pButtonFont);
@@ -96,11 +86,9 @@ void CMainMenuState::Update(const float deltaTime)
 	else if (inputHandler.KeyPressed(SDL_SCANCODE_ESCAPE)) m_pApplication->SetState(CApplication::EState::QUIT);
 
 	m_1PlayerGame.Update(inputHandler);
-	m_2PlayerGame.Update(inputHandler);
 
-		 if (m_1PlayerGame.IsPressed(inputHandler)) m_pApplication->SetState(CApplication::EState::GAME);
-	else if (m_2PlayerGame.IsPressed(inputHandler)) m_pApplication->SetState(CApplication::EState::GAME);
-
+	if (m_1PlayerGame.IsPressed(inputHandler)) m_pApplication->SetState(CApplication::EState::GAME);
+	
 	m_CoinToggleTimer += deltaTime;
 	if (m_CoinToggleTimer >= 0.5f)
 	{
@@ -120,5 +108,4 @@ void CMainMenuState::Render(void)
 		m_pCoinTexture->Render({ 208.f, 20.0f });
 
 	m_1PlayerGame.Render(renderer, &mousePosition);
-	m_2PlayerGame.Render(renderer, &mousePosition);
 }

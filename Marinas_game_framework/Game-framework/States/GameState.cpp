@@ -142,6 +142,9 @@ bool CGameState::OnEnter(void)
 
 //	audioHandler.PlayMusic(m_pMusic, -1);
 
+	m_GoombaCount = 0;
+
+	e_GoombaCount = 0;
 	e_EndOfRoundPlayerKilled = false;
 
 	return true;
@@ -239,6 +242,7 @@ void CGameState::Update(const float deltaTime)
 
 			m_State = Estate::ROUND_ENDED;
 
+			e_GoombaCount = m_GoombaCount;
 			e_EndOfRoundPlayerKilled = false;
 
 			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);

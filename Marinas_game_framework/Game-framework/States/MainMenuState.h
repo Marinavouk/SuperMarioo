@@ -27,8 +27,7 @@ private:
 	Mix_Music*	m_pMusic = nullptr;
 
 	CButton		m_1PlayerGame = {};
-	CButton		m_2PlayerGame = {};
-
+	
 	float		m_CoinToggleTimer = 0.0f;
 
 	bool		m_CoinVisible = true;
