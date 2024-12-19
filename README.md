@@ -68,112 +68,7 @@ bool CGameState::OnEnter(void)
 	CGoomba* goomba1 = (CGoomba*)m_pGoomba1;
 	goomba1->SetDyingCallback(std::bind(&CGameState::OnEnemyDead, this, std::placeholders::_1));
 
-	m_pPipeUpperLeft = new CPipe(m_pApplication);
-	if (!m_pPipeUpperLeft->Create("pipe.png", { 0.0f, 0.0f }, 0))
-		return false;
-	m_pPipeUpperLeft->SetPosition({ 0.0f, tileSize.y * 2.0f });
-	m_pPipeUpperLeft->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
-
-	m_pPipeUpperRight = new CPipe(m_pApplication);
-	if (!m_pPipeUpperRight->Create("pipe.png", { 0.0f, 0.0f }, 0))
-		return false;
-	m_pPipeUpperRight->SetPosition({ windowSize.x - m_pPipeUpperRight->GetRectangleSize().x, tileSize.y * 2.0f });
-	m_pPipeUpperRight->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
-
-	m_pPipeLowerLeft = new CPipe(m_pApplication);
-	if (!m_pPipeLowerLeft->Create("pipe.png", { 0.0f, 0.0f }, 0))
-		return false;
-	m_pPipeLowerLeft->SetPosition({ 0.0f, (windowSize.y - m_pPipeLowerLeft->GetRectangleSize().y) - tileSize.y });
-	m_pPipeLowerLeft->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_NONE);
-
-	m_pPipeLowerRight = new CPipe(m_pApplication);
-	if (!m_pPipeLowerRight->Create("pipe.png", { 0.0f, 0.0f }, 0))
-		return false;
-	m_pPipeLowerRight->SetPosition({ windowSize.x - m_pPipeLowerRight->GetRectangleSize().x, (windowSize.y - m_pPipeLowerRight->GetRectangleSize().y) - tileSize.y });
-	m_pPipeLowerRight->SetFlipMethod(SDL_RendererFlip::SDL_FLIP_HORIZONTAL);
-
-	m_Pipes.push_back(m_pPipeUpperLeft);
-	m_Pipes.push_back(m_pPipeUpperRight);
-	m_Pipes.push_back(m_pPipeLowerLeft);
-	m_Pipes.push_back(m_pPipeLowerRight);
-
-	m_Enemies.push_back(m_pGoomba1);
-
-	m_pCoin = textureHandler.CreateTexture("coin.png");
-	m_pCoin->SetSize({ 16.f, 16.f });
-
-	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
-	if (!m_pTextFont)
-		return false;
-
-	m_pMusic = audioHandler.CreateMusic("Assets/Audio/underground.mp3");
-	if (!m_pMusic)
-		return false;
-
-	m_pHurryMusic = audioHandler.CreateMusic("Assets/Audio/underground_hurry.mp3");
-	if (!m_pHurryMusic)
-		return false;
-
-	m_pJumpSound = audioHandler.CreateSound("Assets/Audio/jump.wav");
-	if (!m_pJumpSound)
-		return false;
-
-	m_pPipeSound = audioHandler.CreateSound("Assets/Audio/pipe.wav");
-	if (!m_pPipeSound)
-		return false;
-
-	m_pDeathSound = audioHandler.CreateSound("Assets/Audio/death.wav");
-	if (!m_pDeathSound)
-		return false;
-
-	m_pGoombaSound = audioHandler.CreateSound("Assets/Audio/goomba.wav");
-	if (!m_pGoombaSound)
-		return false;
-
-	const SDL_Color titleTextColor = { 255,	255, 255, 255 }; // White
-
-	// Buttons can be used as text blocks too, without mouse interaction
-	if (!m_MarioTextBlock.Create(m_pApplication, m_pTextFont, "MARIO", titleTextColor))
-		return false;
-	m_MarioTextBlock.SetPosition({ 30.0f, 10.0f });
-	m_MarioTextBlock.SetBackgroundColor({ 0, 0, 0, 0 }); // Only the text in the text block should be visible, so the background is set to be invisible (alpha = 0)
-
-	if (!m_WorldTextBlock.Create(m_pApplication, m_pTextFont, "WORLD", titleTextColor))
-		return false;
-	m_WorldTextBlock.SetPosition({ windowCenter.x + 10.0f, 10.0f });
-	m_WorldTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
-
-	if (!m_TimeTextBlock.Create(m_pApplication, m_pTextFont, "TIME", titleTextColor))
-		return false;
-	m_TimeTextBlock.SetPosition({ windowCenter.x + 150.0f, 10.0f });
-	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
-
-	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "0-88", titleTextColor))
-		return false;
-	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 70.0f, 20.0f });
-	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 	
-	if (!m_CoinNumberTextBlock.Create(m_pApplication, m_pTextFont, "x00", titleTextColor))
-		return false;
-	m_CoinNumberTextBlock.SetPosition({ 185.0f, 18.0f });
-	m_CoinNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
-
-	m_Timer = m_TimerDefault;
-
-	m_DeathFadeout = false;
-
-	m_State = Estate::IDLE;
-
-	audioHandler.PlayMusic(m_pMusic, -1);
-
-	m_GoombaCount = 0;
-
-	e_GoombaCount = 0;
-	e_EndOfRoundPlayerKilled = false;
-
-	return true;
-}
-
 void CGameState::OnExit(void)
 {
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
@@ -244,10 +139,6 @@ void CGameState::Update(const float deltaTime)
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pPlayer->HandlePipeCollision(m_Pipes, deltaTime);
 		m_pPlayer->HandleEnemyCollision(m_Enemies, deltaTime);
-
-		m_pGoomba1->Update(deltaTime);
-		m_pGoomba1->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
-		m_pGoomba1->HandlePipeCollision(m_Pipes, deltaTime);
 
 		m_Timer -= deltaTime;
 
@@ -352,28 +243,8 @@ bool CTilemap::Create(CApplication* application)
 	return true;
 }
 
-void CTilemap::Destroy(void)
-{
-	m_Tiles.clear();
-
-	m_pApplication->GetTextureHandler().DestroyTexture(m_pTexture->GetName());
-	m_pTexture = nullptr;
-
-	m_pApplication = nullptr;
-}
-
 void CTilemap::Render(void)
 {
-	/*
-	for (int i = 0; i < m_Tiles.size(); ++i)
-	{
-		for (int j = 0; j < m_Tiles[i].size(); ++j)
-		{
-
-		}
-	}
-	*/
-
 	// Range-based for loop
 	// This works the same as the outer-most for-loop commented out above
 	for (const TileVector& row : m_Tiles)
