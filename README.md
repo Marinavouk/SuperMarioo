@@ -293,7 +293,7 @@ void CGameState::Update(const float deltaTime)
 }
 ```
 ------------------------------
-Here is an example of the Tilemap.cpp file. Tiles are defined in a 2D array (map), where each number represents a specific tile type. At the same time, a collider is created for each non-zero tile.
+Here is an example of the Tilemap.cpp file. Tiles are defined in a 2D array (map), where each number represents a specific tile type. At the same time, a collider is created for each  tile.
 ------------------------------
 
 ```
