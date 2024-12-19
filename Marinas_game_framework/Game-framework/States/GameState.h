@@ -55,6 +55,7 @@ private:
 	CTexture*		m_pCoin = nullptr;
 
 	TTF_Font*		m_pTextFont = nullptr;
+	TTF_Font*		m_p200TextFont = nullptr;
 
 	Mix_Music*		m_pMusic = nullptr;
 	Mix_Music*		m_pHurryMusic = nullptr;
