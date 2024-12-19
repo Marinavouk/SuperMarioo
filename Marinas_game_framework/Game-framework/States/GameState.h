@@ -68,7 +68,7 @@ private:
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
 
-	float			m_TimerDefault = 360.0f;
+	float			m_TimerDefault = 180.0f;
 	float			m_Timer = m_TimerDefault;
 
 	// When the player has died, the game waits this long (in seconds) before fading out and changing to the end-of-round state
