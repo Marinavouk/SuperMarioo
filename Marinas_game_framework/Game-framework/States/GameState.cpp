@@ -35,14 +35,7 @@ bool CGameState::OnEnter(void)
 	player->SetDyingCallback(std::bind(&CGameState::OnPlayerDying, this));
 	player->SetEnteringPipeCallback(std::bind(&CGameState::OnPlayerEnteringPipe, this));
 	player->SetExitingPipeCallback(std::bind(&CGameState::OnPlayerExitingPipe, this));
-	player->SetEnemyStompCallback(std::bind(&CGameState::OnPlayerEnemyStomp, this));
-
-	m_pGoomba1 = new CGoomba(m_pApplication);
-	if (!m_pGoomba1->Create("goomba.png", { 0.0f, 0.0f }, 1))
-		return false;
-	m_pGoomba1->SetPosition({ 300.0f, (windowSize.y - m_pGoomba1->GetRectangleSize().y) - tileSize.y });
-	CGoomba* goomba1 = (CGoomba*)m_pGoomba1;
-	goomba1->SetDyingCallback(std::bind(&CGameState::OnEnemyDead, this, std::placeholders::_1));
+	player->SetEnemyStompCallback(std::bind(&CGameState::OnGoombaStomped, this));
 
 	m_pPipeUpperLeft = new CPipe(m_pApplication);
 	if (!m_pPipeUpperLeft->Create("pipe.png", { 0.0f, 0.0f }, 0))
@@ -73,10 +66,26 @@ bool CGameState::OnEnter(void)
 	m_Pipes.push_back(m_pPipeLowerLeft);
 	m_Pipes.push_back(m_pPipeLowerRight);
 
-	m_Enemies.push_back(m_pGoomba1);
+	for (uint32_t i = 0; i < 5; ++i)
+	{
+		CGameObject* gameObject = new CGoomba(m_pApplication);
+		if (!gameObject->Create("goomba.png", { -1000.0f, -1000.0f }, 1))
+			return false;
 
-	m_pCoin = textureHandler.CreateTexture("coin.png");
-	m_pCoin->SetSize({ 16.f, 16.f });
+		CGoomba* goomba = (CGoomba*)gameObject;
+		goomba->SetDyingCallback(std::bind(&CGameState::OnGoombaDead, this, std::placeholders::_1));
+		goomba->SetIndex(i);
+
+		m_GoombaPool.push_back(gameObject);
+	}
+
+	for (uint32_t i = 0; i < 5; ++i)
+	{
+		SpawnGoomba();
+	}
+
+	m_pGoombaGUI = textureHandler.CreateTexture("goomba2.png");
+	m_pGoombaGUI->SetSize({ 16.f, 16.f });
 
 	m_pTextFont = m_pApplication->GetFontHandler().CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 18);
 	if (!m_pTextFont)
@@ -124,15 +133,10 @@ bool CGameState::OnEnter(void)
 	m_TimeTextBlock.SetPosition({ windowCenter.x + 150.0f, 10.0f });
 	m_TimeTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
-	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "0-88", titleTextColor))
+	if (!m_WorldNumberTextBlock.Create(m_pApplication, m_pTextFont, "1", titleTextColor))
 		return false;
-	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 70.0f, 20.0f });
+	m_WorldNumberTextBlock.SetPosition({ windowCenter.x + 60.0f, 10.0f });
 	m_WorldNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
-	
-	if (!m_CoinNumberTextBlock.Create(m_pApplication, m_pTextFont, "x00", titleTextColor))
-		return false;
-	m_CoinNumberTextBlock.SetPosition({ 185.0f, 18.0f });
-	m_CoinNumberTextBlock.SetBackgroundColor({ 0, 0, 0, 0 });
 
 	m_Timer = m_TimerDefault;
 
@@ -140,9 +144,7 @@ bool CGameState::OnEnter(void)
 
 	m_State = Estate::IDLE;
 
-//	audioHandler.PlayMusic(m_pMusic, -1);
-
-	m_GoombaCount = 0;
+	audioHandler.PlayMusic(m_pMusic, -1);
 
 	e_GoombaCount = 0;
 	e_EndOfRoundPlayerKilled = false;
@@ -171,7 +173,6 @@ void CGameState::OnExit(void)
 
 #undef DESTROY_MUSIC
 
-	m_CoinNumberTextBlock.Destroy(m_pApplication);
 	m_WorldNumberTextBlock.Destroy(m_pApplication);
 	m_TimeTextBlock.Destroy(m_pApplication);
 	m_WorldTextBlock.Destroy(m_pApplication);
@@ -180,8 +181,8 @@ void CGameState::OnExit(void)
 	m_pApplication->GetFontHandler().DestroyFont(m_pTextFont);
 	m_pTextFont = nullptr;
 
-	textureHandler.DestroyTexture(m_pCoin->GetName());
-	m_pCoin = nullptr;
+	textureHandler.DestroyTexture(m_pGoombaGUI->GetName());
+	m_pGoombaGUI = nullptr;
 
 #define DESTROY_GAME_OBJECT(GameObject) GameObject->Destroy(); delete GameObject; GameObject = nullptr;
 
@@ -189,13 +190,19 @@ void CGameState::OnExit(void)
 	DESTROY_GAME_OBJECT(m_pPipeLowerLeft);
 	DESTROY_GAME_OBJECT(m_pPipeUpperRight);
 	DESTROY_GAME_OBJECT(m_pPipeUpperLeft);
-	DESTROY_GAME_OBJECT(m_pGoomba1);
 	DESTROY_GAME_OBJECT(m_pPlayer);
 	DESTROY_GAME_OBJECT(m_pTilemap);
 
 #undef DESTROY_GAME_OBJECT
 
-	m_Enemies.clear();
+	for (CGameObject* goomba : m_GoombaPool)
+	{
+		goomba->Destroy();
+		delete goomba;
+	}
+
+	m_GoombaPool.clear();
+	m_ActiveGoombas.clear();
 	m_Pipes.clear();
 }
 
@@ -215,16 +222,22 @@ void CGameState::Update(const float deltaTime)
 	else if (m_State == Estate::ROUND_STARTED)
 	{
 		// The round has started, so update the game objects here so they can move etc
-
 		m_pPlayer->HandleInput(deltaTime);
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pPlayer->HandlePipeCollision(m_Pipes, deltaTime);
-		m_pPlayer->HandleEnemyCollision(m_Enemies, deltaTime);
+		m_pPlayer->HandleEnemyCollision(m_ActiveGoombas, deltaTime);
 
-		m_pGoomba1->Update(deltaTime);
-		m_pGoomba1->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
-		m_pGoomba1->HandlePipeCollision(m_Pipes, deltaTime);
+		for (CGameObject* goomba : m_ActiveGoombas)
+		{
+			if (!goomba->GetIsDead()) 
+			{
+				goomba->Update(deltaTime);
+				goomba->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
+				goomba->HandlePipeCollision(m_Pipes, deltaTime);
+			}
+
+		}
 
 		m_Timer -= deltaTime;
 
@@ -242,7 +255,6 @@ void CGameState::Update(const float deltaTime)
 
 			m_State = Estate::ROUND_ENDED;
 
-			e_GoombaCount = m_GoombaCount;
 			e_EndOfRoundPlayerKilled = false;
 
 			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
@@ -276,7 +288,7 @@ void CGameState::Render(void)
 
 	m_pTilemap->Render();
 
-	for (CGameObject* goomba : m_Enemies)
+	for (CGameObject* goomba : m_ActiveGoombas)
 	{
 		if (!goomba->GetIsDead())
 			goomba->Render();
@@ -293,45 +305,57 @@ void CGameState::Render(void)
 	m_WorldTextBlock.Render(renderer);
 	m_TimeTextBlock.Render(renderer);
 	m_WorldNumberTextBlock.Render(renderer);
-	m_CoinNumberTextBlock.Render(renderer);
 
-	m_pCoin->Render({ 155.f, 10.0f });
+	m_pGoombaGUI->Render({ 155.f, 0.0f });
 
+	fontHandler.RenderText(renderer, m_pTextFont, std::to_string(e_GoombaCount), { 175.0f, 0.0f }, { 250, 250, 250, 255 });
+	
 	std::stringstream timerStream;
 	timerStream << std::setw(3) << std::setfill('0') << (uint32_t)ceilf(m_Timer);
 	const std::string timerText = timerStream.str();
-	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + fontHandler.GetTextSize(m_pTextFont, timerText).x * 5.5f, 12.0f }, { 250, 250, 250, 255 });
+	fontHandler.RenderText(renderer, m_pTextFont, timerText, { m_pApplication->GetWindowCenter().x + fontHandler.GetTextSize(m_pTextFont, timerText).x * 5.5f, 0.0f }, { 250, 250, 250, 255 });
 }
 
 void CGameState::RenderDebug(void)
 {
 	m_pTilemap->RenderDebug();
 	m_pPlayer->RenderDebug();
-	m_pGoomba1->RenderDebug();
+
+	for (CGameObject* goomba : m_ActiveGoombas)
+	{
+		if (!goomba->GetIsDead())
+			goomba->RenderDebug();
+	}
 	m_pPipeUpperLeft->RenderDebug();
 	m_pPipeUpperRight->RenderDebug();
 	m_pPipeLowerLeft->RenderDebug();
 	m_pPipeLowerRight->RenderDebug();
 }
 
-void CGameState::SpawnGoombas(void)
+void CGameState::SpawnGoomba(void)
 {
-	CRandom*            RNG              = m_pApplication->GetRandomNumberGenerator();
+	CRandom* RNG = m_pApplication->GetRandomNumberGenerator();
 	
-	// Loop through the goomba pool and try to retrieve an inactive/unused spider that can be spawned on the screen
-	for (CGameObject* gameObject : m_EnemiesPool)
+	// Loop through the goomba pool and try to retrieve an inactive/unused goomba that can be spawned on the screen
+	for (CGameObject* gameObject : m_GoombaPool)
 	{
 		CGoomba* goomba = (CGoomba*)gameObject;
 
 		if (!goomba->GetIsActive())
 		{
-			
-			
-			//goomba->Activate(spawnPosition,(uint32_t)m_Enemies.size());
+			CGameObject* exitPipe = m_Pipes[RNG->RandomUint(0, (uint32_t)m_Pipes.size() - 1)];
+			const SDL_FPoint exitPipePosition = exitPipe->GetRectanglePosition();
+			const SDL_FPoint exitPipeSize = exitPipe->GetRectangleSize();
+			const SDL_FPoint goombaSize = goomba->GetRectangleSize();
+			const bool exitRightFacingPipe = (exitPipe->GetFlipMethod() == SDL_RendererFlip::SDL_FLIP_NONE);
 
-			m_Enemies.push_back(goomba);
+			const SDL_FPoint spawnPosition = { exitPipePosition.x + RNG->RandomFloat(-20.0f, 20.0f) + (exitPipeSize.x * 0.5f) - (goombaSize.x * 0.5f), (exitPipePosition.y + exitPipeSize.y) - goombaSize.y};
 
-			// Should break out of the for loop now since an inactive/unused spider has been found
+			goomba->Activate(spawnPosition,(uint32_t)m_ActiveGoombas.size(), exitRightFacingPipe);
+
+			m_ActiveGoombas.push_back(goomba);
+
+			// Should break out of the for loop now since an inactive/unused goomba has been found
 			break;
 		}
 	}
@@ -374,14 +398,20 @@ void CGameState::OnPlayerExitingPipe(void)
 	m_pApplication->GetAudioHandler().PlaySound(m_pPipeSound);
 }
 
-void CGameState::OnPlayerEnemyStomp(void)
+void CGameState::OnGoombaStomped(void)
 {
 	m_pApplication->GetAudioHandler().PlaySound(m_pGoombaSound);
 }
 
-void CGameState::OnEnemyDead(CGameObject* enemy)
+void CGameState::OnGoombaDead(const int index)
 {
-	// TODO: re-spawn the goomba in a random pipe
+	e_GoombaCount++;
+	m_ActiveGoombas.erase(m_ActiveGoombas.begin() + index);
 
-	printf("Goomba has died");
+	for (uint32_t i = 0; i < m_ActiveGoombas.size(); ++i)
+	{
+		((CGoomba*)m_ActiveGoombas[i])->SetIndex(i);
+	}
+
+	SpawnGoomba();
 }

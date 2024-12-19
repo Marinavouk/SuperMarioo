@@ -22,13 +22,13 @@ public:
 
 private:
 
-	void			SpawnGoombas(void);
+	void			SpawnGoomba(void);
 	void			OnPlayerJumping(void);
 	void			OnPlayerDying(void);
 	void			OnPlayerEnteringPipe(void);
 	void			OnPlayerExitingPipe(void);
-	void			OnPlayerEnemyStomp(void);
-	void			OnEnemyDead(CGameObject* enemy);
+	void			OnGoombaStomped(void);
+	void			OnGoombaDead(const int index);
 
 private:
 
@@ -46,16 +46,14 @@ private:
 	CTilemap*		m_pTilemap = nullptr;
 
 	CGameObject*	m_pPlayer = nullptr;
-	CGameObject*	m_pGoomba1 = nullptr;
 	CGameObject*	m_pPipeUpperLeft = nullptr;
 	CGameObject*	m_pPipeUpperRight = nullptr;
 	CGameObject*	m_pPipeLowerLeft = nullptr;
 	CGameObject*	m_pPipeLowerRight = nullptr;
 
-	CTexture*		m_pCoin = nullptr;
+	CTexture*		m_pGoombaGUI = nullptr;
 
 	TTF_Font*		m_pTextFont = nullptr;
-	TTF_Font*		m_p200TextFont = nullptr;
 
 	Mix_Music*		m_pMusic = nullptr;
 	Mix_Music*		m_pHurryMusic = nullptr;
@@ -69,13 +67,9 @@ private:
 	CButton			m_WorldTextBlock = {};
 	CButton			m_TimeTextBlock = {};
 	CButton			m_WorldNumberTextBlock = {};
-	CButton		    m_CoinNumberTextBlock = {};
 
 	float			m_TimerDefault = 360.0f;
 	float			m_Timer = m_TimerDefault;
-
-	uint32_t		m_VolumeLimiter = 100;
-	uint32_t		m_GoombaCount = 0;
 
 	// When the player has died, the game waits this long (in seconds) before fading out and changing to the end-of-round state
 	float			m_DeathFadeDelayDefault = 3.0f;
@@ -87,7 +81,7 @@ private:
 	Estate			m_State = Estate::IDLE;
 
 	GameObjectList	m_Pipes = {};
-	GameObjectList	m_Enemies = {};
-	GameObjectList	m_EnemiesPool = {};
+	GameObjectList	m_ActiveGoombas = {};
+	GameObjectList	m_GoombaPool = {};
 
 };

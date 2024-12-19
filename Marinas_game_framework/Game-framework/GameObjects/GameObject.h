@@ -66,5 +66,4 @@ protected:
 
 	bool				m_IsActive = true;
 	bool				m_IsDead = false;
-
 };

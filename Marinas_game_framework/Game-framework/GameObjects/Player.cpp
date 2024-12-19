@@ -109,7 +109,7 @@ void CPlayer::Update(const float deltaTime)
 
 		if (m_Rectangle.y > (windowSize.y - m_Rectangle.h))
 		{
-			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+			m_Rectangle.y = (windowSize.y - m_Rectangle.h);
 
 			m_Velocity.y = 0.0f;
 
@@ -131,8 +131,10 @@ void CPlayer::Update(const float deltaTime)
 				}
 			}
 
+			m_OnGround = true;
 			m_IsJumping = false;
 		}
+
 	}
 
 	else if (m_State == EState::DEAD)

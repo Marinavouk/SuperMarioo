@@ -32,10 +32,11 @@ private:
 	CButton		m_TimeTextBlock = {};
 	CButton		m_WorldNumberTextBlock = {};
 	CButton		m_CoinNumberTextBlock = {};
+	CButton		m_GoombasStompedTextBlock = {};
 
 	CButton		m_ScoreTextBlock = {};
 
 
-	float       timer = 0;
+	float       m_Timer = 3.0f;
 
 };

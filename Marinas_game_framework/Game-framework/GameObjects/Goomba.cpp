@@ -31,7 +31,7 @@ bool CGoomba::Create(const std::string& textureFileName, const SDL_FPoint& posit
 
 	m_Collider = { m_VerticalCollider.x, m_VerticalCollider.y, m_VerticalCollider.w, m_VerticalCollider.h };
 
-	m_Velocity.x = ((m_HorizontalDirection == EMovementState::MOVING_LEFT) ? -m_WalkingVelocity : m_WalkingVelocity);
+	m_IsActive = false;
 
 	return true;
 }
@@ -63,6 +63,14 @@ void CGoomba::Kill(void)
 	m_State = EState::DEAD;
 }
 
+void CGoomba::Render(void)
+{
+	m_pTexture->SetTextureCoords(m_pCurrentAnimator->GetClipRectangle());
+	m_pTexture->SetFlipMethod(m_FlipMethod);
+
+	CGameObject::Render();
+}
+
 void CGoomba::RenderDebug(void)
 {
 	CGameObject::RenderDebug();
@@ -78,7 +86,10 @@ void CGoomba::RenderDebug(void)
 
 void CGoomba::Update(const float deltaTime)
 {
-	m_Velocity.y = std::min(m_Velocity.y + m_Gravity * deltaTime, m_MaxFallVelocity);
+	if (m_State == EState::NORMAL || m_State == EState::DEAD)
+	{
+		m_Velocity.y = std::min(m_Velocity.y + m_Gravity * deltaTime, m_MaxFallVelocity);
+	}
 
 	m_Rectangle.x += m_Velocity.x * deltaTime;
 	m_Rectangle.y += m_Velocity.y * deltaTime;
@@ -94,9 +105,9 @@ void CGoomba::Update(const float deltaTime)
 		if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) < 0.0f) m_Rectangle.x = windowSize.x - (m_Rectangle.w * 0.5f);
 		else if ((m_Rectangle.x + (m_Rectangle.w * 0.5f)) > windowSize.x) m_Rectangle.x = -(m_Rectangle.w * 0.5f);
 
-		if (m_Rectangle.y > (windowSize.y - m_Rectangle.h))
+		if (m_Rectangle.y > (windowSize.y - m_Rectangle.h) - 32.0f)
 		{
-			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+			m_Rectangle.y = (windowSize.y - m_Rectangle.h) - 32.0f;
 
 			m_Velocity.y = 0.0f;
 		}
@@ -239,7 +250,7 @@ void CGoomba::HandlePipeCollision(const GameObjectList& pipes, const float delta
 	}
 }
 
-void CGoomba::Activate(const SDL_FPoint& spawnPosition, const uint32_t index)
+void CGoomba::Activate(const SDL_FPoint& spawnPosition, const uint32_t index, const bool rightDirection)
 {
 	ActivateAnimator(m_pAnimatorWalking);
 
@@ -250,13 +261,14 @@ void CGoomba::Activate(const SDL_FPoint& spawnPosition, const uint32_t index)
 
 	SyncColliders();
 
-	m_StartPosition = spawnPosition;
-
-
 	m_Index = index;
+
+	m_HorizontalDirection = (rightDirection ? EMovementState::MOVING_RIGHT : EMovementState::MOVING_LEFT);
 
 	m_IsActive = true;
 	m_IsDead = false;
+
+	m_Velocity.x = m_PipeTraversingVelocity;
 
 	m_State = EState::EXITING_PIPE;
 }
@@ -350,5 +362,5 @@ void CGoomba::OnDyingAnimationEnd(void)
 	CGameObject::Kill();
 
 	if (m_pDyingCallback)
-		m_pDyingCallback(this);
+		m_pDyingCallback(m_Index);
 }

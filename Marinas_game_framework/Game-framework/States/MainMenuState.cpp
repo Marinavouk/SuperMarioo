@@ -24,20 +24,20 @@ bool CMainMenuState::OnEnter(void)
 	m_pCoinTexture = textureHandler.CreateTexture("coin.png");
 	m_pCoinTexture->SetSize({ 11.f, 12.f });
 
-	m_pMario = textureHandler.CreateTexture("MarioIdle.png");
+	m_pMario = textureHandler.CreateTexture("mario2.png");
 	m_pMario->SetSize({ 40.f, 40.f });
 
 	m_pButtonFont = fontHandler.CreateFont("Assets/Fonts/VCR_OSD_MONO.ttf", 25);
 	if (!m_pButtonFont)
 		return false;
 
-	const SDL_Color buttonBackgroundColor = { 0,		0,		0,		0 };		// nothing		<-- Background color when the button is not held
-	const SDL_Color buttonBackgroundPressedColor = { 0,		0,		0,		0 };	// nothing		<-- Background color when the button is held
-	const SDL_Color buttonTextColor = { 255,	255,	255,	255 };				// White		<-- Text color when the mouse pointer is outside the button
-	const SDL_Color buttonTextColorHovered = { 100,	100,	100,	255 };			// Light gray	<-- Text color when the mouse pointer is inside (hovering) the button
-	const SDL_Color buttonTextColorPressed = { 100,	100,	100,	200 };			// Dark gray	<-- Text color when the button is held
+	const SDL_Color buttonBackgroundColor = { 0, 0,	0, 0 };			 // nothing		<-- Background color when the button is not held
+	const SDL_Color buttonBackgroundPressedColor = { 0,	0, 0, 0 };	 // nothing		<-- Background color when the button is held
+	const SDL_Color buttonTextColor = { 255, 255, 255, 255 };		 // White		<-- Text color when the mouse pointer is outside the button
+	const SDL_Color buttonTextColorHovered = { 100,	100, 100, 255 }; // Light gray	<-- Text color when the mouse pointer is inside (hovering) the button
+	const SDL_Color buttonTextColorPressed = { 100,	100, 100, 200 }; // Dark gray	<-- Text color when the button is held
 
-	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "1 PLAYER GAME", buttonTextColor))
+	if (!m_1PlayerGame.Create(m_pApplication, m_pButtonFont, "START GAME", buttonTextColor))
 		return false;
 	m_1PlayerGame.SetPosition({ windowCenter.x, windowCenter.y + 40.0f });
 	m_1PlayerGame.SetBackgroundColor(buttonBackgroundColor);
@@ -60,14 +60,13 @@ void CMainMenuState::OnExit(void)
 	std::cout << "Exiting menu state" << std::endl;
 #endif
 
-	if (m_pApplication->GetNextState() == CApplication::EState::GAME)
-	{
-		CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
+	
+	CAudioHandler& audioHandler = m_pApplication->GetAudioHandler();
 
-		audioHandler.StopMusic();
-		audioHandler.DestroyMusic(m_pMusic);
-		m_pMusic = nullptr;
-	}
+	audioHandler.StopMusic();
+	audioHandler.DestroyMusic(m_pMusic);
+	m_pMusic = nullptr;
+	
 	m_1PlayerGame.Destroy(m_pApplication);
 
 	m_pApplication->GetFontHandler().DestroyFont(m_pButtonFont);
