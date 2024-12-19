@@ -1,18 +1,21 @@
-# SuperMario  Mini Version
+# Super Mario - My Mini Version
 
 ---------------------------
 My Examination Project for Forsbergs Skola December 2024
+Game Programming 2023
 ---------------------------
 
 ![image](https://github.com/user-attachments/assets/7f2751e1-fabf-4c66-99bc-b41e9f2f4097)
 
- Decided to develop my skills in C++ using SDL library and creating a game from scratch for my examination project.
-Such a challening 7 weeks. 
-During this project I Worked with the SDL library to develop skills in C++
-Created functions and implemented mechanics 
-Completed a simple 2D game with a scoring system
-Learned about key concepts like tilemaps, animations, colliders, and movement, while organizing code to be readable and understandable
-Enjoyed the process of making mistakes and researching for hours
+I decided to develop my skills in C++ by using the SDL library and creating a game from scratch for my examination project. It was a challenging but rewarding 7 weeks.
+
+During this project, I:
+
+Worked with the SDL library to deepen my knowledge of C++.
+Created functions and implemented mechanics for the game.
+Completed a simple 2D game with a scoring system.
+Learned key concepts such as tilemaps, animations, colliders, and movement, while focusing on organizing code to be readable and maintainable.
+Enjoyed the process of making mistakes, debugging, and researching solutions for hours.
 
 -----------------------------
 Some exampel of GameState.CPP 
@@ -161,7 +164,7 @@ bool CGameState::OnEnter(void)
 
 	m_State = Estate::IDLE;
 
-//	audioHandler.PlayMusic(m_pMusic, -1);
+	audioHandler.PlayMusic(m_pMusic, -1);
 
 	m_GoombaCount = 0;
 
@@ -235,8 +238,7 @@ void CGameState::Update(const float deltaTime)
 
 	else if (m_State == Estate::ROUND_STARTED)
 	{
-		// The round has started, so update the game objects here so they can move etc
-
+		
 		m_pPlayer->HandleInput(deltaTime);
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
@@ -289,5 +291,101 @@ void CGameState::Update(const float deltaTime)
 		}
 	}
 }
-´´´
+```
+------------------------------
+Here is an example of the Tilemap.cpp file. Tiles are defined in a 2D array (map), where each number represents a specific tile type. At the same time, a collider is created for each non-zero tile.
+------------------------------
+
+```
+#include "Pch.h"
+#include "Tilemap.h"
+
+#include "Application.h"
+
+bool CTilemap::Create(CApplication* application)
+{
+	m_pApplication = application;
+
+	m_pTexture = m_pApplication->GetTextureHandler().CreateTexture("tiles.png");
+
+	const int32_t numRows = 13;
+	const int32_t numColumns = 16;
+
+	const int32_t map[numRows][numColumns] =
+	{
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+	};
+
+	for (int32_t i = 0; i < numRows; ++i)
+	{
+		std::vector<STile> Tiles = {};
+
+		for (int32_t j = 0; j < numColumns; ++j)
+		{
+			const int32_t TileType = map[i][j];
+
+			if (TileType != 0)
+			{
+				STile tile = { .m_Position = { (j * m_TileSize.x), (i * m_TileSize.y)}, .m_TexCoord = {(TileType - 1) * (int)m_TileSize.x, 0} };
+				Tiles.push_back(tile);
+
+				m_TileColliders.push_back({ tile.m_Position.x, tile.m_Position.y, m_TileSize.x, m_TileSize.y });
+			}
+		}
+
+		if (!Tiles.empty())
+			m_Tiles.push_back(Tiles);
+	}
+
+	return true;
+}
+
+void CTilemap::Destroy(void)
+{
+	m_Tiles.clear();
+
+	m_pApplication->GetTextureHandler().DestroyTexture(m_pTexture->GetName());
+	m_pTexture = nullptr;
+
+	m_pApplication = nullptr;
+}
+
+void CTilemap::Render(void)
+{
+	/*
+	for (int i = 0; i < m_Tiles.size(); ++i)
+	{
+		for (int j = 0; j < m_Tiles[i].size(); ++j)
+		{
+
+		}
+	}
+	*/
+
+	// Range-based for loop
+	// This works the same as the outer-most for-loop commented out above
+	for (const TileVector& row : m_Tiles)
+	{
+		for (const STile& tile : row)
+		{
+			const SDL_FRect	rectangle = { tile.m_Position.x, tile.m_Position.y, m_TileSize.x, m_TileSize.y };
+			const SDL_Rect	clipRectangle = { tile.m_TexCoord.x, tile.m_TexCoord.y, (int)m_TileSize.x, (int)m_TileSize.y };
+
+			m_pTexture->SetTextureCoords(clipRectangle);
+			m_pTexture->Render(tile.m_Position, &rectangle);
+		}
+	}
+```
 
