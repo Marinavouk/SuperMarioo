@@ -71,7 +71,7 @@ private:
 	CButton			m_WorldNumberTextBlock = {};
 	CButton		    m_CoinNumberTextBlock = {};
 
-	float			m_TimerDefault = 300.0f;
+	float			m_TimerDefault = 360.0f;
 	float			m_Timer = m_TimerDefault;
 
 	uint32_t		m_VolumeLimiter = 100;

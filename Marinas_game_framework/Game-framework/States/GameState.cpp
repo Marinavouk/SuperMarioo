@@ -226,7 +226,7 @@ void CGameState::Update(const float deltaTime)
 		m_pGoomba1->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pGoomba1->HandlePipeCollision(m_Pipes, deltaTime);
 
-		//m_Timer -= deltaTime;
+		m_Timer -= deltaTime;
 
 		if (m_Timer <= 60.0f && !m_HurryMusicStarted)
 		{
