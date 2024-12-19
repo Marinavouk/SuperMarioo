@@ -1,8 +1,8 @@
 # Super Mario - My Mini Version
 
 ---------------------------
-#My Examination Project for Forsbergs Skola December 2024
-#Game Programming 2023
+# My Examination Project for Forsbergs Skola December 2024
+# Game Programming 2023
 ---------------------------
 
 ![image](https://github.com/user-attachments/assets/7f2751e1-fabf-4c66-99bc-b41e9f2f4097)
