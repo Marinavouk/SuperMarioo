@@ -35,8 +35,8 @@ Some exampel of GameState.CPP
 #include <iomanip>
 #include <sstream>
 
-bool CGameState::OnEnter(void)
-{
+
+
 	m_pApplication->GetWindow().SetClearColor({ 0, 0, 0, 255 });
 
 	const SDL_FPoint windowSize   = m_pApplication->GetWindowSize();
@@ -59,16 +59,29 @@ bool CGameState::OnEnter(void)
 	player->SetDyingCallback(std::bind(&CGameState::OnPlayerDying, this));
 	player->SetEnteringPipeCallback(std::bind(&CGameState::OnPlayerEnteringPipe, this));
 	player->SetExitingPipeCallback(std::bind(&CGameState::OnPlayerExitingPipe, this));
-	player->SetEnemyStompCallback(std::bind(&CGameState::OnPlayerEnemyStomp, this));
+	player->SetEnemyStompCallback(std::bind(&CGameState::OnGoombaStomped, this));
 
-	m_pGoomba1 = new CGoomba(m_pApplication);
-	if (!m_pGoomba1->Create("goomba.png", { 0.0f, 0.0f }, 1))
-		return false;
-	m_pGoomba1->SetPosition({ 300.0f, (windowSize.y - m_pGoomba1->GetRectangleSize().y) - tileSize.y });
-	CGoomba* goomba1 = (CGoomba*)m_pGoomba1;
-	goomba1->SetDyingCallback(std::bind(&CGameState::OnEnemyDead, this, std::placeholders::_1));
+	for (uint32_t i = 0; i < 5; ++i)
+	{
+		CGameObject* gameObject = new CGoomba(m_pApplication);
+		if (!gameObject->Create("goomba.png", { -1000.0f, -1000.0f }, 1))
+			return false;
 
-	
+		CGoomba* goomba = (CGoomba*)gameObject;
+		goomba->SetDyingCallback(std::bind(&CGameState::OnGoombaDead, this, std::placeholders::_1));
+		goomba->SetIndex(i);
+
+		m_GoombaPool.push_back(gameObject);
+	}
+
+	for (uint32_t i = 0; i < 5; ++i)
+	{
+		SpawnGoomba();
+	}
+
+	m_pGoombaGUI = textureHandler.CreateTexture("goomba2.png");
+	m_pGoombaGUI->SetSize({ 16.f, 16.f });
+
 void CGameState::OnExit(void)
 {
 	CTextureHandler& textureHandler = m_pApplication->GetTextureHandler();
@@ -90,31 +103,15 @@ void CGameState::OnExit(void)
 
 #undef DESTROY_MUSIC
 
-	m_CoinNumberTextBlock.Destroy(m_pApplication);
-	m_WorldNumberTextBlock.Destroy(m_pApplication);
-	m_TimeTextBlock.Destroy(m_pApplication);
-	m_WorldTextBlock.Destroy(m_pApplication);
-	m_MarioTextBlock.Destroy(m_pApplication);
 
-	m_pApplication->GetFontHandler().DestroyFont(m_pTextFont);
-	m_pTextFont = nullptr;
+	for (CGameObject* goomba : m_GoombaPool)
+	{
+		goomba->Destroy();
+		delete goomba;
+	}
 
-	textureHandler.DestroyTexture(m_pCoin->GetName());
-	m_pCoin = nullptr;
-
-#define DESTROY_GAME_OBJECT(GameObject) GameObject->Destroy(); delete GameObject; GameObject = nullptr;
-
-	DESTROY_GAME_OBJECT(m_pPipeLowerRight);
-	DESTROY_GAME_OBJECT(m_pPipeLowerLeft);
-	DESTROY_GAME_OBJECT(m_pPipeUpperRight);
-	DESTROY_GAME_OBJECT(m_pPipeUpperLeft);
-	DESTROY_GAME_OBJECT(m_pGoomba1);
-	DESTROY_GAME_OBJECT(m_pPlayer);
-	DESTROY_GAME_OBJECT(m_pTilemap);
-
-#undef DESTROY_GAME_OBJECT
-
-	m_Enemies.clear();
+	m_GoombaPool.clear();
+	m_ActiveGoombas.clear();
 	m_Pipes.clear();
 }
 
@@ -133,55 +130,23 @@ void CGameState::Update(const float deltaTime)
 
 	else if (m_State == Estate::ROUND_STARTED)
 	{
-		
+		// The round has started, so update the game objects here so they can move etc
 		m_pPlayer->HandleInput(deltaTime);
 		m_pPlayer->Update(deltaTime);
 		m_pPlayer->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
 		m_pPlayer->HandlePipeCollision(m_Pipes, deltaTime);
-		m_pPlayer->HandleEnemyCollision(m_Enemies, deltaTime);
+		m_pPlayer->HandleEnemyCollision(m_ActiveGoombas, deltaTime);
 
-		m_Timer -= deltaTime;
-
-		if (m_Timer <= 60.0f && !m_HurryMusicStarted)
+		for (CGameObject* goomba : m_ActiveGoombas)
 		{
-			audioHandler.StopMusic();
-			audioHandler.PlayMusic(m_pHurryMusic, -1);
-
-			m_HurryMusicStarted = true;
-		}
-
-		else if (m_Timer <= 0.0f)
-		{		
-			m_Timer = 0.0f;
-
-			m_State = Estate::ROUND_ENDED;
-
-			e_GoombaCount = m_GoombaCount;
-			e_EndOfRoundPlayerKilled = false;
-
-			m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
-		}
-	}
-
-	else if (m_State == Estate::ROUND_ENDED)
-	{
-		m_pPlayer->Update(deltaTime);
-
-		if (m_DeathFadeout)
-		{
-			m_DeathFadeDelay -= deltaTime;
-
-			if (m_DeathFadeDelay <= 0.0f)
+			if (!goomba->GetIsDead()) 
 			{
-				m_DeathFadeDelay = 0.0f;
-
-				m_DeathFadeout = false;
-
-				m_pApplication->SetState(CApplication::EState::END_OF_ROUND);
+				goomba->Update(deltaTime);
+				goomba->HandleTilemapCollision(m_pTilemap->GetColliders(), deltaTime);
+				goomba->HandlePipeCollision(m_Pipes, deltaTime);
 			}
+
 		}
-	}
-}
 ```
 ------------------------------
 Here is an example of the Tilemap.cpp file. Tiles are defined in a 2D array (map), where each number represents a specific tile type. At the same time, a collider is created for each  tile.
@@ -261,7 +226,7 @@ void CTilemap::Render(void)
 ```
 
 ----------------------------------
-Last but not least the Player.cpp. I Struggled with colliders, which were insanely difficult to build and understand.
+Last but not least the Player.cpp. I struggled with colliders, which were insanely difficult to build and understand.
 ----------------------------------
 
 ```
@@ -376,7 +341,7 @@ void CPlayer::Update(const float deltaTime)
 
 		if (m_Rectangle.y > (windowSize.y - m_Rectangle.h))
 		{
-			m_Rectangle.y = windowSize.y - m_Rectangle.h;
+			m_Rectangle.y = (windowSize.y - m_Rectangle.h);
 
 			m_Velocity.y = 0.0f;
 
@@ -398,8 +363,10 @@ void CPlayer::Update(const float deltaTime)
 				}
 			}
 
+			m_OnGround = true;
 			m_IsJumping = false;
 		}
+
 	}
 
 	else if (m_State == EState::DEAD)
