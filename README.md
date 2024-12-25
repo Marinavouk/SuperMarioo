@@ -5,8 +5,10 @@
 # Game Programming 2023
 ---------------------------
 
-![image](https://github.com/user-attachments/assets/7f2751e1-fabf-4c66-99bc-b41e9f2f4097)
 
+https://github.com/user-attachments/assets/afea4410-26b6-4c61-a911-105aebadc084
+
+---------------------------
 I decided to develop my skills in C++ by using the SDL library and creating a game from scratch for my examination project. It was a challenging but rewarding 7 weeks.
 
 During this project, I:
@@ -227,6 +229,12 @@ void CTilemap::Render(void)
 
 ----------------------------------
 Last but not least the Player.cpp. I struggled with colliders, which were insanely difficult to build and understand.
+----------------------------------
+
+
+https://github.com/user-attachments/assets/89ad09e0-e219-48ae-9959-91fb4c061db0
+
+
 ----------------------------------
 
 ```
@@ -830,4 +838,4 @@ void CPlayer::ActivateAnimator(CAnimator* animator)
 }
 ```
 -------------------------
-
+![image](https://github.com/user-attachments/assets/7f2751e1-fabf-4c66-99bc-b41e9f2f4097)
