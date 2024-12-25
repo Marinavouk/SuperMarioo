@@ -1,4 +1,4 @@
-# Super Mario - My Mini Version
+# Super Mario VS Goombas
 
 ---------------------------
 # My Examination Project for Forsbergs Skola December 2024
